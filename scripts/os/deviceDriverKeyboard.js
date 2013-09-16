@@ -47,11 +47,51 @@ function krnKbdDispatchKeyPress(params)
         // TODO: Check for caps-lock and handle as shifted if so.
         _KernelInputQueue.enqueue(chr);        
     }    
-    else if ( ((keyCode >= 48) && (keyCode <= 57)) ||   // digits 
-               (keyCode == 32)                     ||   // space
+    else if (  (keyCode == 32)                     ||   // space
                (keyCode == 13) )                        // enter
     {
         chr = String.fromCharCode(keyCode);
         _KernelInputQueue.enqueue(chr); 
     }
+	else if ((keyCode >= 48) && (keyCode <= 57))
+	{
+		if (isShifted)
+		{
+			switch (keyCode)
+			{
+			case 48: //zero
+				var keyCode = 41;
+				break;
+			case 49: //one
+				var keyCode = 33;
+				break;
+			case 50: //two
+				var keyCode = 64;
+				break;
+			case 51: //three
+				var keyCode = 35;
+				break;
+			case 52: //four
+				var keyCode = 36;
+				break;
+			case 53: //five
+				var keyCode = 37;
+				break;	
+			case 54: //six
+				var keyCode = 94;
+				break;
+			case 55: //seven
+				var keyCode = 38;
+				break;
+			case 56: //eight
+				var keyCode = 42;
+				break;
+			case 57: //nine
+				var keyCode = 40;
+				break;
+			}
+		}
+	chr = String.fromCharCode(keyCode);
+	_KernelInputQueue.enqueue(chr); 
+	}
 }

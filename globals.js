@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "0.03-Cantaloupe";
+var APP_VERSION = "0.04-Date";
 
 var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
 
