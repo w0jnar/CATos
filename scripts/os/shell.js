@@ -87,6 +87,13 @@ function shellInit() {
     sc.function = shellDate;
     this.commandList[this.commandList.length] = sc;
 	
+	// location
+    sc = new ShellCommand();
+    sc.command = "whereami";
+    sc.description = "- Displays the current location.";
+    sc.function = shellLocation;
+    this.commandList[this.commandList.length] = sc;
+	
     // processes - list the running processes and their IDs
     // kill <id> - kills the specified process id.
 
@@ -438,4 +445,13 @@ function shellDate()
 	+ hours + ':' + minutes + ':' + seconds
 	+ ' ' + ampm + ' on ' + dayText + ', ' + fixer(date) + '/'
 	+ fixer(month) + '/' + year);
+}
+
+function shellLocation()  //displays random locations, seemed like a good idea.
+{
+    var latitude = parseFloat((Math.random() * (180) + (-90)).toFixed(5));
+	var longitude = parseFloat((Math.random() * (360) + (-180)).toFixed(5));
+	
+	_StdIn.putText("Latitude: " + latitude
+	+ " Longitude: " + longitude);
 }
