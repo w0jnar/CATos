@@ -3,7 +3,7 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
    <meta name="author"             content="Alan G. Labouseur" />
-   <link rel="stylesheet" href="alanbbos.css" type="text/css" media="screen" />
+   <link rel="stylesheet" href="CATos.css" type="text/css" media="screen" />
    <title>
       CATos - a Javascript OS
    </title>
@@ -63,15 +63,15 @@
              onclick="hostBtnReset_click(this);">
    </div>
 
-   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
+   <div id="divConsole" style="margin:4px; width:500px; height:466px; float:left;">
       <canvas id="display"
-              width="500px"
-              height="500px"
+              width="825px"
+              height="400px"
               tabindex="3">
       </canvas>
    </div>
-
-   <div id="divLog" style="margin-left:520px;">
+   
+   <div id="divLog" style="margin-left:300px;" align="right">
       <label>
          Log
          <br>
@@ -83,7 +83,16 @@
       </label>
    </div>
 
-   <div id="divUserProgramInput" style="margin-left:520px;">
+   <div id="divStatus" style="margin-left:4px; width:825px; height:50px; float:left;">
+      <div id="status" style="height:25px;">
+	  
+	  </div>
+	  <div id="date" style="height:25px;">
+	  
+	  </div>
+   </div>
+   
+   <div id="divUserProgramInput" style="margin-left:520px;" align="right">
       <label>
          User Program Input
          <br>
@@ -94,7 +103,7 @@
          ></textarea>
       </label>
    </div>
-
+   
 </div>
 
 <p class="footerText" style="clear:both;">

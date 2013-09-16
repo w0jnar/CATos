@@ -91,10 +91,10 @@ function krnKbdDispatchKeyPress(params)
 				break;
 			}
 		}
-	chr = String.fromCharCode(keyCode);
-	_KernelInputQueue.enqueue(chr); 
+		chr = String.fromCharCode(keyCode);
+		_KernelInputQueue.enqueue(chr); 
 	}
-	else                                                //everything else (seems somewhat pointless to separate, but I felt it was sory of necessary)
+	else                                                //everything else (seems somewhat pointless to separate, but I felt it was sort of necessary)
 	{
 		switch (keyCode)
 		{

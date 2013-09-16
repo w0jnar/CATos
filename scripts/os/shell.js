@@ -94,6 +94,15 @@ function shellInit() {
     sc.function = shellLocation;
     this.commandList[this.commandList.length] = sc;
 	
+//	
+	
+	// status
+    sc = new ShellCommand();
+    sc.command = "status";
+    sc.description = "- <string> Displays the user string in status box.";
+    sc.function = shellStatus;
+    this.commandList[this.commandList.length] = sc;
+	
     // processes - list the running processes and their IDs
     // kill <id> - kills the specified process id.
 
@@ -454,4 +463,9 @@ function shellLocation()  //displays random locations, seemed like a good idea.
 	
 	_StdIn.putText("Latitude: " + latitude
 	+ " Longitude: " + longitude);
+}
+
+function shellStatus(args)  //displays the status the user enters
+{
+	_StdIn.putText(args);
 }

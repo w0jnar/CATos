@@ -1,7 +1,7 @@
 /* alanbbos.css */
 
 body {
-   background: #909193 url(images/linen.png) repeat;
+   background: #909193 url(images/lightblue.png) repeat;
    font-family: Helvetica, Verdana, Arial, sans-serif;
 	font-size: 12pt;
 	font-weight: normal;
@@ -32,7 +32,13 @@ h3 {
 
 #display {
 	background-color:#DFDBC3;
-	border: 2px solid red; 
+	border: 2px solid blue; 
+	cursor: default;
+}
+
+#divStatus {
+	background-color:#70DBDB;
+	border: 1px solid black; 
 	cursor: default;
 }
 

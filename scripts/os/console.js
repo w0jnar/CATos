@@ -14,6 +14,7 @@ function CLIconsole() {
     this.CurrentXPosition = 0;
     this.CurrentYPosition = _DefaultFontSize;
     this.buffer = "";
+	this.prevbuffer = "";
     
     // Methods
     this.init = function() {
@@ -41,8 +42,24 @@ function CLIconsole() {
                // The enter key marks the end of a console command, so ...
                // ... tell the shell ...
                _OsShell.handleInput(this.buffer);
-               // ... and reset our buffer.
+			   this.prevbuffer = this.buffer;
+			   // ... and reset our buffer.
                this.buffer = "";
+           }
+//		   else if (chr == String.fromCharCode(8))  //backspace
+//         {
+//		   
+//         }
+		   else if (chr == String.fromCharCode(38))  //up arrow
+		   {
+//			   while(this.buffer.length != 0)
+//			   {
+//				  this.removeText(this.buffer.slice(-1));
+//				  this.buffer.length -= 1;
+//			   }
+			   
+			   this.putText(this.prevbuffer);
+			   this.buffer = this.prevbuffer;
            }
            // TODO: Write a case for Ctrl-C.
            else
@@ -71,7 +88,7 @@ function CLIconsole() {
            this.CurrentXPosition = this.CurrentXPosition + offset;
        }
     };
-
+	
     this.advanceLine = function() {
        this.CurrentXPosition = 0;
        this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
