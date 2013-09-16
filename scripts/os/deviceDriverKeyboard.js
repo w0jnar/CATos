@@ -53,7 +53,7 @@ function krnKbdDispatchKeyPress(params)
         chr = String.fromCharCode(keyCode);
         _KernelInputQueue.enqueue(chr); 
     }
-	else if ((keyCode >= 48) && (keyCode <= 57))
+	else if ((keyCode >= 48) && (keyCode <= 57))        //numbers and their shifts
 	{
 		if (isShifted)
 		{
@@ -90,6 +90,124 @@ function krnKbdDispatchKeyPress(params)
 				var keyCode = 40;
 				break;
 			}
+		}
+	chr = String.fromCharCode(keyCode);
+	_KernelInputQueue.enqueue(chr); 
+	}
+	else                                                //everything else (seems somewhat pointless to separate, but I felt it was sory of necessary)
+	{
+		switch (keyCode)
+		{
+		case 192: //tilde
+			if (isShifted)
+			{
+				var keyCode = 126;
+			}
+			else
+			{
+				var keyCode = 96;
+			}
+			break;
+		case 189: //hyphen
+			if (isShifted)
+			{
+				var keyCode = 95;
+			}
+			else
+			{
+				var keyCode = 45;
+			}
+			break;
+		case 187: //equal
+			if (isShifted)
+			{
+				var keyCode = 43;
+			}
+			else
+			{
+				var keyCode = 61;
+			}
+			break;
+		case 219: //left bracket
+			if (isShifted)
+			{
+				var keyCode = 123;
+			}
+			else
+			{
+				var keyCode = 91;
+			}
+			break;
+		case 221: //right bracket
+			if (isShifted)
+			{
+				var keyCode = 125;
+			}
+			else
+			{
+				var keyCode = 93;
+			}
+			break;
+		case 220: //slash
+			if (isShifted)
+			{
+				var keyCode = 124;
+			}
+			else
+			{
+				var keyCode = 92;
+			}
+			break;
+		case 186: //semi-colon
+			if (isShifted)
+			{
+				var keyCode = 58;
+			}
+			else
+			{
+				var keyCode = 59;
+			}
+			break;
+		case 222: //left-single quote
+			if (isShifted)
+			{
+				var keyCode = 34;
+			}
+			else
+			{
+				var keyCode = 39;
+			}
+			break;
+		case 188: //comma
+			if (isShifted)
+			{
+				var keyCode = 60;
+			}
+			else
+			{
+				var keyCode = 44;
+			}
+			break;
+		case 190: //period
+			if (isShifted)
+			{
+				var keyCode = 62;
+			}
+			else
+			{
+				var keyCode = 46;
+			}
+			break;
+		case 191: //forward slash
+			if (isShifted)
+			{
+				var keyCode = 63;
+			}
+			else
+			{
+				var keyCode = 47;
+			}
+			break;
 		}
 	chr = String.fromCharCode(keyCode);
 	_KernelInputQueue.enqueue(chr); 
