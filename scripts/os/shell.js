@@ -94,7 +94,7 @@ function shellInit() {
     sc.function = shellLocation;
     this.commandList[this.commandList.length] = sc;
 	
-//	
+//	something interesting
 	
 	// status
     sc = new ShellCommand();
@@ -102,6 +102,15 @@ function shellInit() {
     sc.description = "- <string> Displays the user string in status box.";
     sc.function = shellStatus;
     this.commandList[this.commandList.length] = sc;
+	
+	// BSOD
+	sc = new ShellCommand();
+    sc.command = "bsod";   //admittedly unoriginal, but it gets the point across.
+    sc.description = "- kills the OS.";
+    sc.function = shellFail;
+    this.commandList[this.commandList.length] = sc;
+	
+//  load
 	
     // processes - list the running processes and their IDs
     // kill <id> - kills the specified process id.
@@ -469,4 +478,9 @@ function shellStatus(args)  //displays the status the user enters
 {
 	var statusFill = document.getElementById("status");
 	statusFill.innerText = statusFill.textContent = args.join(' ');
+}
+
+function shellFail() //BSOD
+{
+	krnTrapError("LOLMEOW!");
 }

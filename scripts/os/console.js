@@ -57,7 +57,8 @@ function CLIconsole() {
 //				  this.removeText(this.buffer.slice(-1));
 //				  this.buffer.length -= 1;
 //			   }
-			   
+//			   _StdIn.clearScreen();
+//			   this.buffer = "";
 			   this.putText(this.prevbuffer);
 			   this.buffer = this.prevbuffer;
            }
@@ -90,8 +91,16 @@ function CLIconsole() {
     };
 	
     this.advanceLine = function() {
-       this.CurrentXPosition = 0;
-       this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
+		if(this.CurrentYPosition < 400)
+		{
+		   this.CurrentXPosition = 0;
+           this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
        // TODO: Handle scrolling.
+		}
+		else
+		{   
+		   _StdIn.clearScreen();
+		   _StdIn.resetXY();
+		}
     };
 }

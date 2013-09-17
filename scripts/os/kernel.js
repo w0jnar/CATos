@@ -67,6 +67,7 @@ function krnShutdown()
     // More?
     //
     krnTrace("end shutdown OS");
+	clearInterval(_hardwareClockID);
 }
 
 
@@ -231,6 +232,16 @@ function krnTrace(msg)
 function krnTrapError(msg)
 {
     hostLog("OS ERROR - TRAP: " + msg);
+	
+	var console = document.getElementById('display');
+	var bsodConsole = console.getContext('2d');
+
+	var bsodImage = new Image();
+	bsodImage.onload = function()
+	{
+		bsodConsole.drawImage(bsodImage, 0, 0, bsodImage.width, bsodImage.height);
+	}
+	bsodImage.src = 'images/bsod.png';  //works mostly how I would like, though must manually empty the cache each time I change the image.
     // TODO: Display error on console, perhaps in some sort of colored screen. (Perhaps blue?)
     krnShutdown();
 }
