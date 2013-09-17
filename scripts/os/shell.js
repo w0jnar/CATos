@@ -406,7 +406,7 @@ function shellDate()
 	var minutes = timedate.getMinutes();
 	var seconds = timedate.getSeconds();
 
-	if (hours < 10) 	//Thought it would be more interesting for those who dislike Military time.
+	if (hours < 10) 	//Thought it would be more interesting for those who dislike Military time, though I am not sure why anyone would dislike it.
 	{
 		hours = '0' + hours;
 		var ampm = "AM";
@@ -468,6 +468,5 @@ function shellLocation()  //displays random locations, seemed like a good idea.
 function shellStatus(args)  //displays the status the user enters
 {
 	var statusFill = document.getElementById("status");
-	statusFill.innerText = statusFill.textContent = args;
-//	("#status").text(args);
+	statusFill.innerText = statusFill.textContent = args.join(' ');
 }

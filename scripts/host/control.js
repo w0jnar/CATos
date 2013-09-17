@@ -79,6 +79,9 @@ function hostBtnStartOS_click(btn)
     document.getElementById("btnHaltOS").disabled = false;
     document.getElementById("btnReset").disabled = false;
     
+	var statusFill = document.getElementById("status");
+	statusFill.innerText = statusFill.textContent = "Status";
+	
     // .. set focus on the OS console display ... 
     document.getElementById("display").focus();
     
