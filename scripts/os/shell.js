@@ -467,5 +467,7 @@ function shellLocation()  //displays random locations, seemed like a good idea.
 
 function shellStatus(args)  //displays the status the user enters
 {
-	_StdIn.putText(args);
+	var statusFill = document.getElementById("status");
+	statusFill.innerText = statusFill.textContent = args;
+//	("#status").text(args);
 }
