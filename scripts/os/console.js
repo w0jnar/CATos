@@ -48,19 +48,19 @@ function CLIconsole() {
            }
 //		   else if (chr == String.fromCharCode(8))  //backspace
 //         {
-//		   
+//		       
 //         }
 		   else if (chr == String.fromCharCode(38))  //up arrow
 		   {
-//			   while(this.buffer.length != 0)
-//			   {
-//				  this.removeText(this.buffer.slice(-1));
-//				  this.buffer.length -= 1;
-//			   }
-//			   _StdIn.clearScreen();
-//			   this.buffer = "";
-			   this.putText(this.prevbuffer);
-			   this.buffer = this.prevbuffer;
+			   if(this.buffer != "") //honestly, really proud of this, as it seems so simple, but it (this if/else structure) alluded me for a while.
+			   {
+			      this.putText("");
+			   }
+			   else
+			   {
+				  this.putText(this.prevbuffer);
+			      this.buffer = this.prevbuffer;
+			   }
            }
            // TODO: Write a case for Ctrl-C.
            else
@@ -91,7 +91,7 @@ function CLIconsole() {
     };
 	
     this.advanceLine = function() {
-		if(this.CurrentYPosition < 400)
+		if(this.CurrentYPosition < 390)
 		{
 		   this.CurrentXPosition = 0;
            this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;

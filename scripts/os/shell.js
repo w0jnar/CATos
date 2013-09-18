@@ -106,11 +106,16 @@ function shellInit() {
 	// BSOD
 	sc = new ShellCommand();
     sc.command = "bsod";   //admittedly unoriginal, but it gets the point across.
-    sc.description = "- kills the OS.";
+    sc.description = "- Kills the OS.";
     sc.function = shellFail;
     this.commandList[this.commandList.length] = sc;
 	
-//  load
+	// load
+	sc = new ShellCommand();
+    sc.command = "load";   //admittedly unoriginal, but it gets the point across.
+    sc.description = "- Checks user code for errors.";
+    sc.function = shellLoad;
+    this.commandList[this.commandList.length] = sc;
 	
     // processes - list the running processes and their IDs
     // kill <id> - kills the specified process id.
@@ -477,10 +482,18 @@ function shellLocation()  //displays random locations, seemed like a good idea.
 function shellStatus(args)  //displays the status the user enters
 {
 	var statusFill = document.getElementById("status");
-	statusFill.innerText = statusFill.textContent = args.join(' ');
+	statusFill.innerText = statusFill.textContent = args.join(' ');  //for browser safety
 }
 
 function shellFail() //BSOD
 {
 	krnTrapError("LOLMEOW");
+}
+
+function shellLoad() //Load
+{
+	var incode = document.getElementById("taProgramInput").value;
+//	var patt=new RegExp(pattern,modifiers);
+    var isHex = incode.matches("^[0-9A-Fa-f{2}]g");
+//	_StdIn.putText(incode);
 }
