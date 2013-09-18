@@ -198,8 +198,8 @@ CanvasTextFunctions.remove = function(ctx,font,size,x,y,str) //ok, not exactly a
 
     ctx.save();
     ctx.lineCap = "round";
-    ctx.lineWidth = 10.0 * mag;    //key difference
-	ctx.strokeStyle = "#DFDBC3";  //key difference color of the canvas
+    ctx.lineWidth = 10.0 * mag;    //key difference (changes the size of the lines; in this case, the larger, the less visible.)
+	ctx.strokeStyle = "#DFDBC3";  //key difference  (color of the canvas)
 
     for (var i = 0; i < len; i++) 
 	{

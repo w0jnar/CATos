@@ -47,11 +47,14 @@ function CLIconsole() {
                this.buffer = "";
            }
 		   else if (chr == String.fromCharCode(8))  //backspace
-         {
-		       var currentCharacter = this.buffer.slice(-1);
-			   this.buffer = this.buffer.slice(0,-1);
-			   this.removeText(currentCharacter);   // "remove"
-         }
+           {
+		       if(this.buffer != "")				//originally did not have this if statement, and am pretty sure I do not need it, but I was paranoia.
+			   {
+			       var currentCharacter = this.buffer.slice(-1);
+			       this.buffer = this.buffer.slice(0,-1);
+			       this.removeText(currentCharacter);   // "remove"
+			   }
+           }
 		   else if (chr == String.fromCharCode(38))  //up arrow  probably the work I am most proud of during this, specifically for my "remove."
 		   {
 			   if(this.buffer != "") 
