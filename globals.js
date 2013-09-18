@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "0.11-Kandis";   //versions increment alphabetically by fruit
+var APP_VERSION = "0.12-Lemon";	   //versions increment alphabetically by fruit
                                    //Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 								   //was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 

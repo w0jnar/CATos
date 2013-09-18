@@ -190,6 +190,52 @@ CanvasTextFunctions.draw = function(ctx,font,size,x,y,str)
     return total;
 };
 
+CanvasTextFunctions.remove = function(ctx,font,size,x,y,str) //ok, not exactly a remove, more of the illusion of removing.
+{
+    var total = 0;
+    var len = str.length;
+    var mag = size / 25.0;
+
+    ctx.save();
+    ctx.lineCap = "round";
+    ctx.lineWidth = 10.0 * mag;    //key difference
+	ctx.strokeStyle = "#DFDBC3";  //key difference color of the canvas
+
+    for (var i = 0; i < len; i++) 
+	{
+		var c = CanvasTextFunctions.letter( str.charAt(i));
+		if (!c)
+		{
+			continue;	
+		} 
+		ctx.beginPath();
+		var penUp = 1;
+		var needStroke = 0;
+		for (var j = 0; j < c.points.length; j++) 
+		{
+		    var a = c.points[j];
+		    if ( a[0] === -1 && a[1] === -1) 
+			{
+				penUp = 1;
+				continue;
+		    }
+		    if ( penUp) 
+			{
+				ctx.moveTo( x + a[0]*mag, y - a[1]*mag);
+				penUp = false;
+		    } 
+			else 
+			{
+				ctx.lineTo( x + a[0]*mag, y - a[1]*mag);
+		    }
+		}
+		ctx.stroke();
+		x += c.width*mag;
+    }
+    ctx.restore();
+    return total;
+};
+
 CanvasTextFunctions.enable = function(ctx) 
 {
     ctx.drawText = function(font,size,x,y,text) { return CanvasTextFunctions.draw( ctx, font,size,x,y,text); };
@@ -204,4 +250,6 @@ CanvasTextFunctions.enable = function(ctx)
 		var w = CanvasTextFunctions.measure(font,size,text);
 		return CanvasTextFunctions.draw( ctx, font,size,x-w/2,y,text); 
     };
+	
+	ctx.removeText = function(font,size,x,y,text) { return CanvasTextFunctions.remove( ctx, font,size,x,y,text); };
 };

@@ -46,15 +46,24 @@ function CLIconsole() {
 			   // ... and reset our buffer.
                this.buffer = "";
            }
-//		   else if (chr == String.fromCharCode(8))  //backspace
-//         {
-//		       
-//         }
-		   else if (chr == String.fromCharCode(38))  //up arrow
+		   else if (chr == String.fromCharCode(8))  //backspace
+         {
+		       var currentCharacter = this.buffer.slice(-1);
+			   this.buffer = this.buffer.slice(0,-1);
+			   this.removeText(currentCharacter);   // "remove"
+         }
+		   else if (chr == String.fromCharCode(38))  //up arrow  probably the work I am most proud of during this, specifically for my "remove."
 		   {
-			   if(this.buffer != "") //honestly, really proud of this, as it seems so simple, but it (this if/else structure) alluded me for a while.
+			   if(this.buffer != "") 
 			   {
-			      this.putText("");
+			      while(this.buffer != "")
+				  {
+				      var currentCharacter = this.buffer.slice(-1);
+					  this.buffer = this.buffer.slice(0,-1);
+				      this.removeText(currentCharacter);   // "remove"
+				  }
+				  this.putText(this.prevbuffer);
+			      this.buffer = this.prevbuffer;
 			   }
 			   else
 			   {
@@ -87,6 +96,17 @@ function CLIconsole() {
          // Move the current X position.
            var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, text);
            this.CurrentXPosition = this.CurrentXPosition + offset;
+       }
+    };
+	
+	this.removeText = function(text) {
+       if (text !== "")
+       {
+           // Draw the text at the current X and Y coordinates.
+		   var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, text);
+           _DrawingContext.removeText(this.CurrentFont, this.CurrentFontSize, (this.CurrentXPosition-offset), this.CurrentYPosition, text);
+         // Move the current X position.
+           this.CurrentXPosition = this.CurrentXPosition - offset;
        }
     };
 	
