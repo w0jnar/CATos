@@ -6,7 +6,8 @@ See http://www.labouseur.com/courses/os/ for details.
 
 Version History:
 
-"0.01-Apple"
+"0.01-Apple";  
+
 "0.02-Banana";
 "0.03-Cantaloupe";
 "0.04-Date";
