@@ -482,5 +482,5 @@ function shellStatus(args)  //displays the status the user enters
 
 function shellFail() //BSOD
 {
-	krnTrapError("LOLMEOW!");
+	krnTrapError("LOLMEOW");
 }

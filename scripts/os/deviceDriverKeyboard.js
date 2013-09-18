@@ -33,8 +33,12 @@ function krnKbdDispatchKeyPress(params)
     krnTrace("Key code:" + keyCode + " shifted:" + isShifted);
     var chr = "";
     // Check to see if we even want to deal with the key that was pressed.
-    if ( ((keyCode >= 65) && (keyCode <= 90)) ||   // A..Z
-         ((keyCode >= 97) && (keyCode <= 123)) )   // a..z
+	if ((keyCode == null) ||
+		(typeof keyCode !== "number"))
+	{
+		krnTrapError("Error: Corrupted Keyboard Driver");   //valid testing, clearly.
+	}
+    else if ((keyCode >= 65) && (keyCode <= 90))   // a..z (Keys seem not to come in as captials anyway)
     {
         // Determine the character we want to display.  
         // Assume it's lowercase...
@@ -48,7 +52,9 @@ function krnKbdDispatchKeyPress(params)
         _KernelInputQueue.enqueue(chr);        
     }    
     else if (  (keyCode == 32)                     ||   // space
-               (keyCode == 13) )                        // enter
+               (keyCode == 13)                     ||   //enter
+			   (keyCode == 38)                     ||   //up arrow
+			   (keyCode == 8) )                         //backspace 
     {
         chr = String.fromCharCode(keyCode);
         _KernelInputQueue.enqueue(chr); 
@@ -94,7 +100,8 @@ function krnKbdDispatchKeyPress(params)
 		chr = String.fromCharCode(keyCode);
 		_KernelInputQueue.enqueue(chr); 
 	}
-	else                                                //everything else (seems somewhat pointless to separate, but I felt it was sort of necessary)
+	else if (((keyCode >= 186) && (keyCode <= 192)) ||    
+		 	 ((keyCode >= 219) && (keyCode <= 222)))     //everything else (seems somewhat pointless to separate, but I felt it was sort of necessary)
 	{
 		switch (keyCode)
 		{
@@ -211,5 +218,9 @@ function krnKbdDispatchKeyPress(params)
 		}
 	chr = String.fromCharCode(keyCode);
 	_KernelInputQueue.enqueue(chr); 
+	}
+	else
+	{
+	
 	}
 }
