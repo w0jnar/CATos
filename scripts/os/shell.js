@@ -97,7 +97,7 @@ function shellInit() {
 	// Schrödinger
     sc = new ShellCommand();
     sc.command = "schrodinger";
-    sc.description = "- Returns a random number of random numbers.";
+    sc.description = "- Returns a random number of up to twenty random integers from 7 to 42.";
     sc.function = shellSchrodinger;
     this.commandList[this.commandList.length] = sc;
 	
@@ -486,11 +486,38 @@ function shellLocation()  //displays random locations, seemed like a good idea.
 
 function shellSchrodinger()  //_c@ has some great programming structures.
 {
-    var latitude = parseFloat((Math.random() * (180) + (-90)).toFixed(5));
-	var longitude = parseFloat((Math.random() * (360) + (-180)).toFixed(5));
-	
-	_StdIn.putText("Latitude: " + latitude
-	+ " Longitude: " + longitude);
+	function Schrodinger()
+	{
+		var cat = Math.floor(Math.random() * 2);
+		if (cat == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+    var numStore = new Array();
+	while(Schrodinger() && numStore.length < 20)
+	{
+		numStore.push(Math.floor(Math.random() * (42 - 7 +1)) + 7);
+	}
+	for(var i = 0; i < numStore.length; i++)
+	{
+		if(numStore[i] < 10)
+		{
+			numStore[i] = '0' + numStore[i];
+		}
+	}
+	if (numStore.length == 0)
+	{
+		_StdIn.putText("Sorry, no numbers!");
+	}
+	else
+	{
+		_StdIn.putText(numStore.join(', '));
+	}
 }
 
 function shellStatus(args)  //displays the status the user enters
