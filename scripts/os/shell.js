@@ -405,7 +405,7 @@ function shellPrompt(args)
 }
 
 //Date function
-function shellDate()
+function shellDate()  //Probably should have separated this and put it in utils.js, but it did not seem right to me.
 {
 	function fixer(num) 	//Fixes issues of not having zeros in front of dates.
 	{
@@ -484,7 +484,7 @@ function shellLocation()  //displays random locations, seemed like a good idea.
 	+ " Longitude: " + longitude);
 }
 
-function shellSchrodinger()  //_c@ has some great programming structures.
+function shellSchrodinger()  //_c@ has some great programming structures. (I do like random things.)
 {
 	function Schrodinger()
 	{
@@ -510,7 +510,7 @@ function shellSchrodinger()  //_c@ has some great programming structures.
 			numStore[i] = '0' + numStore[i];
 		}
 	}
-	if (numStore.length == 0)
+	if (numStore.length == 0)  //Mainly because in the chances (I mean, there is a 50% chance) of no numbers being printed, some kind of output seemed better than a broken looking function.
 	{
 		_StdIn.putText("Sorry, no numbers!");
 	}
@@ -528,16 +528,16 @@ function shellStatus(args)  //displays the status the user enters
 
 function shellFail() //BSOD
 {
-	krnTrapError("LOLMEOW");
+	krnTrapError("LOLMEOW");  //What? Cats are fun.
 }
 
 function shellLoad() //Load
 {
 	var inCode = document.getElementById("taProgramInput").value;
 	var test = inCode.match(/^([0-9A-F ])*$/gmi)  //agree to disagree, but I feel lowercase does matter and should be allowed (Hate to admit it, but it is because I had issues with testing and forgetting).
-	if(test != null)
+	if(test != null)                              //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
 	{
-		_StdIn.putText("Program loaded");
+		_StdIn.putText("Program Loaded");
 	}
 	else
 	{

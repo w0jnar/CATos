@@ -21,3 +21,4 @@ Version History:
 "0.13-Macadamia";  
 "0.14-Naartjie";  
 "0.15-Orange";  
+"1.00-Pineapple";  

@@ -48,14 +48,14 @@ function CLIconsole() {
            }
 		   else if (chr == String.fromCharCode(8))  //backspace
            {
-		       if(this.buffer != "")				//originally did not have this if statement, and am pretty sure I do not need it, but I was paranoia.
+		       if(this.buffer != "")				//originally did not have this if statement, and I am pretty sure I do not need it, but I was/am paranoia.
 			   {
 			       var currentCharacter = this.buffer.slice(-1);
 			       this.buffer = this.buffer.slice(0,-1);
 			       this.removeText(currentCharacter);   // "remove"
 			   }
            }
-		   else if (chr == String.fromCharCode(38))  //up arrow  probably the work I am most proud of during this, specifically for my "remove."
+		   else if (chr == String.fromCharCode(38))  //up arrow - probably the work I am most proud of during this, specifically for my "remove."
 		   {
 			   if(this.buffer != "") 
 			   {
@@ -102,28 +102,25 @@ function CLIconsole() {
        }
     };
 	
-	this.removeText = function(text) {
+	this.removeText = function(text) {   //simply the opposite of put with illusions.
        if (text !== "")
        {
-           // Draw the text at the current X and Y coordinates.
 		   var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, text);
            _DrawingContext.removeText(this.CurrentFont, this.CurrentFontSize, (this.CurrentXPosition-offset), this.CurrentYPosition, text);
-         // Move the current X position.
            this.CurrentXPosition = this.CurrentXPosition - offset;
        }
     };
 	
     this.advanceLine = function() {
-		if(this.CurrentYPosition < 390)
-		{
-		   this.CurrentXPosition = 0;
-           this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin;
-       // TODO: Handle scrolling.
-		}
-		else
+		this.CurrentXPosition = 0;
+        this.CurrentYPosition += _DefaultFontSize + _FontHeightMargin; 
+		if(this.CurrentYPosition >= _Canvas.height)
 		{   
-		   _StdIn.clearScreen();
-		   _StdIn.resetXY();
+			var offset = _DefaultFontSize + _FontHeightMargin;
+			var currentCanvas = _DrawingContext.getImageData(0, offset, _Canvas.width, (_Canvas.height - offset));  //"takes" a pixel by pixel image of the current canvas with an offset to account for scroll.
+			_StdIn.clearScreen();                                                                                   //clears the screen
+			_DrawingContext.putImageData(currentCanvas, 0, 0);                                                      //redraws
+			this.CurrentYPosition -= offset;                                                                        //sets the y
 		}
     };
 }
