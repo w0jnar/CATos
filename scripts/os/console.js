@@ -74,6 +74,9 @@ function CLIconsole() {
 			      this.buffer = this.prevbuffer;
 			   }
            }
+		   else if (chr == String.fromCharCode(0))  //null, mainly because of issues with ampersand
+		   {
+		   }
            // TODO: Write a case for Ctrl-C.
            else
            {
