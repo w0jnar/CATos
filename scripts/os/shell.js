@@ -94,7 +94,12 @@ function shellInit() {
     sc.function = shellLocation;
     this.commandList[this.commandList.length] = sc;
 	
-//	something interesting
+	// Schrödinger
+    sc = new ShellCommand();
+    sc.command = "schrodinger";
+    sc.description = "- Returns a random number of random numbers.";
+    sc.function = shellSchrodinger;
+    this.commandList[this.commandList.length] = sc;
 	
 	// status
     sc = new ShellCommand();
@@ -479,6 +484,15 @@ function shellLocation()  //displays random locations, seemed like a good idea.
 	+ " Longitude: " + longitude);
 }
 
+function shellSchrodinger()  //_c@ has some great programming structures.
+{
+    var latitude = parseFloat((Math.random() * (180) + (-90)).toFixed(5));
+	var longitude = parseFloat((Math.random() * (360) + (-180)).toFixed(5));
+	
+	_StdIn.putText("Latitude: " + latitude
+	+ " Longitude: " + longitude);
+}
+
 function shellStatus(args)  //displays the status the user enters
 {
 	var statusFill = document.getElementById("status");
@@ -492,8 +506,14 @@ function shellFail() //BSOD
 
 function shellLoad() //Load
 {
-	var incode = document.getElementById("taProgramInput").value;
-//	var patt=new RegExp(pattern,modifiers);
-    var isHex = incode.matches("^[0-9A-Fa-f{2}]g");
-//	_StdIn.putText(incode);
+	var inCode = document.getElementById("taProgramInput").value;
+	var test = inCode.match(/^([0-9A-F ])*$/gmi)  //agree to disagree, but I feel lowercase does matter and should be allowed (Hate to admit it, but it is because I had issues with testing and forgetting).
+	if(test != null)
+	{
+		_StdIn.putText("Program loaded");
+	}
+	else
+	{
+		_StdIn.putText("Input Failed");
+	}
 }

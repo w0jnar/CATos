@@ -219,8 +219,8 @@ function krnKbdDispatchKeyPress(params)
 	chr = String.fromCharCode(keyCode);
 	_KernelInputQueue.enqueue(chr); 
 	}
-	else
-	{
-	
+	else  //this simple ignores invalid keys, in the sense that if you press an unsupported key, 
+	{	  //it does not do anything, whereas if you were to press an arrow which is not supported, 
+		  //it does not print the character associated with the keyCode	
 	}
 }
