@@ -12,9 +12,10 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "1.00-Pineapple";  	//versions increment alphabetically by fruit
+var APP_VERSION = "1.01-Quandong";  	//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
+										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
 
 var CPU_CLOCK_INTERVAL = 100;   // This is in ms, or milliseconds, so 1000 = 1 second.
 

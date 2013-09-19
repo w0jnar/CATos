@@ -427,7 +427,6 @@ function shellDate()  //Probably should have separated this and put it in utils.
 
 	if (hours < 10) 	//Thought it would be more interesting for those who dislike Military time, though I am not sure why anyone would dislike it.
 	{
-		hours = '0' + hours;
 		var ampm = "AM";
 	}
 	else if (hours > 10 && hours < 12)
@@ -469,8 +468,8 @@ function shellDate()  //Probably should have separated this and put it in utils.
 		break;
 	}
 
-	_StdIn.putText("The current time and date are as follows: " 
-	+ hours + ':' + minutes + ':' + seconds
+	_StdIn.putText("The current time and date are as follows: "    //hope you do not mind the date formatting, it is just persoanlly, I prefer day/month/year.
+	+ fixer(hours) + ':' + fixer(minutes) + ':' + fixer(seconds)
 	+ ' ' + ampm + ' on ' + dayText + ', ' + fixer(date) + '/'
 	+ fixer(month) + '/' + year);
 }

@@ -87,7 +87,7 @@ function krnKbdDispatchKeyPress(params)
 				var keyCode = 94;
 				break;
 			case 55: //seven
-				var keyCode = 0;  //settled on printing nothing, seemed better than up being ampersand.
+				var keyCode = 0;
 				break;
 			case 56: //eight
 				var keyCode = 42;

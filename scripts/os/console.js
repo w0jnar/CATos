@@ -76,6 +76,8 @@ function CLIconsole() {
            }
 		   else if (chr == String.fromCharCode(0))  //null, mainly because of issues with ampersand
 		   {
+			   this.putText('&');
+			   this.buffer += '&';
 		   }
            // TODO: Write a case for Ctrl-C.
            else

@@ -99,7 +99,6 @@ function krnOnCPUClockPulse()
 
 	if (hours < 10)
 	{
-		hours = '0' + hours;
 		var ampm = "AM";
 	}
 	else if (hours > 10 && hours < 12)
@@ -116,8 +115,8 @@ function krnOnCPUClockPulse()
 		var ampm = "PM";
 	}
 
-	var outString = (hours + ':' + minutes + ':' + seconds  //removed day of the week as it made the date command seem pointless.
-	+ ' ' + ampm + ' on ' + fixer(date) + '/' + fixer(month) + '/' + year);
+	var outString = (fixer(hours) + ':' + fixer(minutes) + ':' + fixer(seconds)  //removed day of the week as it made the date command seem pointless.
+	+ ' ' + ampm + ' on ' + fixer(date) + '/' + fixer(month) + '/' + year);  //hope you do not mind the date formatting, it is just persoanlly, I prefer day/month/year.
 	
 	var dateFill = document.getElementById("date");
 	dateFill.innerText = dateFill.textContent = outString;
