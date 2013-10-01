@@ -14,8 +14,9 @@ function CLIconsole() {
     this.CurrentXPosition = 0;
     this.CurrentYPosition = _DefaultFontSize;
     this.buffer = "";
-	this.prevbuffer = "";
-    
+	this.prevBuffer = [];
+    this.prevBufferPosition = 0;
+	
     // Methods
     this.init = function() {
        this.clearScreen();
@@ -42,7 +43,8 @@ function CLIconsole() {
                // The enter key marks the end of a console command, so ...
                // ... tell the shell ...
                _OsShell.handleInput(this.buffer);
-			   this.prevbuffer = this.buffer;
+			   this.prevBuffer.push(this.buffer);
+			   this.prevBufferPosition = this.prevBuffer.length;
 			   // ... and reset our buffer.
                this.buffer = "";
            }
@@ -55,8 +57,8 @@ function CLIconsole() {
 			       this.removeText(currentCharacter);   // "remove"
 			   }
            }
-		   else if (chr == String.fromCharCode(38))  //up arrow - probably the work I am most proud of during this, specifically for my "remove."
-		   {
+		   else if (chr == String.fromCharCode(38))  //up arrow
+		   {		   
 			   if(this.buffer != "") 
 			   {
 			      while(this.buffer != "")
@@ -65,15 +67,36 @@ function CLIconsole() {
 					  this.buffer = this.buffer.slice(0,-1);
 				      this.removeText(currentCharacter);   // "remove"
 				  }
-				  this.putText(this.prevbuffer);
-			      this.buffer = this.prevbuffer;
 			   }
-			   else
+			   
+			   if(this.prevBufferPosition > 0)
 			   {
-				  this.putText(this.prevbuffer);
-			      this.buffer = this.prevbuffer;
+			      this.prevBufferPosition -= 1;
 			   }
+			   this.putText(this.prevBuffer[this.prevBufferPosition]);
+			   this.buffer = this.prevBuffer[this.prevBufferPosition];   
            }
+		   
+		   else if (chr == String.fromCharCode(40))  //down arrow
+		   {			   
+			   if(this.buffer != "") 
+			   {
+			      while(this.buffer != "")
+				  {
+				      var currentCharacter = this.buffer.slice(-1);
+					  this.buffer = this.buffer.slice(0,-1);
+				      this.removeText(currentCharacter);   // "remove"
+				  }
+			   }
+			   
+			   if(this.prevBufferPosition < this.prevBuffer.length-1)  //I went back and forth on this. Lacking -1 makes sense, but I felt have the last command be retained seemed right.
+			   {
+			      this.prevBufferPosition += 1;
+			   }
+			   this.putText(this.prevBuffer[this.prevBufferPosition]);
+			   this.buffer = this.prevBuffer[this.prevBufferPosition];   
+           }
+		   
 		   else if (chr == String.fromCharCode(223))  //ampersand
 		   {
 			   this.putText('&');
