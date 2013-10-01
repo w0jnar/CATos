@@ -27,3 +27,4 @@ Version History:
 "1.03-Saskatoonberry";  
 "1.04-Tangerine";  
 "1.05-Ugni";  
+"1.06-Vanilla";  
