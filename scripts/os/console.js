@@ -14,7 +14,7 @@ function CLIconsole() {
     this.CurrentXPosition = 0;
     this.CurrentYPosition = _DefaultFontSize;
     this.buffer = "";
-	this.prevbuffer = "";
+	this.prevBuffer = "";
     
     // Methods
     this.init = function() {
@@ -42,7 +42,7 @@ function CLIconsole() {
                // The enter key marks the end of a console command, so ...
                // ... tell the shell ...
                _OsShell.handleInput(this.buffer);
-			   this.prevbuffer = this.buffer;
+			   this.prevBuffer = this.buffer;
 			   // ... and reset our buffer.
                this.buffer = "";
            }
@@ -65,14 +65,9 @@ function CLIconsole() {
 					  this.buffer = this.buffer.slice(0,-1);
 				      this.removeText(currentCharacter);   // "remove"
 				  }
-				  this.putText(this.prevbuffer);
-			      this.buffer = this.prevbuffer;
 			   }
-			   else
-			   {
-				  this.putText(this.prevbuffer);
-			      this.buffer = this.prevbuffer;
-			   }
+			   this.putText(this.prevBuffer);
+			   this.buffer = this.prevBuffer;
            }
 		   else if (chr == String.fromCharCode(223))  //ampersand
 		   {
