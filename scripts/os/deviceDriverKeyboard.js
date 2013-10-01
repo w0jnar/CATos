@@ -33,8 +33,7 @@ function krnKbdDispatchKeyPress(params)
     krnTrace("Key code:" + keyCode + " shifted:" + isShifted);
     var chr = "";
     // Check to see if we even want to deal with the key that was pressed.
-	if ((keyCode == null) ||
-		(typeof keyCode !== "number"))
+	if ((keyCode == null) || (typeof keyCode !== "number"))
 	{
 		krnTrapError("Error: Corrupted Keyboard Driver");   //valid testing, clearly.
 	}
@@ -87,13 +86,13 @@ function krnKbdDispatchKeyPress(params)
 				var keyCode = 94;
 				break;
 			case 55: //seven
-				var keyCode = 0;
+				var keyCode = 223;
 				break;
 			case 56: //eight
 				var keyCode = 42;
 				break;
 			case 57: //nine
-				var keyCode = 40;
+				var keyCode = 224;
 				break;
 			}
 		}
