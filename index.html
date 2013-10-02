@@ -33,8 +33,10 @@
 
 <body onload="hostInit();">
 
-<div id="divMain" style="width:100%;">
-
+<div id="divMain" style="width: 100%; text-align: left;">
+	<table>
+	<tr>
+	<td>
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
              id = "btnStartOS"
@@ -62,7 +64,23 @@
              tabindex="2"
              onclick="hostBtnReset_click(this);">
    </div>
-<!--Perfect on 14 inch screens or larger (at full screen)-->
+   </td>
+   </tr>
+   <tr>
+   <td>
+   <div id="divStatus" style="margin-left:4px; width:700px; height:18px; float:left;">
+      <div id="status" style="width:350px; float:left;">
+	  
+	  </div>
+	  <div id="date" style="width:350px; text-align:right; float:right;">
+	  </div>
+   </div>
+   </td>
+   
+   </tr>
+
+   <tr>
+   <td>
    <div id="divConsole" style="margin:4px; width:700px; height:466px; float:left;">
       <canvas id="display"
               width="700px"
@@ -70,8 +88,10 @@
               tabindex="3">
       </canvas>
    </div>
+   </td>
    
-   <div id="divLog" style="margin-left:200px; position:absolute;top:20px;right:0px;" align="right">
+   <td>
+   <div id="divLog" style="margin-left:200px;" align="right">
       <label>
          Log
          <br>
@@ -79,20 +99,79 @@
                    id  ="taLog"
                    rows="26"
                    cols="48"
+				   readonly  <!--perfect name-->
          ></textarea>
       </label>
    </div>
+   </td>
+   </tr>
+   <tr>
+   </tr>
+   <tr>
+   <td>
 
-   <div id="divStatus" style="margin-left:4px; width:700px; height:18px; float:left; position:absolute;top:510px;">
-      <div id="status" style="width:350px; float:left;">
-	  
-	  </div>
-	  <div id="date" style="width:350px; text-align: right; float:right;">
-<!-- spacing may seem weird, but it is actually proper. -->	  
-	  </div>
+   <div id="divCPUStatus" style="width:200px; height:75px; float:left; text-align:center; visibility:hidden">
+   <table border="1" align="center"  bgcolor="white">
+   <tr>
+   <td colspan="5">
+   CPU STATUS
+   </td>
+   </tr>
+   <tr>
+   <td>
+   &nbsp;PC&nbsp;&nbsp;
+   </td>
+   <td>
+   &nbsp;ACC&nbsp;
+   </td>
+   <td>
+   &nbsp;X&nbsp;
+   </td>
+   <td>
+   &nbsp;Y&nbsp;
+   </td>
+   <td>
+   &nbsp;Z&nbsp;
+   </td>
+   </tr>
+   
+   <tr>
+		<td>
+		<div id="divPC">
+		
+		</div>
+		</td>
+		
+		<td>
+		<div id="divACC">
+		
+		</div>
+		</td>
+		
+		<td>
+		<div id="divXReg">
+		
+		</div>
+		</td>
+		
+		<td>
+		<div id="divYReg">
+		
+		</div>
+		</td>
+		
+		<td>
+		<div id="divZFlag">
+		
+		</div>
+		</td>
+   </tr>
+   </table>
    </div>
    
-   <div id="divUserProgramInput" style="margin-left:200px; margin-top:0px; position:absolute;top:490px;right:0px; float:right;" align="right">
+   </td>
+   <td>
+   <div id="divUserProgramInput" style="margin-left:200px; text-align:right;">
       <label>
          User Program Input
          <br>
@@ -103,16 +182,22 @@
          ></textarea>
       </label>
    </div>
-   
+   </td>
+   </tr>
+   </table>
 </div>
-
-<p class="footerText" style="clear:both; margin-top:10px; position:fixed;bottom:0px; width:100%;">
+<table width="100%">
+<tr>
+<td>
+<p class="footerText" style="clear:both; margin-top:10px; width:100%;">
    <br>
    Copyright &copy; 2008 - 2013 No Rights Reserved.
    <br>
    Reproduction is prohibited without the express written consent of
    Ted Codd, Stevie Ray Vaughan, and Ian Fleming.
 </p>
-
+</td>
+</tr>
+</table>
 </body>
 </html>
