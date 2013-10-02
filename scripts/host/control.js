@@ -80,7 +80,7 @@ function hostBtnStartOS_click(btn)
     document.getElementById("btnReset").disabled = false;
     
 	var statusFill = document.getElementById("status");
-	statusFill.innerText = statusFill.textContent = "Categorically Awesome Time operating system - User Status Here!";  //I could have separated the divs, but I felt it would not leave enough room for the User Status.
+	statusFill.innerText = statusFill.textContent = "Categorically Awesome Time OS";  //I could have separated the divs, but I felt it would not leave enough room for the User Status.
 	
     // .. set focus on the OS console display ... 
     document.getElementById("display").focus();

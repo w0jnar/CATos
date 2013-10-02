@@ -41,7 +41,7 @@ function shellInit() {
     // shutdown
     sc = new ShellCommand();
     sc.command = "shutdown";
-    sc.description = "- Shuts down the virtual OS but leaves the underlying hardware simulation running.";
+    sc.description = "- Shuts down the virtual OS abruptly.";
     sc.function = shellShutdown;
     this.commandList[this.commandList.length] = sc;
 
@@ -97,7 +97,7 @@ function shellInit() {
 	// Schrödinger
     sc = new ShellCommand();
     sc.command = "schrodinger";
-    sc.description = "- Returns a random number of up to twenty random integers from 7 to 42.";
+    sc.description = "- Returns a random number of random integers from 7 to 42."; //got rid of the whole, "up to 20" mainly seeing as it did not fit and because the most I have seen in testing has been 5.
     sc.function = shellSchrodinger;
     this.commandList[this.commandList.length] = sc;
 	
@@ -498,7 +498,7 @@ function shellSchrodinger()  //_c@ has some great programming structures. (I do 
 		}
 	}
     var numStore = new Array();
-	while(Schrodinger() && numStore.length < 20)
+	while(Schrodinger() && numStore.length < 20)  //current record for furthest it has gone: 5 numbers.
 	{
 		numStore.push(Math.floor(Math.random() * (42 - 7 +1)) + 7);
 	}

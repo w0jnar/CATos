@@ -36,8 +36,8 @@ h3 {
 }
 
 #divStatus {
-	background-color:#70DBDB;
-	border: 2px solid blue; 
+	background-color:white;
+	border: 1px solid black; 
 	cursor: default;
 }
 
