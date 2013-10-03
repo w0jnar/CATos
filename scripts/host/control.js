@@ -83,7 +83,6 @@ function hostBtnStartOS_click(btn)
 	statusFill.innerText = statusFill.textContent = "Categorically Awesome Time OS";  //I could have separated the divs, but I felt it would not leave enough room for the User Status.
 	
 	//"initialize" the Memory Tracker
-	document.getElementById("divCPUStatus").style.visibility='visible';
 	memoryFill();
 	
     // .. set focus on the OS console display ... 

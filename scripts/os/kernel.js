@@ -78,7 +78,7 @@ function krnOnCPUClockPulse()
        This, on the other hand, is the clock pulse from the hardware (or host) that tells the kernel 
        that it has to look for interrupts and process them if it finds any.                           */
 	
-	
+	memoryCurrent();
 	
 	function fixer(num) //Admittedly, there is probably an easier/clear way to do this, and putting this here seems right and works.
 	{
