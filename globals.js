@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "1.09-Ziziphus";   	//versions increment alphabetically by fruit
+var APP_VERSION = "1.10-Abiu";   	//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -64,9 +64,9 @@ var krnKeyboardDriver = null;
 // For testing...
 var _GLaDOS = null;
 
-//globals for printing memory values
+/* //globals for printing memory values   Note:antiquated
 var _PC = 0;
 var _ACC = 0;
 var _XReg = 0;
 var _YReg = 0;
-var _ZFlag = 0;
+var _ZFlag = 0; */
