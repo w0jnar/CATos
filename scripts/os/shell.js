@@ -536,6 +536,9 @@ function shellLoad() //Load
 	var test = inCode.match(/^([0-9A-F ])*$/gmi)  //agree to disagree, but I feel lowercase does matter and should be allowed (Hate to admit it, but it is because I had issues with testing and forgetting).
 	if(test != null)                              //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
 	{
+//		_StdIn.putText(inCode);
+//		_StdIn.advanceLine();
+		
 		_StdIn.putText("Program Loaded");
 	}
 	else

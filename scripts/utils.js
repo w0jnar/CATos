@@ -36,15 +36,45 @@ function rot13(str) {   // An easy-to understand implementation of the famous an
     return retVal;
 }
 
-function memoryFill(){
-	var divPCFill = document.getElementById("divPC");
-	divPCFill.innerText = divPCFill.textContent = _PC;
-	var divACCFill = document.getElementById("divACC");
-	divACCFill.innerText = divACCFill.textContent = _ACC;
-	var divXRegFill = document.getElementById("divXReg");
-	divXRegFill.innerText = divXRegFill.textContent = _XReg;
-	var divYRegFill = document.getElementById("divYReg");
-	divYRegFill.innerText = divYRegFill.textContent = _YReg;
-	var divZFlagFill = document.getElementById("divZFlag");
-	divZFlagFill.innerText = divZFlagFill.textContent = _ZFlag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
+function dateFunc(){
+	function fixer(num) //Admittedly, there is probably an easier/clear way to do this, and putting this here seems right and works.
+		{
+				if (num < 10)
+				{
+					num = '0' + num;
+				}
+				return num;
+		}
+
+	var timedate = new Date();
+	var date = timedate.getDate();
+	var month = timedate.getMonth()+1;
+	var year = timedate.getFullYear();
+	var hours = timedate.getHours();
+	var minutes = timedate.getMinutes();
+	var seconds = timedate.getSeconds();
+
+	if (hours < 10)
+	{
+		var ampm = "AM";
+	}
+	else if (hours > 10 && hours < 12)
+	{
+		var ampm = "AM";
+	}
+	else if (hours == 12)
+	{
+		var ampm = "PM";
+	}
+	else
+	{
+		hours = hours - 12;
+		var ampm = "PM";
+	}
+
+	var outString = (fixer(hours) + ':' + fixer(minutes) + ':' + fixer(seconds)  //removed day of the week as it made the date command seem pointless.
+	+ ' ' + ampm + ' on ' + fixer(date) + '/' + fixer(month) + '/' + year);  //hope you do not mind the date formatting, it is just persoanlly, I prefer day/month/year.
+	
+	var dateFill = document.getElementById("date");
+	dateFill.innerText = dateFill.textContent = outString;
 }
