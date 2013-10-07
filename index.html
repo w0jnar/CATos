@@ -15,8 +15,9 @@
    <script type="text/javascript" src="scripts/host/control.js"></script>
    <script type="text/javascript" src="scripts/host/devices.js"></script>
    <script type="text/javascript" src="scripts/host/cpu.js"></script>
+   <script type="text/javascript" src="scripts/host/mainMemory.js"></script>
    <script type="text/javascript" src="scripts/host/memoryManipulation.js"></script>
-
+   
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="scripts/os/interrupt.js"></script>
    <script type="text/javascript" src="scripts/os/canvastext.js"></script>	
@@ -172,9 +173,15 @@
    </td>
    
    <td align="center">
-   <div id="divMemoryStatus" style="width:500px; text-align:center;">
+   <div id="divMemoryStatus" style="width:430px; height:120px; text-align:center; overflow:auto;">
+   
+   <textarea name="taMemory"
+                   id  ="taMemory"
+                   rows="98"
+                   cols="48"
+				   readonly
+         ></textarea>
    </div>
-   In progress
    </td>
    
    <td>

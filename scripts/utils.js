@@ -78,3 +78,19 @@ function dateFunc(){
 	var dateFill = document.getElementById("date");
 	dateFill.innerText = dateFill.textContent = outString;
 }
+
+function toHexString(args){
+	if(args<16)
+	{
+		var hexString ='$00' + args.toString(16);
+	}
+	else if(args<256)
+	{
+		var hexString ='$0' + args.toString(16);
+	}
+		else
+	{
+		var hexString ='$' + args.toString(16);
+	}
+	return hexString;
+	}

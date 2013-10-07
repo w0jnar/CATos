@@ -34,3 +34,9 @@ function memoryFill(){
 	var divZFlagFill = document.getElementById("divZFlag");
 	divZFlagFill.innerText = divZFlagFill.textContent = Cpu.Zflag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
 }
+
+function mainMemoryFill(){
+	var fill = mainMemoryInitString();
+	var programTA = document.getElementById("taMemory");
+	programTA.value = fill;
+}

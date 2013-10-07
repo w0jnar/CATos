@@ -32,6 +32,8 @@ function hostInit()
 
 	// Clear the log text box.
 	document.getElementById("taLog").value="";
+	
+	mainMemoryFill();
 
 	// Set focus on the start button.
    document.getElementById("btnStartOS").focus();
@@ -85,6 +87,9 @@ function hostBtnStartOS_click(btn)
 	//"initialize" the Memory Tracker
 	memoryReset();
 	memoryFill();
+	
+	memInit();
+	mainMemoryFill()
 	
     // .. set focus on the OS console display ... 
     document.getElementById("display").focus();
