@@ -78,9 +78,10 @@ function krnOnCPUClockPulse()
        This, on the other hand, is the clock pulse from the hardware (or host) that tells the kernel 
        that it has to look for interrupts and process them if it finds any.                           */
 	
+	
 	memoryFill();
 	dateFunc();
-	
+	mainMemoryFill();
 	
 	
     // Check for an interrupt, are any. Page 560

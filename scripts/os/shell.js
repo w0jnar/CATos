@@ -538,7 +538,7 @@ function shellLoad() //Load
 	{
 //		_StdIn.putText(inCode);
 //		_StdIn.advanceLine();
-		
+		mainMemoryUpdate(inCode);
 		_StdIn.putText("Program Loaded");
 	}
 	else

@@ -20,6 +20,19 @@ function memInit(){
 	}
 }
 
+function mainMemoryUpdate(args){
+	args = args.replace(/\s+/g, '');
+	var substringLower = 0;
+	for (var i=0; i<args.length/2; i++)
+	{ 
+		if(args.substr(substringLower, 2) !== "  ")
+		{
+			mainMemory[i] = args.substr(substringLower, 2);
+		}
+		substringLower += 2;
+	}
+}	
+
 function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. 
 {
 	var current = 0;
@@ -46,7 +59,7 @@ function mainMemoryInitString()  //creates a string of the mainMemoroy array to 
 			{
 				stringReturn += mainMemory[j++] + " | ";
 			}
-			stringReturn += "\n";
+			stringReturn += "|\n";
 		}
 	}
 	return stringReturn;
