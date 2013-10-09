@@ -585,10 +585,11 @@ function shellLoad() //Load
 
 function shellRun(args) //Run
 {
-    var inPID = parseInt(args);
+    var inPID = parseInt(args);	//more or less note to self: never make similarly named globals for all of the things. It makes testing awful.
 	if(inPID >= 0 && inPID <= pid)
 	{
-		krnRunProcess(pid);
+		krnRunProcess(inPID);
+		
 	}
     else
     {
@@ -596,7 +597,7 @@ function shellRun(args) //Run
     }
 }
 
-function shellProgram() //Run
+function shellProgram() //Program1
 {
 	var taUserProgamFill = document.getElementById("taProgramInput");
 	taUserProgamFill.value = "A9 03 8D 41 00 A9 01 8D 40 00 AC 40 00 A2 01 FF EE 40 00 AE 40 00 EC 41 00 D0 EF A9 44 8D 42 00 A9 4F 8D 43 00 A9 4E 8D 44 00 A9 45 8D 45 00 A9 00 8D 46 00 A2 02 A0 42 FF 00";

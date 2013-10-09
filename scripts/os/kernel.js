@@ -81,7 +81,6 @@ function krnOnCPUClockPulse()
        that it has to look for interrupts and process them if it finds any.                           */
 	
 	
-	cpuMemoryFill();
 	dateFunc();
 	mainMemoryFill();
 	
@@ -218,7 +217,25 @@ function krnMemoryAllocation(inCode)
 	return process;
 }
 
-function krnRunProcess(pid)
+function krnRunProcess(inPID)
 {
-	
+	var process;
+//	_StdIn.putText("Meow");
+	for(var i=0; i< _KernelReadyQueue.getSize(); i++)  //goes through the ready queue looking for the process based on PID
+    {
+		var pcbCheck = _KernelReadyQueue.q[i];
+        if( inPID == parseInt(pcbCheck.pid))
+        {
+			_StdIn.putText("Process found!");
+			process = pcbCheck;
+        }
+    }
+	if(process == null)
+	{
+		_StdIn.putText("Error, process not found.");
+	}
+	else
+	{
+		
+	}
 }
