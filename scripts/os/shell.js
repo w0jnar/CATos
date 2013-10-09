@@ -122,6 +122,20 @@ function shellInit() {
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 	
+	// run
+	sc = new ShellCommand();
+    sc.command = "run";   //admittedly unoriginal, but it gets the point across.
+    sc.description = "- <PID> Runs user input code based on PID.";
+    sc.function = shellRun;
+    this.commandList[this.commandList.length] = sc;
+	
+	// Program 1
+	sc = new ShellCommand();
+    sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
+    sc.description = "- Puts an example program into the \"User Input Program\" area.";
+    sc.function = shellProgram;
+    this.commandList[this.commandList.length] = sc;
+	
     // processes - list the running processes and their IDs
     // kill <id> - kills the specified process id.
 
@@ -534,22 +548,56 @@ function shellLoad() //Load
 {
 	var inCode = document.getElementById("taProgramInput").value.replace(/\s+/g, '').toUpperCase(); //admittedly messy, but seemingly for the best.
 	var test = inCode.match(/^([0-9A-F ])*$/gm)
+	var sizeTest = inCode.length <= (256 * 2);
 //	alert(inCode);
-	if(test != null && (inCode.length % 2 == 0) && (inCode !== ""))  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
+	if((test != null) && (inCode.length % 2 == 0) && (inCode !== "") && (pid < 3) && sizeTest)  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
 	{   //logic is to test that it is proper 2 byte hex code.
 //		_StdIn.putText(inCode);  test lines
 //		_StdIn.advanceLine();
-		var process = new PCB();
-		process.pcbInit();
-//		_KernelInputQueue.enqueue(process);
-		process.pcbMemoryFill();
-	
-		
-		mainMemoryUpdate(inCode, process.block);  //future-proofing for when there is more than one program for the memory on the "client."
-		_StdIn.putText("Program Loaded. Program has a PID of " + process.pid);
+		var process = krnMemoryAllocation(inCode);
+		_StdIn.putText("Program Loaded. Program has a PID of " + process.pid + ".");
+		_StdIn.advanceLine();
+		_StdIn.putText(process.toString());
+	}
+	else if(pid === 3)
+	{
+		_StdIn.putText("Attempted to load too many programs.");
+		_StdIn.advanceLine();
+		_StdIn.putText("No more memory can be allocated at this time.");
+	}
+	else if(inCode.length % 2 !== 0)
+	{
+		_StdIn.putText("Program attempted to be loaded was off.");
+		_StdIn.advanceLine();
+		_StdIn.putText("Please check your input code.");
+	}
+	else if(!sizeTest)
+	{
+		_StdIn.putText("Program attempted to be loaded was too large.");
+		_StdIn.advanceLine();
+		_StdIn.putText("Please check the number and dial again.");
 	}
 	else
 	{
 		_StdIn.putText("Input Failed");
 	}
+}
+
+function shellRun(args) //Run
+{
+    var inPID = parseInt(args);
+	if(inPID >= 0 && inPID <= pid)
+	{
+		krnRunProcess(pid);
+	}
+    else
+    {
+		_StdOut.putText("PID not supplied or incorrect.");
+    }
+}
+
+function shellProgram() //Run
+{
+	var taUserProgamFill = document.getElementById("taProgramInput");
+	taUserProgamFill.value = "A9 03 8D 41 00 A9 01 8D 40 00 AC 40 00 A2 01 FF EE 40 00 AE 40 00 EC 41 00 D0 EF A9 44 8D 42 00 A9 4F 8D 43 00 A9 4E 8D 44 00 A9 45 8D 45 00 A9 00 8D 46 00 A2 02 A0 42 FF 00";
 }

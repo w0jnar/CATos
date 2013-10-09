@@ -21,6 +21,9 @@ function krnBootstrap()      // Page 8.
    _KernelInterruptQueue = new Queue();  // A (currently) non-priority queue for interrupt requests (IRQs).
    _KernelBuffers = new Array();         // Buffers... for the kernel.
    _KernelInputQueue = new Queue();      // Where device input lands before being processed out somewhere.
+   
+   _KernelReadyQueue = new Queue();  	 // A queue for new PCB's (Process Control Blocks).
+   
    _Console = new CLIconsole();          // The command line interface / console I/O device.
 
    // Initialize the CLIconsole.
@@ -203,4 +206,19 @@ function krnTrapError(msg)
 	bsodImage.src = 'images/bsod.png';  //works mostly how I would like, though must manually empty the cache each time I change the image.
     // TODO: Display error on console, perhaps in some sort of colored screen. (Perhaps blue?)
     krnShutdown();
+}
+
+function krnMemoryAllocation(inCode)
+{
+	var process = new PCB();  //creates new pcb
+	process.pcbInit();
+	_KernelReadyQueue.enqueue(process);
+	process.pcbMemoryFill();
+	mainMemoryUpdate(inCode, process.block);  //future-proofing for when there is more than one program for the memory on the "client."
+	return process;
+}
+
+function krnRunProcess(pid)
+{
+	
 }
