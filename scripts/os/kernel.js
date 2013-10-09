@@ -48,7 +48,6 @@ function krnBootstrap()      // Page 8.
    krnTrace("Creating and Launching the shell.");
    _OsShell = new Shell();
    _OsShell.init();
-
    // Finally, initiate testing.
    if (_GLaDOS) {
       _GLaDOS.afterStartup();
@@ -79,7 +78,7 @@ function krnOnCPUClockPulse()
        that it has to look for interrupts and process them if it finds any.                           */
 	
 	
-	memoryFill();
+	cpuMemoryFill();
 	dateFunc();
 	mainMemoryFill();
 	

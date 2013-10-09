@@ -33,11 +33,14 @@ function hostInit()
 	// Clear the log text box.
 	document.getElementById("taLog").value="";
 	
-	mainMemoryFill();
+//	mainMemoryFill();
 
 	// Set focus on the start button.
    document.getElementById("btnStartOS").focus();
-
+	
+   	_Memory = new MainMemory();
+    _Memory.init();
+	mainMemoryFill();
    // Check for our testing and enrichment core.
    if (typeof Glados === "function") {
       _GLaDOS = new Glados();
@@ -85,11 +88,14 @@ function hostBtnStartOS_click(btn)
 	statusFill.innerText = statusFill.textContent = "Categorically Awesome Time OS";  //I could have separated the divs, but I felt it would not leave enough room for the User Status.
 	
 	//"initialize" the Memory Tracker
-	memoryReset();
-	memoryFill();
+	cpuMemoryReset();
+	cpuMemoryFill();
 	
-	memInit();
-	mainMemoryFill()
+//	memInit();
+//	mainMemoryFill()
+//	_Memory = new MainMemory(); admittedly, this should probably be active instead of in hostInit, but I wanted there to be basic text instead of an empty box.
+//  _Memory.init();
+	_Memory.mainMemoryInit();
 	
     // .. set focus on the OS console display ... 
     document.getElementById("display").focus();
@@ -97,7 +103,7 @@ function hostBtnStartOS_click(btn)
     // ... Create and initialize the CPU ...
     _CPU = new Cpu();
     _CPU.init();
-
+	
     // ... then set the host clock pulse ...
     _hardwareClockID = setInterval(hostClockPulse, CPU_CLOCK_INTERVAL);
     // .. and call the OS Kernel Bootstrap routine.

@@ -532,13 +532,15 @@ function shellFail() //BSOD
 
 function shellLoad() //Load
 {
-	var inCode = document.getElementById("taProgramInput").value;
-	var test = inCode.match(/^([0-9A-F ])*$/gmi)  //agree to disagree, but I feel lowercase does matter and should be allowed (Hate to admit it, but it is because I had issues with testing and forgetting).
-	if(test != null)                              //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
-	{
-//		_StdIn.putText(inCode);
+	var inCode = document.getElementById("taProgramInput").value.replace(/\s+/g, '').toUpperCase(); //admittedly messy, but seemingly for the best.
+	var test = inCode.match(/^([0-9A-F ])*$/gm)
+//	alert(inCode);
+	if(test != null && (inCode.length % 2 == 0))  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
+	{   //logic is to test that it is proper 2 byte hex code.
+//		_StdIn.putText(inCode);  test lines
 //		_StdIn.advanceLine();
-		mainMemoryUpdate(inCode);
+		
+		mainMemoryUpdate(inCode, 1);  //future-proofing for when there is more than one program for the memory on the "client."
 		_StdIn.putText("Program Loaded");
 	}
 	else

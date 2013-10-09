@@ -22,7 +22,7 @@ function cpuMemoryReset(){
 	_ZFlag = Cpu.Zflag;
 } */
 
-function cpuMemoryFill(){
+function cpuMemoryFill(){ //for updating the current memory block on the client
 	var divPCFill = document.getElementById("divPC");
 	divPCFill.innerText = divPCFill.textContent = Cpu.PC;
 	var divACCFill = document.getElementById("divACC");
@@ -35,17 +35,17 @@ function cpuMemoryFill(){
 	divZFlagFill.innerText = divZFlagFill.textContent = Cpu.Zflag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
 }
 
-function mainMemoryFill(){
+function mainMemoryFill(){ //updates the memory block
 	var fill = mainMemoryInitString();
 	var programTA = document.getElementById("taMemory");
 	programTA.value = fill;
 }
 
 
-function mainMemoryUpdate(args, loc){
+function mainMemoryUpdate(args, loc){ //pass the string and eventually the block in memory. Was considering passing the PID, but seemed like it would not work as well if changed. Even then though, we will see with this solution.
 //	args = args.replace(/\s+/g, ''); unnecessary due to eventual 'load' changes, though just in case thought I should keep it.
 	var substringLower = 0;
-	var incrementValue = ((loc-1) * 256)
+	var incrementValue = ((loc-1) * 256) //figures out what block it should be in
 	for (var i=0 + incrementValue; i<(incrementValue) + args.length/2; i++)
 	{ 
 		if(args.substr(substringLower, 2) !== "  ") //Two characters at a time.
@@ -56,7 +56,7 @@ function mainMemoryUpdate(args, loc){
 	}
 }	
 
-function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. 
+function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. There are definitely better ways, but I would say this is probably the most unique way that does not seem asinine.
 {
 	var current = 0;
 	var stringReturn;
