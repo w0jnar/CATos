@@ -535,13 +535,18 @@ function shellLoad() //Load
 	var inCode = document.getElementById("taProgramInput").value.replace(/\s+/g, '').toUpperCase(); //admittedly messy, but seemingly for the best.
 	var test = inCode.match(/^([0-9A-F ])*$/gm)
 //	alert(inCode);
-	if(test != null && (inCode.length % 2 == 0))  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
+	if(test != null && (inCode.length % 2 == 0) && (inCode !== ""))  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
 	{   //logic is to test that it is proper 2 byte hex code.
 //		_StdIn.putText(inCode);  test lines
 //		_StdIn.advanceLine();
+		var process = new PCB();
+		process.pcbInit();
+//		_KernelInputQueue.enqueue(process);
+		process.pcbMemoryFill();
+	
 		
-		mainMemoryUpdate(inCode, 1);  //future-proofing for when there is more than one program for the memory on the "client."
-		_StdIn.putText("Program Loaded");
+		mainMemoryUpdate(inCode, process.block);  //future-proofing for when there is more than one program for the memory on the "client."
+		_StdIn.putText("Program Loaded. Program has a PID of " + process.pid);
 	}
 	else
 	{

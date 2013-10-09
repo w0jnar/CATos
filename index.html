@@ -26,7 +26,7 @@
    <script type="text/javascript" src="scripts/os/queue.js"></script>
    <script type="text/javascript" src="scripts/os/shell.js"></script>
    <script type="text/javascript" src="scripts/os/kernel.js"></script>
-   <script type="text/javascript" src="scripts/os/pCB.js"></script>
+   <script type="text/javascript" src="scripts/os/pcb.js"></script>
    <script type="text/javascript" src="scripts/os/memoryManipulation.js"></script>
 
    <!-- Other Routines -->
@@ -122,19 +122,19 @@
    </tr>
    <tr>
    <td>
-   &nbsp;PC&nbsp;&nbsp;
+   &nbsp;&nbsp;&nbsp;PC&nbsp;&nbsp;&nbsp;
    </td>
    <td>
-   &nbsp;ACC&nbsp;
+   &nbsp;&nbsp;&nbsp;ACC&nbsp;&nbsp;&nbsp;
    </td>
    <td>
-   &nbsp;X&nbsp;
+   &nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;
    </td>
    <td>
-   &nbsp;Y&nbsp;
+   &nbsp;&nbsp;Y&nbsp;&nbsp;&nbsp;
    </td>
    <td>
-   &nbsp;Z&nbsp;
+   &nbsp;&nbsp;Z&nbsp;&nbsp;&nbsp;
    </td>
    </tr>
    
@@ -199,6 +199,78 @@
       </label>
    </div>
    </td>
+   </tr>
+   
+   <tr>
+   <td>
+   <div id="divPCBStatus" style="width:200px; height:75px; float:left; margin-top:-40px; text-align:center;">
+   <table border="1" align="center" bgcolor="white">
+   <tr>
+   <td colspan="6">
+   PCB Status
+   </td>
+   </tr>
+   <tr>
+   <td>
+   &nbsp;PID&nbsp;
+   </td>
+   <td>
+   &nbsp;PC&nbsp;&nbsp;
+   </td>
+   <td>
+   &nbsp;ACC&nbsp;
+   </td>
+   <td>
+   &nbsp;&nbsp;X&nbsp;&nbsp;
+   </td>
+   <td>
+   &nbsp;&nbsp;Y&nbsp;&nbsp;
+   </td>
+   <td>
+   &nbsp;&nbsp;Z&nbsp;&nbsp;
+   </td>
+   </tr>
+
+   <tr>
+		<td>
+		<div id="divPID_PCB">
+		&nbsp;
+		</div>
+		</td>
+		<td>
+		<div id="divPC_PCB">
+		&nbsp;
+		</div>
+		</td>
+		
+		<td>
+		<div id="divACC_PCB">
+		&nbsp;
+		</div>
+		</td>
+		
+		<td>
+		<div id="divXReg_PCB">
+		&nbsp;
+		</div>
+		</td>
+		
+		<td>
+		<div id="divYReg_PCB">
+		&nbsp;
+		</div>
+		</td>
+		
+		<td>
+		<div id="divZFlag_PCB">
+		&nbsp;
+		</div>
+		</td>
+   </tr>
+   </table>
+   </div>  
+   </td>
+
    </tr>
    </table>
 </div>
