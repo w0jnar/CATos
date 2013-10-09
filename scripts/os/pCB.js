@@ -18,7 +18,7 @@ function PCB()
 	this.acc	= 0;
 	this.xReg	= 0;
 	this.yReg	= 0;
-	this.zReg	= 0;
+	this.zFlag	= 0;
 	this.pc		= 0;
 	
 	this.pcbInit = function() {
@@ -31,15 +31,25 @@ function PCB()
 		this.acc	= 0;
 		this.xReg	= 0;
 		this.yReg	= 0;
-		this.zReg	= 0;
+		this.zFlag	= 0;
 		this.pc		= 0;
+	}
+	
+	this.statusUp = function(state, pc, acc, x, y, z)       //status update for the pcb
+	{
+		this.state 		= state;
+		this.pc	  		= pc;
+		this.acc  		= acc;
+		this.xReg     	= x;
+		this.yReg     	= y;
+		this.zFlag     	= z;
 	}
 	
 	this.pcbMemoryFill = function() { //for updating the current memory block on the client
 		var divPIDFill = document.getElementById("divPID_PCB");
 		divPIDFill.innerText = divPIDFill.textContent = this.pid;
 		var divPCFill = document.getElementById("divPC_PCB");
-		divPCFill.innerText = divPCFill.textContent = this.pc;
+		divPCFill.innerText = divPCFill.textContent = toHexString(this.pc);
 		var divACCFill = document.getElementById("divACC_PCB");
 		divACCFill.innerText = divACCFill.textContent = this.acc;
 		var divXRegFill = document.getElementById("divXReg_PCB");
@@ -47,7 +57,7 @@ function PCB()
 		var divYRegFill = document.getElementById("divYReg_PCB");
 		divYRegFill.innerText = divYRegFill.textContent = this.yReg;
 		var divZFlagFill = document.getElementById("divZFlag_PCB");
-		divZFlagFill.innerText = divZFlagFill.textContent = this.zReg;
+		divZFlagFill.innerText = divZFlagFill.textContent = this.zFlag;
 	}
 	
 	this.toString = function() {
@@ -56,7 +66,6 @@ function PCB()
 		output += ", base: " + this.base;
 		output += ", limit: " + this.limit;
 		output += ", block: " + this.block;
-		
 		return output;
 	}
 }

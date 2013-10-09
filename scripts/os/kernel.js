@@ -223,19 +223,24 @@ function krnRunProcess(inPID)
 //	_StdIn.putText("Meow");
 	for(var i=0; i< _KernelReadyQueue.getSize(); i++)  //goes through the ready queue looking for the process based on PID
     {
-		var pcbCheck = _KernelReadyQueue.q[i];
+		var pcbCheck = _KernelReadyQueue.q[i];  //goes pcb by pcb
         if( inPID == parseInt(pcbCheck.pid))
         {
-			_StdIn.putText("Process found!");
+			_StdIn.putText("Process found!");  //is found
 			process = pcbCheck;
+			_CurrentPCB = i;
         }
     }
-	if(process == null)
+	if(process == null)  //if it was not found, error out.
 	{
 		_StdIn.putText("Error, process not found.");
 	}
-	else
+	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
-		
+		process.state = "running";
+		cpuMemoryReset();
+		_CPU.pc = process.pc;
+		memoryRanges(process); 
+		_CPU.isExecuting = true;
 	}
 }

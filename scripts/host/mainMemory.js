@@ -16,6 +16,9 @@ function MainMemory()
 	}
     };
 	
+	this.rangeLow = 0;    //default values
+	this.rangeHigh = 255;
+	
 	this.mainMemoryInit = function() {
 	for (var i=0; i<_Memory.mainMemory.length; i++) //just for when the os starts. might be changed for individual sections of memory.
 	{ 

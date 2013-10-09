@@ -79,7 +79,7 @@ function dateFunc(){
 	dateFill.innerText = dateFill.textContent = outString;
 }
 
-function toHexString(args){
+function toHexString(args){  //for printing
 	if(args<16)
 	{
 		var hexString ='$00' + args.toString(16);

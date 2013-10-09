@@ -482,9 +482,11 @@ function shellDate()  //Probably should have separated this and put it in utils.
 		break;
 	}
 
-	_StdIn.putText("The current time and date are as follows: "    //hope you do not mind the date formatting, it is just persoanlly, I prefer day/month/year.
+	_StdIn.putText('The current time and date are as follows: '    //hope you do not mind the date formatting, it is just persoanlly, I prefer day/month/year.
 	+ fixer(hours) + ':' + fixer(minutes) + ':' + fixer(seconds)
-	+ ' ' + ampm + ' on ' + dayText + ', ' + fixer(date) + '/'
+	+ ' ' + ampm);
+	_StdIn.advanceLine();
+	_StdIn.putText('on ' + dayText + ', ' + fixer(date) + '/'
 	+ fixer(month) + '/' + year);
 }
 

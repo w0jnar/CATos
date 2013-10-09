@@ -35,11 +35,72 @@ function Cpu() {
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
 		
+		this.execute(this.nextOp());
+		mainMemoryFill();
 		cpuMemoryFill();
     };
+	
+	this.nextOp = function(){
+		return _Memory.mainMemory[this.PC + _Memory.rangeLow];  //more future-proofing
+	}
+//http://labouseur.com/courses/os/instructionset.pdf	
+	this.execute = function(opcode){
+//		_StdIn.putText(opcode); //test
+		switch(opcode)
+		{
+		case "A9": 	//
+			loadAccConst(); 
+			break;
+		case "AD": 	//
+			loadAccMem();
+			break;
+		case "8D":	//
+			storeAccMem();
+			break;
+		case "6D":	//
+			addWithCarry();	
+			break;
+		case "A2":	//
+			loadXRegConst();
+			break;
+		case "AE":  //
+			loadXRegMem();
+			break;
+		case "A0":	//
+			loadYRegConst();
+			break;
+		case "AC":  //
+			loadYRegMem();
+			break;
+		case "EA":  //
+			noOp();
+			break;
+		case "00":  //
+			systemBreak();
+			break;
+		case "EC":  //
+			compareMemXReg();
+			break;
+		case "D0":  //
+			branchXBytes();	
+			break;
+		case "EE":  //
+			incValueByte();	
+			break;
+		case "FF": 	//
+			sysCall();
+			break;
+		default:
+			systemBreak();	
+			break;
+		}
+	}	
 }
 
-function cpuMemoryReset(){
+
+
+function cpuMemoryReset()
+{
 	Cpu.PC = 0;
 	Cpu.Acc = 0;
 	Cpu.Xreg = 0;
@@ -47,15 +108,16 @@ function cpuMemoryReset(){
 	Cpu.Zflag = 0;
 }
 
-function cpuMemoryFill(){ //for updating the current memory block on the client
+function cpuMemoryFill() //for updating the current memory block on the client
+{	
 	var divPCFill = document.getElementById("divPC");
-	divPCFill.innerText = divPCFill.textContent = Cpu.PC;
+	divPCFill.innerText = divPCFill.textContent = toHexString(_CPU.PC);
 	var divACCFill = document.getElementById("divACC");
-	divACCFill.innerText = divACCFill.textContent = Cpu.Acc;
+	divACCFill.innerText = divACCFill.textContent = _CPU.Acc;
 	var divXRegFill = document.getElementById("divXReg");
-	divXRegFill.innerText = divXRegFill.textContent = Cpu.Xreg;
+	divXRegFill.innerText = divXRegFill.textContent = _CPU.Xreg;
 	var divYRegFill = document.getElementById("divYReg");
-	divYRegFill.innerText = divYRegFill.textContent = Cpu.Yreg;
+	divYRegFill.innerText = divYRegFill.textContent = _CPU.Yreg;
 	var divZFlagFill = document.getElementById("divZFlag");
-	divZFlagFill.innerText = divZFlagFill.textContent = Cpu.Zflag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
+	divZFlagFill.innerText = divZFlagFill.textContent = _CPU.Zflag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
 }
