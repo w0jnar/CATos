@@ -97,6 +97,123 @@ function Cpu() {
 	}	
 }
 
+// A9
+function loadAccConst()  //"Load the accumulator with a constant"
+{
+	var nextAdd = nextBytes(_Memory.rangeLow);
+	_CPU.Acc = hexToDec(nextAdd,_Memory.rangeLow);
+
+}
+
+// AD
+function loadAccMem()  //"Load the accumulator from memory"
+{
+	var hexLoc = next2Bytes(); //pulls the next two bytes and returns a single hex address in correct order.
+	var decLoc = hexToDec(hexLoc,_Memory.rangeLow);
+	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
+	{
+		_CPU.Acc = parseInt(_Memory.mainMemory[decLoc]);
+	}
+	else  //needs to be edited, but figured as current there is "only" 1 block of memory, I could move on for now.
+	{
+		hostLog("Error, out of Block, check PC", "CPU");
+		_CPU.isExecuting = false;
+	}
+	_CPU.PC++;
+}
+
+// 8D
+function storeAccMem()  //"Store the accumulator in memory"
+{
+	var hexLoc = next2Bytes(); //pulls the next two bytes and returns a single hex address in correct order.
+	var decLoc = hexToDec(hexLoc,_Memory.rangeLow); //hex to dec
+	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
+	{
+		var accVal = _CPU.Acc.toString(16).toUpperCase();
+		if( accVal.length == 1) //issues of byte only being returned, not bytes
+		{
+			accVal = "0" + accVal;
+		}
+		_Memory.mainMemory[decLoc] = accVal;
+		
+	}
+	else
+	{
+		hostLog("Error, out of Block, check PC", "CPU");
+		_CPU.isExecuting = false;
+	}
+
+}
+
+// 6D
+function addWithCarry()  //"Add with carry"
+{
+	var hexLoc = next2Bytes(); //pulls the next two bytes and returns a single hex address in correct order.
+	var decLoc = hexToDec(hexLoc,_Memory.rangeLow); //hex to dec
+	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
+	{
+		_CPU.Acc += parseInt(_Memory.mainMemory[decLoc], 16);
+	}
+	else
+	{
+		hostLog("Error, out of Block, check PC", "CPU");
+		_CPU.isExecuting = false;
+	}
+
+}
+
+// A2
+function loadXRegConst()  //"Load the X register with a constant"
+{
+	var hexLoc = nextBytes(_Memory.rangeLow); //next, then parse, then store
+	_CPU.Xreg = parseInt(hexLoc,16);
+
+}
+
+// AE
+function loadXRegMem()  //"Load the X register from memory"
+{
+	var hexLoc = next2Bytes(); //pulls the next two bytes and returns a single hex address in correct order.
+	var decLoc = hexToDec(hexLoc,_Memory.rangeLow); //hex to dec
+	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
+	{
+		_CPU.Xreg = parseInt(_Memory.mainMemory[decLoc],16);
+		
+	}
+	else
+	{
+		hostLog("Error, out of Block, check PC", "CPU");
+		_CPU.isExecuting = false;
+	}
+
+}
+
+// A0
+function loadYRegConst()  //"Load the Y register with a constant"
+{
+	var hexLoc = nextBytes(_Memory.rangeLow); //next, then parse, then store
+	_CPU.Yreg = hexLoc;
+
+}
+
+// AC
+function loadYRegMem()  //"Load the Y register from memory"
+{
+	var hexLoc = next2Bytes(); //pulls the next two bytes and returns a single hex address in correct order.
+	var decLoc = hexToDec(hexLoc,_Memory.rangeLow); //hex to dec
+	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
+	{
+		_CPU.Yreg = parseInt(_Memory.mainMemory[decLoc],16);
+		
+	}
+	else
+	{
+		hostLog("Error, out of Block, check PC", "CPU");
+		_CPU.isExecuting = false;
+	}
+
+}
+
 
 
 function cpuMemoryReset()
