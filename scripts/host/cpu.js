@@ -102,7 +102,7 @@ function loadAccConst()  //"Load the accumulator with a constant"
 {
 	var nextAdd = nextBytes(_Memory.rangeLow);
 	_CPU.Acc = hexToDec(nextAdd,_Memory.rangeLow);
-
+	_CPU.PC++;
 }
 
 // AD
@@ -142,7 +142,7 @@ function storeAccMem()  //"Store the accumulator in memory"
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
 	}
-
+	_CPU.PC++;
 }
 
 // 6D
@@ -159,7 +159,7 @@ function addWithCarry()  //"Add with carry"
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
 	}
-
+	_CPU.PC++;
 }
 
 // A2
@@ -167,7 +167,7 @@ function loadXRegConst()  //"Load the X register with a constant"
 {
 	var hexLoc = nextBytes(_Memory.rangeLow); //next, then parse, then store
 	_CPU.Xreg = parseInt(hexLoc,16);
-
+	_CPU.PC++;
 }
 
 // AE
@@ -185,7 +185,7 @@ function loadXRegMem()  //"Load the X register from memory"
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
 	}
-
+	_CPU.PC++;
 }
 
 // A0
@@ -193,7 +193,7 @@ function loadYRegConst()  //"Load the Y register with a constant"
 {
 	var hexLoc = nextBytes(_Memory.rangeLow); //next, then parse, then store
 	_CPU.Yreg = hexLoc;
-
+	_CPU.PC++;
 }
 
 // AC
@@ -211,7 +211,7 @@ function loadYRegMem()  //"Load the Y register from memory"
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
 	}
-
+	_CPU.PC++;
 }
 
 
