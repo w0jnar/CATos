@@ -214,7 +214,61 @@ function loadYRegMem()  //"Load the Y register from memory"
 	_CPU.PC++;
 }
 
+// EA
+function noOp()  //"No Operation"
+{
+	_CPU.PC++;
+}
 
+// 00
+function systemBreak()  //"Break (which is really a system call)"
+{
+//	var pcb =  _KernelReadyQueue.q[_CurrentPCB];
+	hostLog("Execution Terminated", "CPU");
+	_KernelReadyQueue.q[_CurrentPCB].statusUp("terminated", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
+	_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill();
+	_CPU.isExecuting = false;
+	_StdIn.advanceLine();
+	_StdIn.putText(">");
+}
+
+// EC
+function compareMemXReg()  //"Compare a byte in memory to the X reg -  Sets the Z (zero) flag if equal"
+{
+	var hexLoc = next2Bytes(); //pulls the next two bytes and returns a single hex address in correct order.
+	var decLoc = hexToDec(hexLoc,_Memory.rangeLow); //hex to dec
+	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
+	{
+		_CPU.Zflag = (parseInt(_Memory.mainMemory[decLoc]) === _CPU.Xreg) ? 1 : 0;
+		
+	}
+	else
+	{
+		hostLog("Error, out of Block, check PC", "CPU");
+		_CPU.isExecuting = false;
+	}
+	_CPU.PC++;
+}
+
+// D0
+function branchXBytes()  //"Branch X bytes if Z flag = 0"
+{
+	if(_CPU.Zflag === 0)
+	{
+		var branchLoc = parseInt(nextBytes(_Memory.rangeLow),16);  //get the location after the branch counting offset.
+		_CPU.PC += branchLoc; //add it to the PC
+		
+		if(_CPU.PC > _Memory.rangeHigh) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
+		{
+			_CPU.PC -= (_Memory.rangeHigh + 1);
+		}
+		_CPU.PC++;
+	}
+	else
+	{
+		_CPU.PC++; 
+	}
+}
 
 function cpuMemoryReset()
 {
