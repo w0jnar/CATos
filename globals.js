@@ -73,3 +73,6 @@ var _YReg = 0;
 var _ZFlag = 0; */
 
 var _CurrentPCB = 0;
+
+var pcbCount = 1;
+var pid = 0;
