@@ -6,14 +6,6 @@
    Designed to handle memory manipulations in terms of index.html
    ------------ */
 
-function cpuMemoryReset(){
-	Cpu.PC = 0;
-	Cpu.Acc = 0;
-	Cpu.Xreg = 0;
-	Cpu.Yreg = 0;
-	Cpu.Zflag = 0;
-}
-
 /* function memoryCurrent(){   Note:antiquated
 	_PC = Cpu.PC;
 	_ACC = Cpu.Acc;
@@ -22,30 +14,18 @@ function cpuMemoryReset(){
 	_ZFlag = Cpu.Zflag;
 } */
 
-function cpuMemoryFill(){
-	var divPCFill = document.getElementById("divPC");
-	divPCFill.innerText = divPCFill.textContent = Cpu.PC;
-	var divACCFill = document.getElementById("divACC");
-	divACCFill.innerText = divACCFill.textContent = Cpu.Acc;
-	var divXRegFill = document.getElementById("divXReg");
-	divXRegFill.innerText = divXRegFill.textContent = Cpu.Xreg;
-	var divYRegFill = document.getElementById("divYReg");
-	divYRegFill.innerText = divYRegFill.textContent = Cpu.Yreg;
-	var divZFlagFill = document.getElementById("divZFlag");
-	divZFlagFill.innerText = divZFlagFill.textContent = Cpu.Zflag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
-}
 
-function mainMemoryFill(){
+function mainMemoryFill(){ //updates the memory block
 	var fill = mainMemoryInitString();
 	var programTA = document.getElementById("taMemory");
 	programTA.value = fill;
 }
 
 
-function mainMemoryUpdate(args, loc){
+function mainMemoryUpdate(args, loc){ //pass the string and eventually the block in memory. Was considering passing the PID, but seemed like it would not work as well if changed. Even then though, we will see with this solution.
 //	args = args.replace(/\s+/g, ''); unnecessary due to eventual 'load' changes, though just in case thought I should keep it.
 	var substringLower = 0;
-	var incrementValue = ((loc-1) * 256)
+	var incrementValue = ((loc-1) * 256) //figures out what block it should be in
 	for (var i=0 + incrementValue; i<(incrementValue) + args.length/2; i++)
 	{ 
 		if(args.substr(substringLower, 2) !== "  ") //Two characters at a time.
@@ -56,7 +36,7 @@ function mainMemoryUpdate(args, loc){
 	}
 }	
 
-function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. 
+function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. There are definitely better ways, but I would say this is probably the most unique way that does not seem asinine.
 {
 	var current = 0;
 	var stringReturn;
@@ -87,3 +67,28 @@ function mainMemoryInitString()  //creates a string of the mainMemoroy array to 
 	}
 	return stringReturn;
 }	
+
+function memoryRanges(inProcess)  //modifies the memory ranges according the the pcb (done in the kernel).
+{
+	_Memory.rangeLow = inProcess.base;
+	_Memory.rangeHigh = inProcess.limit;
+}
+
+
+function hexToDec(args, offset) //somewhat self explanatory. args is hex to change, offset accounts for memory block. 
+{
+	return parseInt(args,16) + offset;
+}
+
+function nextBytes(offset)  //pulls the next byte from memory.
+{	
+	return _Memory.mainMemory[(++_CPU.PC) + offset];
+}
+
+function next2Bytes()  //pulls the next 2 byte from memory and makes them into a hex address.
+{	
+	var storeCheck1 = _Memory.mainMemory[(++_CPU.PC) + _Memory.rangeLow];
+	var storeCheck2 = _Memory.mainMemory[(++_CPU.PC) + _Memory.rangeLow];
+	var hexLoc = storeCheck2 + storeCheck1;
+	return hexLoc;
+}

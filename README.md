@@ -32,3 +32,15 @@ Version History:
 "1.08-Yangmei";  
 "1.09-Ziziphus";  
 "1.10-Abiu";  
+"1.11-Batuan";  
+"1.12-Cocoplum";  
+"1.13-Duku";  
+"1.14-Emblica";  
+"1.15-Fig";  
+"1.16-Guava";  
+"1.17-Honeydew";  
+"1.18-Imbe";  
+"1.19-Jabuticaba";  
+"1.20-Kumquat";  
+"1.21-Lime";  
+"2.00-Mango";  

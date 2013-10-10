@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "1.10-Abiu";   	//versions increment alphabetically by fruit
+var APP_VERSION = "2.00-Mango";  		//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -28,9 +28,9 @@ var KEYBOARD_IRQ = 1;
 // Global Variables
 //
 var _CPU = null;
-
+var _Memory = null;
 var _OSclock = 0;       // Page 23.
-
+//var pcb = null; for testing
 var _Mode = 0;   // 0 = Kernel Mode, 1 = User Mode.  See page 21.
 
 var _Canvas = null;               // Initialized in hostInit().
@@ -47,6 +47,7 @@ var _KernelInterruptQueue = null;
 var _KernelBuffers = null;
 var _KernelInputQueue = null;
 
+var _KernelReadyQueue = null;	  // considered using a normal array, but figured with an actual queue implemented, it would be better just to use this.
 // Standard input and output
 var _StdIn  = null;
 var _StdOut = null;
@@ -70,3 +71,5 @@ var _ACC = 0;
 var _XReg = 0;
 var _YReg = 0;
 var _ZFlag = 0; */
+
+var _CurrentPCB = 0;
