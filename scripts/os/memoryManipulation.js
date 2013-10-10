@@ -80,15 +80,15 @@ function hexToDec(args, offset) //somewhat self explanatory. args is hex to chan
 	return parseInt(args,16) + offset;
 }
 
-function nextBytes(offset)  //pulls the next byte from memory.
+function nextBytes()  //pulls the next byte from memory.
 {	
-	return _Memory.mainMemory[(++_CPU.PC) + offset];
+	return _Memory.mainMemory[(++_CPU.PC)];
 }
 
 function next2Bytes()  //pulls the next 2 byte from memory and makes them into a hex address.
 {	
-	var storeCheck1 = _Memory.mainMemory[(++_CPU.PC) + _Memory.rangeLow];
-	var storeCheck2 = _Memory.mainMemory[(++_CPU.PC) + _Memory.rangeLow];
+	var storeCheck1 = _Memory.mainMemory[(++_CPU.PC)];
+	var storeCheck2 = _Memory.mainMemory[(++_CPU.PC)];
 	var hexLoc = storeCheck2 + storeCheck1;
 	return hexLoc;
 }

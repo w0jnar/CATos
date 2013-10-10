@@ -41,7 +41,7 @@ function Cpu() {
     };
 	
 	this.nextOp = function(){
-		return _Memory.mainMemory[this.PC + _Memory.rangeLow];  //more future-proofing
+		return _Memory.mainMemory[this.PC];  //more future-proofing
 	}
 //http://labouseur.com/courses/os/instructionset.pdf	
 	this.execute = function(opcode){
@@ -100,8 +100,8 @@ function Cpu() {
 // A9
 function loadAccConst()  //"Load the accumulator with a constant"
 {
-	var nextAdd = nextBytes(_Memory.rangeLow);
-	_CPU.Acc = hexToDec(nextAdd,_Memory.rangeLow);
+	var nextAdd = nextBytes();
+	_CPU.Acc = parseInt(nextAdd,16);
 	_CPU.PC++;
 }
 
@@ -118,6 +118,7 @@ function loadAccMem()  //"Load the accumulator from memory"
 	{
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
+		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -141,6 +142,7 @@ function storeAccMem()  //"Store the accumulator in memory"
 	{
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
+		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -158,6 +160,7 @@ function addWithCarry()  //"Add with carry"
 	{
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
+		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -165,7 +168,7 @@ function addWithCarry()  //"Add with carry"
 // A2
 function loadXRegConst()  //"Load the X register with a constant"
 {
-	var hexLoc = nextBytes(_Memory.rangeLow); //next, then parse, then store
+	var hexLoc = nextBytes(); //next, then parse, then store
 	_CPU.Xreg = parseInt(hexLoc,16);
 	_CPU.PC++;
 }
@@ -184,6 +187,7 @@ function loadXRegMem()  //"Load the X register from memory"
 	{
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
+		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -191,7 +195,7 @@ function loadXRegMem()  //"Load the X register from memory"
 // A0
 function loadYRegConst()  //"Load the Y register with a constant"
 {
-	var hexLoc = nextBytes(_Memory.rangeLow); //next, then parse, then store
+	var hexLoc = nextBytes(); //next, then parse, then store
 	_CPU.Yreg = hexLoc;
 	_CPU.PC++;
 }
@@ -210,6 +214,7 @@ function loadYRegMem()  //"Load the Y register from memory"
 	{
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
+		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -240,12 +245,12 @@ function compareMemXReg()  //"Compare a byte in memory to the X reg -  Sets the 
 	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
 	{
 		_CPU.Zflag = (parseInt(_Memory.mainMemory[decLoc]) === _CPU.Xreg) ? 1 : 0;
-		
 	}
 	else
 	{
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
+		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -255,12 +260,12 @@ function branchXBytes()  //"Branch X bytes if Z flag = 0"
 {
 	if(_CPU.Zflag === 0)
 	{
-		var branchLoc = parseInt(nextBytes(_Memory.rangeLow),16);  //get the location after the branch counting offset.
+		var branchLoc = parseInt(nextBytes(),16);  //get the location after the branch counting offset.
 		_CPU.PC += branchLoc; //add it to the PC
 		
-		if(_CPU.PC > _Memory.rangeHigh) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
+		if(_CPU.PC > 255) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
 		{
-			_CPU.PC -= (_Memory.rangeHigh + 1);
+			_CPU.PC -= (256);
 		}
 		_CPU.PC++;
 	}
@@ -277,7 +282,7 @@ function incValueByte()  //"Increment the value of a byte"
 	var decLoc = hexToDec(hexLoc,_Memory.rangeLow); //hex to dec
 	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
 	{
-		var decVal = parseInt(_Memory.mainMemory[decLoc], 16 );
+		var decVal = parseInt(_Memory.mainMemory[decLoc],16);
 		decVal++;
 //		decLoc++; //there probably is a better/more streamline way to do this, but this was the first think that came to mind seeing as I was already converting to test bounds.
 		var hexVal = decVal.toString(16).toUpperCase();
@@ -292,6 +297,7 @@ function incValueByte()  //"Increment the value of a byte"
 	{
 		hostLog("Error, out of Block, check PC", "CPU");
 		_CPU.isExecuting = false;
+		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -310,8 +316,8 @@ function sysCall()  //"System Call - #$01 in X reg = print the integer stored in
 	}
 	else if(_CPU.Xreg === 2)
 	{
-		var decLoc = hexToDec(_CPU.Yreg,_Memory.rangeLow);
-		var check = "00";
+		var decLoc = hexToDec(_CPU.Yreg,_Memory.rangeLow); //decimal location
+		var check = "00";									//comparison value
 		var currentBytes = _Memory.mainMemory[decLoc];
 		var keyCode = 0;
 		var currentCharacter = "";
@@ -329,11 +335,11 @@ function sysCall()  //"System Call - #$01 in X reg = print the integer stored in
 
 function cpuMemoryReset()
 {
-	Cpu.PC = 0;
-	Cpu.Acc = 0;
-	Cpu.Xreg = 0;
-	Cpu.Yreg = 0;
-	Cpu.Zflag = 0;
+	_CPU.PC = 0;
+	_CPU.Acc = 0;
+	_CPU.Xreg = 0;
+	_CPU.Yreg = 0;
+	_CPU.Zflag = 0;
 }
 
 function cpuMemoryFill() //for updating the current memory block on the client

@@ -4,7 +4,7 @@
    The "base class" (or 'prototype') for all Process Control Blocks.
    ------------------------------ */
 //it would probably be better to put these in globals.js, but I felt as they are directly involved in pid process, they should be here. 
-var pcbCount = 1;
+//var pcbCount = 1;
 var pid = 0;
    
 function PCB()
@@ -23,9 +23,9 @@ function PCB()
 	
 	this.pcbInit = function() {
 		this.pid		= pid++;  							// Process ID
-		this.base		= 0 + ((pcbCount-1) * 256);  		// Base Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
-		this.limit		= 255 + ((pcbCount-1) * 256);		// Max Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
-		this.block		= pcbCount++;	 					// Block in main Memory
+		this.base		= 0 + ((this.pid) * 256);  		// Base Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
+		this.limit		= 255 + ((this.pid) * 256);		// Max Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
+		this.block		= this.pid + 1;	 					// Block in main Memory
 		this.state		= "ready";
 		
 		this.acc	= 0;
