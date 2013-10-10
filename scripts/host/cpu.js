@@ -266,8 +266,65 @@ function branchXBytes()  //"Branch X bytes if Z flag = 0"
 	}
 	else
 	{
-		_CPU.PC++; 
+		_CPU.PC += 2;
 	}
+}
+
+// EE
+function incValueByte()  //"Increment the value of a byte"
+{
+	var hexLoc = next2Bytes(); //pulls the next two bytes and returns a single hex address in correct order.
+	var decLoc = hexToDec(hexLoc,_Memory.rangeLow); //hex to dec
+	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
+	{
+		var decVal = parseInt(_Memory.mainMemory[decLoc], 16 );
+		decVal++;
+//		decLoc++; //there probably is a better/more streamline way to do this, but this was the first think that came to mind seeing as I was already converting to test bounds.
+		var hexVal = decVal.toString(16).toUpperCase();
+		if( hexVal.length == 1) //issues of byte only being returned, not bytes
+		{
+			hexVal = "0" + hexVal;
+		}
+		_Memory.mainMemory[decLoc] = hexVal;
+		
+	}
+	else
+	{
+		hostLog("Error, out of Block, check PC", "CPU");
+		_CPU.isExecuting = false;
+	}
+	_CPU.PC++;
+}
+
+//FF
+function sysCall()  //"System Call - #$01 in X reg = print the integer stored in the Y register. - #$02 in X reg = print the 00-terminated string stored at the address in the Y register."
+{
+	if(_CPU.Xreg === 1)  //"System Call - #$01 in X reg = print the integer stored in the Y register.
+	{
+		var yValue = parseInt(_CPU.Yreg).toString(); //get yValue to a string
+		
+		for( var i = 0; i < yValue.length; i++)
+		{
+			_StdIn.putText(yValue.charAt(i));  //prints y
+		}
+	}
+	else if(_CPU.Xreg === 2)
+	{
+		var decLoc = hexToDec(_CPU.Yreg,_Memory.rangeLow);
+		var check = "00";
+		var currentBytes = _Memory.mainMemory[decLoc];
+		var keyCode = 0;
+		var currentCharacter = "";
+		
+		while(currentBytes != check)
+		{
+			keyCode = parseInt(currentBytes, 16); 			   //int from bytes
+			currentCharacter = String.fromCharCode(keyCode);   //"character" from int
+			_StdIn.putText(currentCharacter);				   //print the character
+			currentBytes = _Memory.mainMemory[++decLoc];
+		}
+	}
+	_CPU.PC++;
 }
 
 function cpuMemoryReset()
