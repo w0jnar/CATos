@@ -4,6 +4,8 @@
    The "base class" (or 'prototype') for all Process Control Blocks.
    ------------------------------ */
 //it would probably be better to put these in globals.js, but I felt as they are directly involved in pid process, they should be here. 
+var pcbCount = 1;
+var pid = 0;
    
 function PCB()
 {
