@@ -43,3 +43,4 @@ Version History:
 "1.19-Jabuticaba";  
 "1.20-Kumquat";  
 "1.21-Lime";  
+"2.00-Mango";  
