@@ -6,7 +6,7 @@
 
 function MainMemory()
 {
-	this.mainMemory = new Array(768);
+	this.mainMemory = new Array(3 * _PartitionSize);
 	
 	this.init = function() {
         for (var i=0; i<this.mainMemory.length; i++)
@@ -17,7 +17,7 @@ function MainMemory()
     };
 	
 	this.rangeLow = 0;    //default values
-	this.rangeHigh = 255;
+	this.rangeHigh = _PartitionSize - 1;
 	
 	this.mainMemoryInit = function() {
 	for (var i=0; i<_Memory.mainMemory.length; i++) //just for when the os starts. might be changed for individual sections of memory.

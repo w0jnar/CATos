@@ -4,6 +4,9 @@ CATos, or Categorically Awesome Time operating system is an Operating System cod
 as my submission for my professor's Fall 2013 Operating Systems class initial project.
 See http://www.labouseur.com/courses/os/ for details.
 
+Link to the current live version:  
+http://w0jnar.github.io/CATos/  
+
 Version History:
 
 "0.01-Apple";  
@@ -45,3 +48,4 @@ Version History:
 "1.21-Lime";  
 "2.00-Mango";  
 "2.01-Nectarine";  
+"2.02-Oroblanco";  

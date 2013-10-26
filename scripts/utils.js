@@ -38,13 +38,13 @@ function rot13(str) {   // An easy-to understand implementation of the famous an
 
 function dateFunc(){
 	function fixer(num) //Admittedly, there is probably an easier/clear way to do this, and putting this here seems right and works.
+	{
+		if (num < 10)
 		{
-				if (num < 10)
-				{
-					num = '0' + num;
-				}
-				return num;
+			num = "0" + num;
 		}
+		return num;
+	}
 
 	var timedate = new Date();
 	var date = timedate.getDate();
@@ -58,11 +58,11 @@ function dateFunc(){
 	{
 		var ampm = "AM";
 	}
-	else if (hours > 10 && hours < 12)
+	else if (hours >= 10 && hours < 12)
 	{
 		var ampm = "AM";
 	}
-	else if (hours == 12)
+	else if (hours === 12)
 	{
 		var ampm = "PM";
 	}
@@ -71,7 +71,7 @@ function dateFunc(){
 		hours = hours - 12;
 		var ampm = "PM";
 	}
-
+	
 	var outString = (fixer(hours) + ':' + fixer(minutes) + ':' + fixer(seconds)  //removed day of the week as it made the date command seem pointless.
 	+ ' ' + ampm + ' on ' + fixer(date) + '/' + fixer(month) + '/' + year);  //hope you do not mind the date formatting, it is just persoanlly, I prefer day/month/year.
 	
@@ -84,7 +84,7 @@ function toHexString(args){  //for printing
 	{
 		var hexString ='$00' + args.toString(16);
 	}
-	else if(args<256)
+	else if(args<_PartitionSize)
 	{
 		var hexString ='$0' + args.toString(16);
 	}

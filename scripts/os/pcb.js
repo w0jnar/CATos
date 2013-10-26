@@ -11,7 +11,7 @@ function PCB()
 {
 	this.pid		= 0;  		// Process ID
 	this.base		= 0;  		// Base Address in main Memory
-	this.limit		= 255;		// Max Address in main Memory
+	this.limit		= _PartitionSize - 1;		// Max Address in main Memory
 	this.block		= 1;	    // Block in main Memory
 	this.state		= "new";
 	
@@ -22,10 +22,10 @@ function PCB()
 	this.pc		= 0;
 	
 	this.pcbInit = function() {
-		this.pid		= pid++;  							// Process ID
-		this.base		= 0 + ((this.pid) * 256);  		// Base Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
-		this.limit		= 255 + ((this.pid) * 256);		// Max Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
-		this.block		= this.pid + 1;	 					// Block in main Memory
+		this.pid		= pid++;  													// Process ID
+		this.base		= 0 + ((this.pid) * _PartitionSize);  						// Base Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
+		this.limit		= _PartitionSize - 1 + ((this.pid) * _PartitionSize);		// Max Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
+		this.block		= this.pid + 1;	 											// Block in main Memory
 		this.state		= "ready";
 		
 		this.acc	= 0;

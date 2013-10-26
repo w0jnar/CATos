@@ -131,7 +131,7 @@ function storeAccMem()  //"Store the accumulator in memory"
 	if(decLoc <= _Memory.rangeHigh && decLoc >= _Memory.rangeLow)
 	{
 		var accVal = _CPU.Acc.toString(16).toUpperCase();
-		if( accVal.length == 1) //issues of byte only being returned, not bytes
+		if( accVal.length === 1) //issues of byte only being returned, not bytes
 		{
 			accVal = "0" + accVal;
 		}
@@ -263,9 +263,9 @@ function branchXBytes()  //"Branch X bytes if Z flag = 0"
 		var branchLoc = parseInt(nextBytes(),16);  //get the location after the branch counting offset.
 		_CPU.PC += branchLoc; //add it to the PC
 		
-		if(_CPU.PC > 255) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
+		if(_CPU.PC > (_PartitionSize-1)) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
 		{
-			_CPU.PC -= (256);
+			_CPU.PC -= (_PartitionSize);
 		}
 		_CPU.PC++;
 	}
@@ -286,7 +286,7 @@ function incValueByte()  //"Increment the value of a byte"
 		decVal++;
 //		decLoc++; //there probably is a better/more streamline way to do this, but this was the first think that came to mind seeing as I was already converting to test bounds.
 		var hexVal = decVal.toString(16).toUpperCase();
-		if( hexVal.length == 1) //issues of byte only being returned, not bytes
+		if( hexVal.length === 1) //issues of byte only being returned, not bytes
 		{
 			hexVal = "0" + hexVal;
 		}

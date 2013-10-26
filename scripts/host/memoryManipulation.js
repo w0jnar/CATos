@@ -45,7 +45,7 @@ function mainMemoryFill(){
 function mainMemoryUpdate(args, loc){
 //	args = args.replace(/\s+/g, ''); unnecessary due to eventual 'load' changes, though just in case thought I should keep it.
 	var substringLower = 0;
-	var incrementValue = ((loc-1) * 256)
+	var incrementValue = ((loc-1) * _PartitionSize)
 	for (var i=0 + incrementValue; i<(incrementValue) + args.length/2; i++)
 	{ 
 		if(args.substr(substringLower, 2) !== "  ") //Two characters at a time.

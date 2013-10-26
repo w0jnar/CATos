@@ -242,7 +242,7 @@ function krnRunProcess(inPID)
 		cpuMemoryFill();
 		_KernelReadyQueue.q[_CurrentPCB].statusUp("running", 0, 0, 0, 0, 0);
 		_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill();
-		_CPU.PC = 0 + ((process.pid) * 256);
+		_CPU.PC = 0 + ((process.pid) * _PartitionSize);
 		memoryRanges(process); 
 		_CPU.isExecuting = true;
 	}

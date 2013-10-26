@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "2.01-Nectarine";  	//versions increment alphabetically by fruit
+var APP_VERSION = "2.02-Oroblanco";  	//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -73,3 +73,4 @@ var _YReg = 0;
 var _ZFlag = 0; */
 
 var _CurrentPCB = 0;
+var _PartitionSize = 256;

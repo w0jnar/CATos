@@ -133,7 +133,14 @@ function shellInit() {
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
     sc.description = "- Puts an example program into the \"User Input Program\" area.";
-    sc.function = shellProgram;
+    sc.function = shellProgram1;
+    this.commandList[this.commandList.length] = sc;
+	
+	// Program 2 (Your requested program)
+	sc = new ShellCommand();
+    sc.command = "program_alan";   //admittedly unoriginal, but it gets the point across.
+    sc.description = "- Puts an Alan designed, Thomas implemented program.";
+    sc.function = shellProgram2;
     this.commandList[this.commandList.length] = sc;
 	
     // processes - list the running processes and their IDs
@@ -550,7 +557,7 @@ function shellLoad() //Load
 {
 	var inCode = document.getElementById("taProgramInput").value.replace(/\s+/g, '').toUpperCase(); //admittedly messy, but seemingly for the best.
 	var test = inCode.match(/^([0-9A-F ])*$/gm)
-	var sizeTest = inCode.length <= (256 * 2);
+	var sizeTest = inCode.length <= (_PartitionSize * 2);
 //	alert(inCode);
 	if((test != null) && (inCode.length % 2 == 0) && (inCode !== "") && (pid < 3) && sizeTest)  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
 	{   //logic is to test that it is proper 2 byte hex code.
@@ -599,9 +606,16 @@ function shellRun(args) //Run
     }
 }
 
-function shellProgram() //Program1
+function shellProgram1() //Program1
 {
 	var taUserProgamFill = document.getElementById("taProgramInput");
 	taUserProgamFill.value = "A9 03 8D 41 00 A9 01 8D 40 00 AC 40 00 A2 01 FF EE 40 00 AE 40 00 EC 41 00 D0 EF A9 44 8D 42 00 A9 4F 8D 43 00 A9 4E 8D 44 00 A9 45 8D 45 00 A9 00 8D 46 00 A2 02 A0 42 FF 00";
+	_StdOut.putText("User Program Changed.");
+}
+
+function shellProgram2() //Program2
+{
+	var taUserProgamFill = document.getElementById("taProgramInput");
+	taUserProgamFill.value = "A9 A9 A2 A9 EC 10 00 8D 10 00 EE 08 00 D0 F8 00 00";
 	_StdOut.putText("User Program Changed.");
 }

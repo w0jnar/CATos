@@ -25,7 +25,7 @@ function mainMemoryFill(){ //updates the memory block
 function mainMemoryUpdate(args, loc){ //pass the string and eventually the block in memory. Was considering passing the PID, but seemed like it would not work as well if changed. Even then though, we will see with this solution.
 //	args = args.replace(/\s+/g, ''); unnecessary due to eventual 'load' changes, though just in case thought I should keep it.
 	var substringLower = 0;
-	var incrementValue = ((loc-1) * 256) //figures out what block it should be in
+	var incrementValue = ((loc-1) * _PartitionSize) //figures out what block it should be in
 	for (var i=0 + incrementValue; i<(incrementValue) + args.length/2; i++)
 	{ 
 		if(args.substr(substringLower, 2) !== "  ") //Two characters at a time.
