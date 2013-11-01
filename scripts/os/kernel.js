@@ -96,6 +96,8 @@ function krnOnCPUClockPulse()
     else if (_CPU.isExecuting) // If there are no interrupts then run one CPU cycle if there is anything being processed.
     {
         _CPU.cycle();
+		//mainMemoryFill();
+		cpuMemoryFill();
     }    
     else                       // If there are no interrupts and there is nothing being executed then just be idle.
     {
@@ -212,7 +214,13 @@ function krnMemoryAllocation(inCode)
 	var process = new PCB();  //creates new pcb
 	process.pcbInit();
 	_KernelReadyQueue.enqueue(process);
-	process.pcbMemoryFill();
+	if(_processFlag === 0)
+	{
+		process.pcbMemoryFill(0);
+		_processFlag = 1;
+	}
+	else
+		process.pcbMemoryFill(1);
 	mainMemoryUpdate(inCode, process.block);  //future-proofing for when there is more than one program for the memory on the "client."
 	return process;
 }
@@ -223,27 +231,65 @@ function krnRunProcess(inPID)
 //	_StdIn.putText("Meow");
 	for(var i=0; i< _KernelReadyQueue.getSize(); i++)  //goes through the ready queue looking for the process based on PID
     {
-		var pcbCheck = _KernelReadyQueue.q[i];  //goes pcb by pcb
-        if( inPID == parseInt(pcbCheck.pid))
+		//goes pcb by pcb
+        if( inPID == parseInt(_KernelReadyQueue.q[i].pid))
         {
 			_StdIn.putText("Process found!");  //is found
-			process = pcbCheck;
 			_CurrentPCB = i;
         }
     }
-	if(process == null)  //if it was not found, error out.
+	if(_KernelReadyQueue.q[_CurrentPCB] == null)  //if it was not found, error out.
 	{
 		_StdIn.putText("Error, process not found.");
 	}
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
-		process.state = "running";
+		_KernelReadyQueue.q[_CurrentPCB];
 		cpuMemoryReset();
 		cpuMemoryFill();
 		_KernelReadyQueue.q[_CurrentPCB].statusUp("running", 0, 0, 0, 0, 0);
-		_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill();
-		_CPU.PC = 0 + ((process.pid) * _PartitionSize);
-		memoryRanges(process); 
+		_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
+		_CPU.PC = 0 + ((_KernelReadyQueue.q[_CurrentPCB].pid) * _PartitionSize);
+		memoryRanges(_KernelReadyQueue.q[_CurrentPCB]); 
 		_CPU.isExecuting = true;
 	}
 }
+
+function mainMemoryFill(){
+	var fill = mainMemoryInitString();
+	var programTA = document.getElementById("taMemory");
+	programTA.value = fill;
+}
+
+
+function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. 
+{
+	var current = 0;
+	var stringReturn;
+//	hexString = current.toString(16);
+//	current = parseInt(hexString, 16);
+	var j = 0; //column count more or less
+	var currentBlock = 1;
+	for(var i = 0; i <= 99; i++)
+	{
+		if(i == 0)
+		{
+			stringReturn = "                     Memory                     \n";
+		}
+		else if((i === 1) || (i === 34) || (i === 67))
+		{
+			stringReturn += "                    Program " + currentBlock + "                \n";
+			currentBlock++;
+		}
+		else
+		{
+			stringReturn += " " + toHexString(j) + " | ";
+			for(var cellCount = 0; cellCount < 8; cellCount++)   //realistically could have probably used j here or changed the variables, but for my own sake, this just helped me.
+			{
+				stringReturn += _Memory.mainMemory[j++] + " | ";
+			}
+			stringReturn += "|\n";
+		}
+	}
+	return stringReturn;
+}	

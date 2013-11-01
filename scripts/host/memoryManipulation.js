@@ -35,13 +35,6 @@ function cpuMemoryFill(){
 	divZFlagFill.innerText = divZFlagFill.textContent = Cpu.Zflag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
 }
 
-function mainMemoryFill(){
-	var fill = mainMemoryInitString();
-	var programTA = document.getElementById("taMemory");
-	programTA.value = fill;
-}
-
-
 function mainMemoryUpdate(args, loc){
 //	args = args.replace(/\s+/g, ''); unnecessary due to eventual 'load' changes, though just in case thought I should keep it.
 	var substringLower = 0;
@@ -54,36 +47,4 @@ function mainMemoryUpdate(args, loc){
 		}
 		substringLower += 2;
 	}
-}	
-
-function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. 
-{
-	var current = 0;
-	var stringReturn;
-//	hexString = current.toString(16);
-//	current = parseInt(hexString, 16);
-	var j = 0; //column count more or less
-	var currentBlock = 1;
-	for(var i = 0; i <= 99; i++)
-	{
-		if(i == 0)
-		{
-			stringReturn = "                     Memory                     \n";
-		}
-		else if((i === 1) || (i === 34) || (i === 67))
-		{
-			stringReturn += "                    Program " + currentBlock + "                \n";
-			currentBlock++;
-		}
-		else
-		{
-			stringReturn += " " + toHexString(j) + " | ";
-			for(var cellCount = 0; cellCount < 8; cellCount++)   //realistically could have probably used j here or changed the variables, but for my own sake, this just helped me.
-			{
-				stringReturn += _Memory.mainMemory[j++] + " | ";
-			}
-			stringReturn += "|\n";
-		}
-	}
-	return stringReturn;
 }	

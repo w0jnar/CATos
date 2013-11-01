@@ -6,7 +6,6 @@
 //it would probably be better to put these in globals.js, but I felt as they are directly involved in pid process, they should be here. 
 //var pcbCount = 1;
 var pid = 0;
-   
 function PCB()
 {
 	this.pid		= 0;  		// Process ID
@@ -45,7 +44,27 @@ function PCB()
 		this.zFlag     	= z;
 	}
 	
-	this.pcbMemoryFill = function() { //for updating the current memory block on the client
+	this.pcbMemoryFill = function(startFlag) { //for updating the current memory block on the client
+		// var table = document.getElementById("PCBTable");  //modifies the pcb table by adding a row, based on the number of rows, and inserts the values directly.
+		// if(startFlag === 1)
+			// document.getElementById("PCBTable").deleteRow(-1);
+		// //for(var i = 0; i <= pid; 
+		
+		// var row = table.insertRow(-1);
+		// var cellPID = row.insertCell(0);
+		// var cellPC = row.insertCell(1);
+		// var cellACC = row.insertCell(2);
+		// var cellXReg = row.insertCell(3);
+		// var cellYReg = row.insertCell(4);
+		// var cellZFlag = row.insertCell(5);
+	
+		// cellPID.innerHTML = this.pid;
+		// cellPC.innerHTML = this.pc;
+		// cellACC.innerHTML = this.acc;
+		// cellXReg.innerHTML = this.xReg;
+		// cellYReg.innerHTML = this.yReg;
+		// cellZFlag.innerHTML = this.zFlag;
+		//attempt at a better solution, which in the long run, did the same thing, though, could be used* if properly fixed (*I think.)
 		var divPIDFill = document.getElementById("divPID_PCB");
 		divPIDFill.innerText = divPIDFill.textContent = this.pid;
 		var divPCFill = document.getElementById("divPC_PCB");

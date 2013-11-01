@@ -36,8 +36,8 @@ function Cpu() {
         // Do the real work here. Be sure to set this.isExecuting appropriately.
 		
 		this.execute(this.nextOp());
-		mainMemoryFill();
-		cpuMemoryFill();
+		// mainMemoryFill();
+		// cpuMemoryFill();
     };
 	
 	this.nextOp = function(){
@@ -116,9 +116,8 @@ function loadAccMem()  //"Load the accumulator from memory"
 	}
 	else  //needs to be edited, but figured as current there is "only" 1 block of memory, I could move on for now.
 	{
-		hostLog("Error, out of Block, check PC", "CPU");
+		hostLog("Error, Memory Fault, check PC", "CPU");
 		_CPU.isExecuting = false;
-		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -140,9 +139,8 @@ function storeAccMem()  //"Store the accumulator in memory"
 	}
 	else
 	{
-		hostLog("Error, out of Block, check PC", "CPU");
+		hostLog("Error, Memory Fault, check PC", "CPU");
 		_CPU.isExecuting = false;
-		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -158,9 +156,8 @@ function addWithCarry()  //"Add with carry"
 	}
 	else
 	{
-		hostLog("Error, out of Block, check PC", "CPU");
+		hostLog("Error, Memory Fault, check PC", "CPU");
 		_CPU.isExecuting = false;
-		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -185,9 +182,8 @@ function loadXRegMem()  //"Load the X register from memory"
 	}
 	else
 	{
-		hostLog("Error, out of Block, check PC", "CPU");
+		hostLog("Error, Memory Fault, check PC", "CPU");
 		_CPU.isExecuting = false;
-		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -212,9 +208,8 @@ function loadYRegMem()  //"Load the Y register from memory"
 	}
 	else
 	{
-		hostLog("Error, out of Block, check PC", "CPU");
+		hostLog("Error, Memory Fault, check PC", "CPU");
 		_CPU.isExecuting = false;
-		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -231,7 +226,8 @@ function systemBreak()  //"Break (which is really a system call)"
 //	var pcb =  _KernelReadyQueue.q[_CurrentPCB];
 	hostLog("Execution Terminated", "CPU");
 	_KernelReadyQueue.q[_CurrentPCB].statusUp("terminated", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
-	_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill();
+	_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
+	_KernelReadyQueue.dequeue();
 	_CPU.isExecuting = false;
 	_StdIn.advanceLine();
 	_StdIn.putText(">");
@@ -248,9 +244,8 @@ function compareMemXReg()  //"Compare a byte in memory to the X reg -  Sets the 
 	}
 	else
 	{
-		hostLog("Error, out of Block, check PC", "CPU");
+		hostLog("Error, Memory Fault, check PC", "CPU");
 		_CPU.isExecuting = false;
-		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }
@@ -295,9 +290,8 @@ function incValueByte()  //"Increment the value of a byte"
 	}
 	else
 	{
-		hostLog("Error, out of Block, check PC", "CPU");
+		hostLog("Error, Memory Fault, check PC", "CPU");
 		_CPU.isExecuting = false;
-		krnTrapError("Memory Fault");
 	}
 	_CPU.PC++;
 }

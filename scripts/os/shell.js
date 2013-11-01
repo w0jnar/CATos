@@ -556,7 +556,7 @@ function shellFail() //BSOD
 function shellLoad() //Load
 {
 	var inCode = document.getElementById("taProgramInput").value.replace(/\s+/g, '').toUpperCase(); //admittedly messy, but seemingly for the best.
-	var test = inCode.match(/^([0-9A-F ])*$/gm)
+	var test = inCode.match(/^([0-9A-F ])*$/gm);
 	var sizeTest = inCode.length <= (_PartitionSize * 2);
 //	alert(inCode);
 	if((test != null) && (inCode.length % 2 == 0) && (inCode !== "") && (pid < 3) && sizeTest)  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
