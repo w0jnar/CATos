@@ -117,6 +117,7 @@ function loadAccMem()  //"Load the accumulator from memory"
 	else  //needs to be edited, but figured as current there is "only" 1 block of memory, I could move on for now.
 	{
 		hostLog("Error, Memory Fault, check PC", "CPU");
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 	}
 	_CPU.PC++;
@@ -140,6 +141,7 @@ function storeAccMem()  //"Store the accumulator in memory"
 	else
 	{
 		hostLog("Error, Memory Fault, check PC", "CPU");
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 	}
 	_CPU.PC++;
@@ -157,6 +159,7 @@ function addWithCarry()  //"Add with carry"
 	else
 	{
 		hostLog("Error, Memory Fault, check PC", "CPU");
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 	}
 	_CPU.PC++;
@@ -183,6 +186,7 @@ function loadXRegMem()  //"Load the X register from memory"
 	else
 	{
 		hostLog("Error, Memory Fault, check PC", "CPU");
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 	}
 	_CPU.PC++;
@@ -209,6 +213,7 @@ function loadYRegMem()  //"Load the Y register from memory"
 	else
 	{
 		hostLog("Error, Memory Fault, check PC", "CPU");
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 	}
 	_CPU.PC++;
@@ -225,12 +230,20 @@ function systemBreak()  //"Break (which is really a system call)"
 {
 //	var pcb =  _KernelReadyQueue.q[_CurrentPCB];
 	hostLog("Execution Terminated", "CPU");
-	_KernelReadyQueue.q[_CurrentPCB].statusUp("terminated", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
-	_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
-	_KernelReadyQueue.dequeue();
-	_CPU.isExecuting = false;
-	_StdIn.advanceLine();
-	_StdIn.putText(">");
+	cpuWrapUp();
+	// if(_KernelReadyQueue.isEmpty())
+	// {
+		_CPU.isExecuting = false;
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
+	// }
+	// else
+	// {
+		// _KernelReadyQueue.q[_CurrentPCB].statusUp("running", 0, 0, 0, 0, 0);
+		// _KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
+		// _CPU.PC = 0 + ((_KernelReadyQueue.q[_CurrentPCB].pid) * _PartitionSize);
+		// memoryRanges(_KernelReadyQueue.q[_CurrentPCB]); 
+	// }
 }
 
 // EC
@@ -245,6 +258,7 @@ function compareMemXReg()  //"Compare a byte in memory to the X reg -  Sets the 
 	else
 	{
 		hostLog("Error, Memory Fault, check PC", "CPU");
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 	}
 	_CPU.PC++;
@@ -291,6 +305,7 @@ function incValueByte()  //"Increment the value of a byte"
 	else
 	{
 		hostLog("Error, Memory Fault, check PC", "CPU");
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 	}
 	_CPU.PC++;
@@ -348,4 +363,11 @@ function cpuMemoryFill() //for updating the current memory block on the client
 	divYRegFill.innerText = divYRegFill.textContent = _CPU.Yreg;
 	var divZFlagFill = document.getElementById("divZFlag");
 	divZFlagFill.innerText = divZFlagFill.textContent = _CPU.Zflag;   //admittedly, setting all of this to zero with this method seems pointless, though it is for future efforts.
+}
+
+function cpuWrapUp()
+{
+	_KernelReadyQueue.q[0].statusUp("terminated", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
+	_KernelReadyQueue.q[0].pcbMemoryFill(1);
+	_KernelReadyQueue.dequeue();
 }

@@ -117,16 +117,23 @@ function shellInit() {
 	
 	// load
 	sc = new ShellCommand();
-    sc.command = "load";   //admittedly unoriginal, but it gets the point across.
+    sc.command = "load"; 
     sc.description = "- Checks user code for errors.";
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 	
 	// run
 	sc = new ShellCommand();
-    sc.command = "run";   //admittedly unoriginal, but it gets the point across.
+    sc.command = "run"; 
     sc.description = "- <PID> Runs user input code based on PID.";
     sc.function = shellRun;
+    this.commandList[this.commandList.length] = sc;
+	
+	// runAll
+	sc = new ShellCommand();
+    sc.command = "runall"; 
+    sc.description = "- Runs all of the loaded programs.";
+    sc.function = shellRunAll;
     this.commandList[this.commandList.length] = sc;
 	
 	// Program 1
@@ -136,7 +143,7 @@ function shellInit() {
     sc.function = shellProgram1;
     this.commandList[this.commandList.length] = sc;
 	
-	// Program 2 (Your requested program)
+	// Program 2 (Alan's requested program)
 	sc = new ShellCommand();
     sc.command = "program_alan";   //admittedly unoriginal, but it gets the point across.
     sc.description = "- Puts an Alan designed, Thomas implemented program.";
@@ -604,6 +611,11 @@ function shellRun(args) //Run
     {
 		_StdOut.putText("PID not supplied or incorrect.");
     }
+}
+
+function shellRunAll() //Run
+{
+    krnRunAllProcesses();
 }
 
 function shellProgram1() //Program1

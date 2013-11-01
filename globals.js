@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "2.03-Pecan";  		//versions increment alphabetically by fruit
+var APP_VERSION = "2.04-Quince";  		//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -46,6 +46,7 @@ var _KernelInterruptQueue = null;
 var _KernelBuffers = null;
 var _KernelInputQueue = null;
 
+var _KernelResidentList = null;
 var _KernelReadyQueue = null;	  // considered using a normal array, but figured with an actual queue implemented, it would be better just to use this.
 // Standard input and output
 var _StdIn  = null;

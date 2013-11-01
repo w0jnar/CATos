@@ -21,7 +21,7 @@ function krnBootstrap()      // Page 8.
    _KernelInterruptQueue = new Queue();  // A (currently) non-priority queue for interrupt requests (IRQs).
    _KernelBuffers = new Array();         // Buffers... for the kernel.
    _KernelInputQueue = new Queue();      // Where device input lands before being processed out somewhere.
-   
+   _KernelResidentList = new Array();
    _KernelReadyQueue = new Queue();  	 // A queue for new PCB's (Process Control Blocks).
    
    _Console = new CLIconsole();          // The command line interface / console I/O device.
@@ -213,7 +213,7 @@ function krnMemoryAllocation(inCode)
 {
 	var process = new PCB();  //creates new pcb
 	process.pcbInit();
-	_KernelReadyQueue.enqueue(process);
+	_KernelResidentList.push(process);
 	if(_processFlag === 0)
 	{
 		process.pcbMemoryFill(0);
@@ -228,29 +228,31 @@ function krnMemoryAllocation(inCode)
 function krnRunProcess(inPID)
 {
 	var process;
-//	_StdIn.putText("Meow");
-	for(var i=0; i< _KernelReadyQueue.getSize(); i++)  //goes through the ready queue looking for the process based on PID
+	//	_StdIn.putText("Meow");
+	//alert(_KernelResidentList.length);
+	for(var i=0; i < _KernelResidentList.length; i++)  //goes through the ready queue looking for the process based on PID
     {
 		//goes pcb by pcb
-        if( inPID == parseInt(_KernelReadyQueue.q[i].pid))
+        if( inPID == parseInt(_KernelResidentList[i].pid))
         {
 			_StdIn.putText("Process found!");  //is found
 			_CurrentPCB = i;
         }
     }
-	if(_KernelReadyQueue.q[_CurrentPCB] == null)  //if it was not found, error out.
+	if(_KernelResidentList[_CurrentPCB] == null)  //if it was not found, error out.
 	{
 		_StdIn.putText("Error, process not found.");
 	}
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
-		_KernelReadyQueue.q[_CurrentPCB];
+		_KernelReadyQueue.enqueue(_KernelResidentList[_CurrentPCB]);
+		_KernelResidentList.splice(_CurrentPCB, 1);
 		cpuMemoryReset();
 		cpuMemoryFill();
-		_KernelReadyQueue.q[_CurrentPCB].statusUp("running", 0, 0, 0, 0, 0);
-		_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
-		_CPU.PC = 0 + ((_KernelReadyQueue.q[_CurrentPCB].pid) * _PartitionSize);
-		memoryRanges(_KernelReadyQueue.q[_CurrentPCB]); 
+		_KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
+		_KernelReadyQueue.q[0].pcbMemoryFill(1);
+		_CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
+		memoryRanges(_KernelReadyQueue.q[0]); 
 		_CPU.isExecuting = true;
 	}
 }
@@ -292,4 +294,33 @@ function mainMemoryInitString()  //creates a string of the mainMemoroy array to 
 		}
 	}
 	return stringReturn;
-}	
+}
+
+function krnRunAllProcesses()
+{
+	for(var i=0; i< _KernelResidentList.length; i++)  //goes through the ready queue looking for the process based on PID
+    {
+		//goes pcb by pcb
+        if(_KernelResidentList[i].status == "ready")
+        {
+			_KernelReadyQueue.enqueue(_KernelResidentList[i]);
+			_KernelResidentList[i] = null;
+        }
+    }
+	if(_KernelResidentList[_CurrentPCB] == null)  //if it was not found, error out.
+	{
+		_StdIn.putText("Error, process not found.");
+	}
+	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
+	{
+		_KernelReadyQueue.enqueue(_KernelResidentList[_CurrentPCB]);
+		_KernelResidentList[_CurrentPCB] = null;
+		cpuMemoryReset();
+		cpuMemoryFill();
+		_KernelReadyQueue.q[_CurrentPCB].statusUp("running", 0, 0, 0, 0, 0);
+		_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
+		_CPU.PC = 0 + ((_KernelReadyQueue.q[_CurrentPCB].pid) * _PartitionSize);
+		memoryRanges(_KernelReadyQueue.q[_CurrentPCB]); 
+		_CPU.isExecuting = true;
+	}
+}
