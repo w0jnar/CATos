@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "2.04-Quince";  		//versions increment alphabetically by fruit
+var APP_VERSION = "2.05-Rhubarb";  		//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -23,7 +23,7 @@ var TIMER_IRQ = 0;  // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prio
                     // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ = 1;  
 
-
+var QUANTUM = 6;
 //
 // Global Variables
 //

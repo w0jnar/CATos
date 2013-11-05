@@ -68,6 +68,7 @@ function krnShutdown()
     // Unload the Device Drivers?
     // More?
     //
+	document.getElementById("btnHaltOS").disabled = true;
     krnTrace("end shutdown OS");
 	clearInterval(_hardwareClockID);
 }
@@ -233,11 +234,14 @@ function krnRunProcess(inPID)
 	for(var i=0; i < _KernelResidentList.length; i++)  //goes through the ready queue looking for the process based on PID
     {
 		//goes pcb by pcb
-        if( inPID == parseInt(_KernelResidentList[i].pid))
-        {
-			_StdIn.putText("Process found!");  //is found
-			_CurrentPCB = i;
-        }
+		if(_KernelResidentList[i] !== null)
+		{
+			if( inPID == parseInt(_KernelResidentList[i].pid))
+			{
+				_StdIn.putText("Process found!");  //is found
+				_CurrentPCB = i;
+			}
+		}
     }
 	if(_KernelResidentList[_CurrentPCB] == null)  //if it was not found, error out.
 	{
@@ -246,7 +250,8 @@ function krnRunProcess(inPID)
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
 		_KernelReadyQueue.enqueue(_KernelResidentList[_CurrentPCB]);
-		_KernelResidentList.splice(_CurrentPCB, 1);
+		//_KernelResidentList.splice(_CurrentPCB, 1);
+		_KernelResidentList[_CurrentPCB] = null;
 		cpuMemoryReset();
 		cpuMemoryFill();
 		_KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);

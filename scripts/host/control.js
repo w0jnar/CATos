@@ -117,7 +117,7 @@ function hostBtnStartOS_click(btn)
 
 function hostBtnHaltOS_click(btn)
 {
-	document.getElementById("btnHaltOS").disabled = true;
+	//document.getElementById("btnHaltOS").disabled = true;
     hostLog("emergency halt", "host");
     hostLog("Attempting Kernel shutdown.", "host");
     // Call the OS shutdown routine.
