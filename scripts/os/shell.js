@@ -602,7 +602,7 @@ function shellLoad() //Load
 function shellRun(args) //Run
 {
     var inPID = parseInt(args);	//more or less note to self: never make similarly named globals for all of the things. It makes testing awful.
-	if(inPID >= 0 && inPID <= programCount)
+	if(inPID >= 0 && inPID < programCount)
 	{
 		krnRunProcess(inPID);
 		
@@ -615,6 +615,7 @@ function shellRun(args) //Run
 
 function shellRunAll() //Run
 {
+	_RunAllFlag = 1;
     krnRunAllProcesses();
 }
 

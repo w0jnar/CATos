@@ -231,19 +231,21 @@ function systemBreak()  //"Break (which is really a system call)"
 //	var pcb =  _KernelReadyQueue.q[_CurrentPCB];
 	hostLog("Execution Terminated", "CPU");
 	cpuWrapUp();
-	// if(_KernelReadyQueue.isEmpty())
-	// {
+	if(_KernelReadyQueue.isEmpty() || _RunAllFlag !== 1)
+	{
 		_CPU.isExecuting = false;
+		_RunAllFlag = 0;
 		_StdIn.advanceLine();
 		_StdIn.putText(">");
-	// }
-	// else
-	// {
-		// _KernelReadyQueue.q[_CurrentPCB].statusUp("running", 0, 0, 0, 0, 0);
-		// _KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
-		// _CPU.PC = 0 + ((_KernelReadyQueue.q[_CurrentPCB].pid) * _PartitionSize);
-		// memoryRanges(_KernelReadyQueue.q[_CurrentPCB]); 
-	// }
+	}
+	else if(_RunAllFlag === 1 && !_KernelReadyQueue.isEmpty())
+	{
+		krnNextProcess();
+	}
+	else if(_RunAllFlag === 1)
+	{
+		_RunAllFlag = 0;
+	}
 }
 
 // EC

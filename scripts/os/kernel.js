@@ -323,26 +323,32 @@ function krnRunAllProcesses()
 	for(var i=0; i< _KernelResidentList.length; i++)  //goes through the ready queue looking for the process based on PID
     {
 		//goes pcb by pcb
-        if(_KernelResidentList[i].status == "ready")
-        {
-			_KernelReadyQueue.enqueue(_KernelResidentList[i]);
-			_KernelResidentList[i] = null;
-        }
+		if(_KernelResidentList[i] !== null)
+		{
+			if(_KernelResidentList[i].state == "ready") //necessary because errors otherwise
+			{
+				_KernelReadyQueue.enqueue(_KernelResidentList[i]);
+				_KernelResidentList[i] = null;
+			}
+		}
     }
-	if(_KernelResidentList[_CurrentPCB] == null)  //if it was not found, error out.
+	if(_KernelReadyQueue.isEmpty())  //if it was not found, error out.
 	{
-		_StdIn.putText("Error, process not found.");
+		_StdIn.putText("Error, no processes ready.");
 	}
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
-		_KernelReadyQueue.enqueue(_KernelResidentList[_CurrentPCB]);
-		_KernelResidentList[_CurrentPCB] = null;
-		cpuMemoryReset();
-		cpuMemoryFill();
-		_KernelReadyQueue.q[_CurrentPCB].statusUp("running", 0, 0, 0, 0, 0);
-		_KernelReadyQueue.q[_CurrentPCB].pcbMemoryFill(1);
-		_CPU.PC = 0 + ((_KernelReadyQueue.q[_CurrentPCB].pid) * _PartitionSize);
-		memoryRanges(_KernelReadyQueue.q[_CurrentPCB]); 
-		_CPU.isExecuting = true;
+		krnNextProcess();
 	}
+}
+
+function krnNextProcess()
+{
+	cpuMemoryReset();
+	cpuMemoryFill();
+	_KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
+	_KernelReadyQueue.q[0].pcbMemoryFill(1);
+	_CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
+	memoryRanges(_KernelReadyQueue.q[0]); 
+	_CPU.isExecuting = true;
 }
