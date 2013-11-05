@@ -370,4 +370,5 @@ function cpuWrapUp()
 	_KernelReadyQueue.q[0].statusUp("terminated", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
 	_KernelReadyQueue.q[0].pcbMemoryFill(1);
 	_KernelReadyQueue.dequeue();
+	programCount--;
 }

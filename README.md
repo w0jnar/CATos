@@ -52,3 +52,4 @@ Version History:
 "2.03-Pecan";  
 "2.04-Quince";  
 "2.05-Rhubarb";  
+"2.06-Saskatoonberry";  

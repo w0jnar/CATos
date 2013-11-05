@@ -22,6 +22,10 @@ function krnBootstrap()      // Page 8.
    _KernelBuffers = new Array();         // Buffers... for the kernel.
    _KernelInputQueue = new Queue();      // Where device input lands before being processed out somewhere.
    _KernelResidentList = new Array();
+   for(var i = 0; i < _MaxProgram; i++)
+   {
+		_KernelResidentList[i] = null;
+   }
    _KernelReadyQueue = new Queue();  	 // A queue for new PCB's (Process Control Blocks).
    
    _Console = new CLIconsole();          // The command line interface / console I/O device.
@@ -213,8 +217,20 @@ function krnTrapError(msg)
 function krnMemoryAllocation(inCode)
 {
 	var process = new PCB();  //creates new pcb
-	process.pcbInit();
-	_KernelResidentList.push(process);
+	var newProcessLocation;
+	for(var i = 0; i < _MaxProgram; i++) //find a free space, not the best method for now, but seemed ok.
+	{
+		if(_KernelResidentList[i] === null)
+		{
+			newProcessLocation = i;
+			break;
+		}
+	}
+	//if(newProcessLocation == null) should be an impossibility with former checking, so for now removed
+	
+	process.pcbInit(newProcessLocation);
+	_KernelResidentList[newProcessLocation] = process;
+	programCount++;
 	if(_processFlag === 0)
 	{
 		process.pcbMemoryFill(0);
@@ -222,6 +238,7 @@ function krnMemoryAllocation(inCode)
 	}
 	else
 		process.pcbMemoryFill(1);
+	mainMemoryRewrite(process.base, process.limit);
 	mainMemoryUpdate(inCode, process.block);  //future-proofing for when there is more than one program for the memory on the "client."
 	return process;
 }

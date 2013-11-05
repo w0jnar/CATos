@@ -25,5 +25,5 @@ function MainMemory()
 		var memoryCell = "00";
 		_Memory.mainMemory[i] = memoryCell;
 	}
-}
+	}
 }

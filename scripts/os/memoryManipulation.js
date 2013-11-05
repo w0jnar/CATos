@@ -34,6 +34,14 @@ function mainMemoryUpdate(args, loc){ //pass the string and eventually the block
 		}
 		substringLower += 2;
 	}
+}
+
+function mainMemoryRewrite(base, limit){ 
+	for (var i=base; i<limit; i++)
+	{ 
+		var memoryCell = "00";
+		_Memory.mainMemory[i] = memoryCell;
+	}
 }	
 
 function mainMemoryInitString()  //creates a string of the mainMemoroy array to be printed to the index. There are definitely better ways, but I would say this is probably the most unique way that does not seem asinine.

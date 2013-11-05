@@ -6,6 +6,8 @@
 //it would probably be better to put these in globals.js, but I felt as they are directly involved in pid process, they should be here. 
 //var pcbCount = 1;
 var pid = 0;
+var programCount = 0;
+var _MaxProgram = 3;
 function PCB()
 {
 	this.pid		= 0;  		// Process ID
@@ -20,8 +22,8 @@ function PCB()
 	this.zFlag	= 0;
 	this.pc		= 0;
 	
-	this.pcbInit = function() {
-		this.pid		= pid++;  													// Process ID
+	this.pcbInit = function(i) {
+		this.pid		= i;  														// Process ID
 		this.base		= 0 + ((this.pid) * _PartitionSize);  						// Base Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
 		this.limit		= _PartitionSize - 1 + ((this.pid) * _PartitionSize);		// Max Address in main Memory, creates an offset based on ones already in queue, though issues after 3 realistically.
 		this.block		= this.pid + 1;	 											// Block in main Memory

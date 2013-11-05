@@ -566,7 +566,7 @@ function shellLoad() //Load
 	var test = inCode.match(/^([0-9A-F ])*$/gm);
 	var sizeTest = inCode.length <= (_PartitionSize * 2);
 //	alert(inCode);
-	if((test != null) && (inCode.length % 2 == 0) && (inCode !== "") && (pid < 3) && sizeTest)  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
+	if((test != null) && (inCode.length % 2 == 0) && (inCode !== "") && (programCount < _MaxProgram) && sizeTest)  //only real issue is new line, though it seemed unnecessary (and to a degree impossible*) as the user program input automatically scrolls. (*I honestly doubt it is impossible, it just felt that way.)
 	{   //logic is to test that it is proper 2 byte hex code.
 //		_StdIn.putText(inCode);  test lines
 //		_StdIn.advanceLine();
@@ -575,7 +575,7 @@ function shellLoad() //Load
 		_StdIn.advanceLine();
 		_StdIn.putText(process.toString());
 	}
-	else if(pid === 3)
+	else if(programCount === _MaxProgram)
 	{
 		_StdIn.putText("Attempted to load too many programs.");
 		_StdIn.advanceLine();
@@ -602,7 +602,7 @@ function shellLoad() //Load
 function shellRun(args) //Run
 {
     var inPID = parseInt(args);	//more or less note to self: never make similarly named globals for all of the things. It makes testing awful.
-	if(inPID >= 0 && inPID <= pid)
+	if(inPID >= 0 && inPID <= programCount)
 	{
 		krnRunProcess(inPID);
 		
