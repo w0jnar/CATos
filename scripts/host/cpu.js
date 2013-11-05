@@ -35,6 +35,9 @@ function Cpu() {
         // TODO: Accumulate CPU usage and profiling statistics here.
         // Do the real work here. Be sure to set this.isExecuting appropriately.
 		
+		//alert(_Memory.rangeLow);
+		//alert(_Memory.rangeHigh);
+		
 		this.execute(this.nextOp());
 		// mainMemoryFill();
 		// cpuMemoryFill();
@@ -241,6 +244,16 @@ function systemBreak()  //"Break (which is really a system call)"
 	else if(_RunAllFlag === 1 && !_KernelReadyQueue.isEmpty())
 	{
 		krnNextProcess();
+		// cpuMemoryReset();
+		// cpuMemoryFill();
+		// _KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
+		// _KernelReadyQueue.q[0].pcbMemoryFill(1);
+		// _CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
+		// memoryRanges(_KernelReadyQueue.q[0]); 
+		//alert(_Memory.rangeHigh);
+		//alert(_Memory.rangeLow);
+		//alert(_Memory.rangeHigh);
+		// _CPU.isExecuting = true;
 	}
 	else if(_RunAllFlag === 1)
 	{
@@ -273,10 +286,13 @@ function branchXBytes()  //"Branch X bytes if Z flag = 0"
 	{
 		var branchLoc = parseInt(nextBytes(),16);  //get the location after the branch counting offset.
 		_CPU.PC += branchLoc; //add it to the PC
-		
-		if(_CPU.PC > (_PartitionSize-1)) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
+		//alert(_CPU.PC);
+		//alert(_Memory.rangeHigh);
+		if(_CPU.PC > (_Memory.rangeHigh)) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
 		{
+			//alert(_Memory.rangeLow);
 			_CPU.PC -= (_PartitionSize);
+			//alert(_CPU.PC);
 		}
 		_CPU.PC++;
 	}
@@ -369,6 +385,7 @@ function cpuMemoryFill() //for updating the current memory block on the client
 
 function cpuWrapUp()
 {
+	//alert(_KernelReadyQueue.toString());
 	_KernelReadyQueue.q[0].statusUp("terminated", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
 	_KernelReadyQueue.q[0].pcbMemoryFill(1);
 	_KernelReadyQueue.dequeue();

@@ -37,7 +37,7 @@ function mainMemoryUpdate(args, loc){ //pass the string and eventually the block
 }
 
 function mainMemoryRewrite(base, limit){ 
-	for (var i=base; i<limit; i++)
+	for (var i=base; i<=limit; i++)
 	{ 
 		var memoryCell = "00";
 		_Memory.mainMemory[i] = memoryCell;

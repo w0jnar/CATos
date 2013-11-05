@@ -269,13 +269,14 @@ function krnRunProcess(inPID)
 		_KernelReadyQueue.enqueue(_KernelResidentList[_CurrentPCB]);
 		//_KernelResidentList.splice(_CurrentPCB, 1);
 		_KernelResidentList[_CurrentPCB] = null;
-		cpuMemoryReset();
-		cpuMemoryFill();
-		_KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
-		_KernelReadyQueue.q[0].pcbMemoryFill(1);
-		_CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
-		memoryRanges(_KernelReadyQueue.q[0]); 
-		_CPU.isExecuting = true;
+		krnNextProcess();
+		// cpuMemoryReset();
+		// cpuMemoryFill();
+		// _KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
+		// _KernelReadyQueue.q[0].pcbMemoryFill(1);
+		// _CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
+		// memoryRanges(_KernelReadyQueue.q[0]); 
+		// _CPU.isExecuting = true;
 	}
 }
 
@@ -338,12 +339,22 @@ function krnRunAllProcesses()
 	}
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
+		//alert(_KernelReadyQueue.toString());
 		krnNextProcess();
+		// cpuMemoryReset();
+		// cpuMemoryFill();
+		// _KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
+		// _KernelReadyQueue.q[0].pcbMemoryFill(1);
+
+		// _CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
+		// memoryRanges(_KernelReadyQueue.q[0]); 
+		// _CPU.isExecuting = true;
 	}
 }
 
 function krnNextProcess()
 {
+	//alert(_KernelReadyQueue.toString());
 	cpuMemoryReset();
 	cpuMemoryFill();
 	_KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);

@@ -54,3 +54,4 @@ Version History:
 "2.05-Rhubarb";  
 "2.06-Saskatoonberry";  
 "2.07-Thimbleberry";  
+"2.08-Velvet Tamarind";  
