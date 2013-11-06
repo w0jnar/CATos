@@ -628,7 +628,7 @@ function shellRunAll() //Run
 
 function shellQuantum(args)
 {
-	alert(QUANTUM);
+	//alert(QUANTUM);
 	var inQuantum = parseInt(args);
 	
 	if( isNaN(inQuantum) || inQuantum < 0 )
@@ -639,7 +639,7 @@ function shellQuantum(args)
 	{
 		QUANTUM = inQuantum;
 	}
-	alert(QUANTUM);
+	//alert(QUANTUM);
 }
 
 function shellProgram1() //Program1
