@@ -89,6 +89,17 @@ function krnOnCPUClockPulse()
 	dateFunc();
 	mainMemoryFill();
 	
+	var RQOut = document.getElementById("RQOut");
+	if(!_KernelReadyQueue.isEmpty())
+	{
+		
+		//alert(_KernelReadyQueue.toString());
+		RQOut.innerText = RQOut.textContent = _KernelReadyQueue.toString();
+	}
+	else
+	{
+		RQOut.innerText = RQOut.textContent.value = "\n";
+	}
 	
     // Check for an interrupt, are any. Page 560
     if (_KernelInterruptQueue.getSize() > 0)    
@@ -100,7 +111,9 @@ function krnOnCPUClockPulse()
     }
     else if (_CPU.isExecuting) // If there are no interrupts then run one CPU cycle if there is anything being processed.
     {
-        _CPU.cycle();
+		if(!_KernelReadyQueue.isEmpty())
+			_CurrentPCB = _KernelReadyQueue.q[0].pid;
+		_CPU.cycle();
 		//mainMemoryFill();
 		cpuMemoryFill();
     }    
@@ -266,10 +279,13 @@ function krnRunProcess(inPID)
 	}
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
-		_KernelReadyQueue.enqueue(_KernelResidentList[_CurrentPCB]);
+		while(!_KernelReadyQueue.isEmpty())
+			_KernelReadyQueue.dequeue()
+		_KernelReadyQueue.q.unshift(_KernelResidentList[_CurrentPCB]);
 		//_KernelResidentList.splice(_CurrentPCB, 1);
 		_KernelResidentList[_CurrentPCB] = null;
 		krnNextProcess();
+		_KernelReadyQueue.q[0].pcbMemoryFill(1);
 		// cpuMemoryReset();
 		// cpuMemoryFill();
 		// _KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
@@ -341,6 +357,7 @@ function krnRunAllProcesses()
 	{
 		//alert(_KernelReadyQueue.toString());
 		krnNextProcess();
+		_KernelReadyQueue.q[0].pcbMemoryFill(1);
 		// cpuMemoryReset();
 		// cpuMemoryFill();
 		// _KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
@@ -358,7 +375,7 @@ function krnNextProcess()
 	cpuMemoryReset();
 	cpuMemoryFill();
 	_KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
-	_KernelReadyQueue.q[0].pcbMemoryFill(1);
+	//_KernelReadyQueue.q[0].pcbMemoryFill(1);
 	_CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
 	memoryRanges(_KernelReadyQueue.q[0]); 
 	_CPU.isExecuting = true;

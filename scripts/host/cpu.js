@@ -37,7 +37,12 @@ function Cpu() {
 		
 		//alert(_Memory.rangeLow);
 		//alert(_Memory.rangeHigh);
+		if(_ContextSwitch === QUANTUM)
+		{
+			_ContextSwitch = 0;
+		}
 		
+		_ContextSwitch++;
 		this.execute(this.nextOp());
 		// mainMemoryFill();
 		// cpuMemoryFill();
@@ -233,6 +238,7 @@ function systemBreak()  //"Break (which is really a system call)"
 {
 //	var pcb =  _KernelReadyQueue.q[_CurrentPCB];
 	hostLog("Execution Terminated", "CPU");
+	//_KernelResidentList[_CurrentPCB] = null;
 	cpuWrapUp();
 	if(_KernelReadyQueue.isEmpty() || _RunAllFlag !== 1)
 	{
@@ -243,6 +249,7 @@ function systemBreak()  //"Break (which is really a system call)"
 	}
 	else if(_RunAllFlag === 1 && !_KernelReadyQueue.isEmpty())
 	{
+		hostLog("Context Switch", "CPU");
 		krnNextProcess();
 		// cpuMemoryReset();
 		// cpuMemoryFill();

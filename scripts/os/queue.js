@@ -38,7 +38,7 @@ function Queue()
         var retVal = "";
         for (var i in this.q)
         {
-            retVal += "[" + this.q[i] + "] ";
+            retVal +=   this.q[i] + "\n";
         }
         return retVal;
     };

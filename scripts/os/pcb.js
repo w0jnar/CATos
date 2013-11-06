@@ -81,12 +81,24 @@ function PCB()
 		divZFlagFill.innerText = divZFlagFill.textContent = this.zFlag;
 	}
 	
+	// this.toString = function() {
+		// var output = "";
+		// output += "PID: " + this.pid;
+		// output += ", base: " + this.base;
+		// output += ", limit: " + this.limit;
+		// output += ", block: " + this.block;
+		   // output += ", State: " + this.state;
+		// return output;
+	// }
+	
 	this.toString = function() {
 		var output = "";
-		output += "PID: " + this.pid;
-		output += ", base: " + this.base;
-		output += ", limit: " + this.limit;
-		output += ", block: " + this.block;
+		var meow = "   ";
+		output += meow + this.pid + " | ";
+		output += meow  + this.base + " | ";
+		output += meow  + this.limit + " | ";
+		output += meow  + this.block + " | ";
+		output += meow  + this.state + " | " + meow;
 		return output;
 	}
 }

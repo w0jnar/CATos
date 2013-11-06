@@ -580,7 +580,7 @@ function shellLoad() //Load
 		var process = krnMemoryAllocation(inCode);
 		_StdIn.putText("Program Loaded. Program has a PID of " + process.pid + ".");
 		_StdIn.advanceLine();
-		_StdIn.putText(process.toString());
+		//_StdIn.putText(process.toString());
 	}
 	else if(programCount === _MaxProgram)
 	{
