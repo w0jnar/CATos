@@ -243,6 +243,8 @@ function systemBreak()  //"Break (which is really a system call)"
 	if(_KernelReadyQueue.isEmpty() || _RunAllFlag !== 1)
 	{
 		_CPU.isExecuting = false;
+		cpuMemoryReset();
+		cpuMemoryFill();
 		_RunAllFlag = 0;
 		_StdIn.advanceLine();
 		_StdIn.putText(">");

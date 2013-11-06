@@ -84,22 +84,30 @@ function PCB()
 	// this.toString = function() {
 		// var output = "";
 		// output += "PID: " + this.pid;
-		// output += ", base: " + this.base;
-		// output += ", limit: " + this.limit;
-		// output += ", block: " + this.block;
-		   // output += ", State: " + this.state;
+		// output += "; Base: " + this.base;
+		// output += "; Limit: " + this.limit;
+		// output += "; State: " + this.state;
 		// return output;
 	// }
 	
-	this.toString = function() {
+	this.toString = function() { //Admittedly not perfect. There were many issues with printing spaces for some reason, so it was either this or iffy table manipulation.
 		var output = "";
-		var meow = "   ";
-		output += meow + this.pid + " | ";
-		output += meow  + this.base + " | ";
-		output += meow  + this.limit + " | ";
-		output += meow  + this.block + " | ";
-		output += meow  + this.state + " | " + meow;
+		var meow = " ---- "; //necessary
+		var meow1 = " ----- "; //not as necessary
+		// output += " [ ";
+		// output += meow;
+		output += "-- " + this.pid;
+		output += meow1;
+		output += " " + this.base;
+		output += meow1;
+		output += " " + this.limit;
+		output += meow1;
+		output += " " + this.block;
+		output += meow;
+		output += " " + this.state;
+		// output += meow;
+		// output += " ] ";
+		//alert(output);
 		return output;
 	}
 }
-

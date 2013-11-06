@@ -94,7 +94,7 @@ function krnOnCPUClockPulse()
 	{
 		
 		//alert(_KernelReadyQueue.toString());
-		RQOut.innerText = RQOut.textContent = _KernelReadyQueue.toString();
+		RQOut.innerText = RQOut.textContent = _KernelReadyQueue.toString(); //.replace(/ /gi,'...');
 	}
 	else
 	{
