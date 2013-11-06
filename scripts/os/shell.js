@@ -136,6 +136,13 @@ function shellInit() {
     sc.function = shellRunAll;
     this.commandList[this.commandList.length] = sc;
 	
+	// quantum
+	sc = new ShellCommand();
+    sc.command = "quantum"; 
+    sc.description = "- <int> Set the cycle quantum for Round Robin.";
+    sc.function = shellQuantum;
+    this.commandList[this.commandList.length] = sc;
+	
 	// Program 1
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
@@ -617,6 +624,22 @@ function shellRunAll() //Run
 {
 	_RunAllFlag = 1;
     krnRunAllProcesses();
+}
+
+function shellQuantum(args)
+{
+	alert(QUANTUM);
+	var inQuantum = parseInt(args);
+	
+	if( isNaN(inQuantum) || inQuantum < 0 )
+	{
+		_StdIn.putText("Invalid Quantum.");
+	}
+	else
+	{
+		QUANTUM = inQuantum;
+	}
+	alert(QUANTUM);
 }
 
 function shellProgram1() //Program1
