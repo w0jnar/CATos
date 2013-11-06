@@ -143,6 +143,20 @@ function shellInit() {
     sc.function = shellQuantum;
     this.commandList[this.commandList.length] = sc;
 	
+	// display
+	sc = new ShellCommand();
+    sc.command = "active"; 
+    sc.description = "- Displays all active PIDs.";
+    sc.function = shellDisplay;
+    this.commandList[this.commandList.length] = sc;
+	
+	// kill
+	sc = new ShellCommand();
+    sc.command = "kill"; 
+    sc.description = "- <int> Kills a process based on input PID.";
+    sc.function = shellKill;
+    this.commandList[this.commandList.length] = sc;
+	
 	// Program 1
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
@@ -640,6 +654,45 @@ function shellQuantum(args)
 		QUANTUM = inQuantum;
 	}
 	//alert(QUANTUM);
+}
+
+function shellDisplay()
+{
+	var outputStr = "Current Active Processes: ";
+	
+	for (var i in _KernelResidentList)
+	{
+		if(_KernelResidentList[i] !== null)
+		{
+			outputStr += _KernelResidentList[i].pid + " ";
+		}
+	}
+	_StdIn.putText(outputStr);
+}
+
+function shellKill(args)
+{
+	_CurrentPCB = -1;
+	for(var i=0; i < _KernelResidentList.length; i++)  //goes through the ready queue looking for the process based on PID
+    {
+		//goes pcb by pcb
+		if(_KernelResidentList[i] !== null)
+		{
+			if(args == parseInt(_KernelResidentList[i].pid))
+			{
+				_CurrentPCB = i;
+			}
+		}
+    }
+	if(_CurrentPCB === -1)  //if it was not found, error out.
+	{
+		_StdIn.putText("Error, process not found.");
+	}
+	else
+	{
+		_KernelResidentList[_CurrentPCB] = null;
+		_StdIn.putText("Process decimated.");
+	}
 }
 
 function shellProgram1() //Program1

@@ -94,10 +94,15 @@ function PCB()
 		var output = "";
 		var meow = " ---- "; //necessary
 		var meow1 = " ----- "; //not as necessary
+		var meow2 = " -------- ";
 		// output += " [ ";
 		// output += meow;
 		output += "-- " + this.pid;
-		output += meow1;
+		//output += meow1;
+		if(this.base < 100)
+			output += meow2;
+		else
+			output += meow1;
 		output += " " + this.base;
 		output += meow1;
 		output += " " + this.limit;
