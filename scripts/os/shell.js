@@ -652,6 +652,7 @@ function shellQuantum(args)
 	else
 	{
 		QUANTUM = inQuantum;
+		_StdIn.putText("Quantum Changed.");
 	}
 	//alert(QUANTUM);
 }

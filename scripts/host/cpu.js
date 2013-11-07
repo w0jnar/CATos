@@ -373,11 +373,14 @@ function sysCall()  //"System Call - #$01 in X reg = print the integer stored in
 	if(_CPU.Xreg === 1)  //"System Call - #$01 in X reg = print the integer stored in the Y register.
 	{
 		var yValue = parseInt(_CPU.Yreg).toString(); //get yValue to a string
-		
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
 		for( var i = 0; i < yValue.length; i++)
 		{
 			_StdIn.putText(yValue.charAt(i));  //prints y
 		}
+		//_StdIn.advanceLine();
+		//_StdIn.putText(">");
 	}
 	else if(_CPU.Xreg === 2)
 	{
@@ -386,7 +389,8 @@ function sysCall()  //"System Call - #$01 in X reg = print the integer stored in
 		var currentBytes = _Memory.mainMemory[decLoc];
 		var keyCode = 0;
 		var currentCharacter = "";
-		
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
 		while(currentBytes != check)
 		{
 			keyCode = parseInt(currentBytes, 16); 			   //int from bytes
@@ -394,6 +398,7 @@ function sysCall()  //"System Call - #$01 in X reg = print the integer stored in
 			_StdIn.putText(currentCharacter);				   //print the character
 			currentBytes = _Memory.mainMemory[++decLoc];
 		}
+		//_StdIn.advanceLine();
 	}
 	_CPU.PC++;
 }
