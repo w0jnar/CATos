@@ -48,5 +48,6 @@ scheduler = function()
 		_StdIn.advanceLine();
 		_StdIn.putText(">");
 	}
-	memoryRanges(_KernelReadyQueue.q[0]);
+	if(!_KernelReadyQueue.isEmpty())
+		memoryRanges(_KernelReadyQueue.q[0]);
 } 
