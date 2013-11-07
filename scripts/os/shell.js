@@ -692,6 +692,7 @@ function shellKill(args)
 	{
 		_KernelResidentList[_CurrentPCB] = null;
 		_StdIn.putText("Process decimated.");
+		programCount--;
 	}
 }
 

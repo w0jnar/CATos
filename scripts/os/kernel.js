@@ -376,7 +376,7 @@ function krnNextProcess()
 	cpuMemoryFill();
 	_KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
 	//_KernelReadyQueue.q[0].pcbMemoryFill(1);
-	_CPU.PC = 0 + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
-	memoryRanges(_KernelReadyQueue.q[0]); 
+	_CPU.PC = 0; // + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
+	memoryRanges(_KernelReadyQueue.q[0]);
 	_CPU.isExecuting = true;
 }

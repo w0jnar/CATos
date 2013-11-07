@@ -38,6 +38,17 @@ function Cpu() {
         this.Yreg  = y;
         this.Zflag = z;
 	}
+	
+	this.toString = function()
+	{
+		var output = "";
+		output += "PC: " + this.PC;
+		output += "ACC: " + this.Acc;
+		output += "X: " + this.Xreg;
+		output += "Y: " + this.Yreg;
+		output += "Z: " + this.Zflag;
+		return output;
+	}
     
     this.cycle = function() {
         krnTrace("CPU cycle");
@@ -59,7 +70,10 @@ function Cpu() {
     };
 	
 	this.nextOp = function(){
-		return _Memory.mainMemory[this.PC];  //more future-proofing
+		//alert(_Memory.rangeLow);
+		//alert(this.PC)
+		return _Memory.mainMemory[this.PC + _Memory.rangeLow];  //more future-proofing 
+											 //EDIT: Not enough future proofing it would seem. Thought I should leave the original comment as it seemed humorous.
 	}
 //http://labouseur.com/courses/os/instructionset.pdf	
 	this.execute = function(opcode){
@@ -249,9 +263,9 @@ function systemBreak()  //"Break (which is really a system call)"
 //	var pcb =  _KernelReadyQueue.q[_CurrentPCB];
 	hostLog("Execution Terminated", "CPU");
 	//_KernelResidentList[_CurrentPCB] = null;
-	cpuWrapUp();
 	if(_KernelReadyQueue.isEmpty() || _RunAllFlag !== 1)
 	{
+		cpuWrapUp();
 		_CPU.isExecuting = false;
 		cpuMemoryReset();
 		cpuMemoryFill();
@@ -263,8 +277,11 @@ function systemBreak()  //"Break (which is really a system call)"
 	else if(_RunAllFlag === 1 && !_KernelReadyQueue.isEmpty())
 	{
 		hostLog("Context Switch", "CPU");
-		krnNextProcess();
-		_ContextSwitch = 1;
+		//krnNextProcess();
+		//_ContextSwitch = 1;
+		//_KernelReadyQueue.dequeue();
+		_KernelReadyQueue.q[0].statusUp("terminated", 0, 0, 0, 0, 0);
+		scheduler();
 		// cpuMemoryReset();
 		// cpuMemoryFill();
 		// _KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
@@ -309,7 +326,7 @@ function branchXBytes()  //"Branch X bytes if Z flag = 0"
 		_CPU.PC += branchLoc; //add it to the PC
 		//alert(_CPU.PC);
 		//alert(_Memory.rangeHigh);
-		if(_CPU.PC > (_Memory.rangeHigh)) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
+		if(_CPU.PC > (_PartitionSize - 1)) //check if it outside the range of the block. Admittedly, probably going to change the ranges to something else, but as it stood, they worked well in mainMemory seeing as they are the ranges.
 		{
 			//alert(_Memory.rangeLow);
 			_CPU.PC -= (_PartitionSize);
@@ -393,7 +410,7 @@ function cpuMemoryReset()
 function cpuMemoryFill() //for updating the current memory block on the client
 {	
 	var divPCFill = document.getElementById("divPC");
-	divPCFill.innerText = divPCFill.textContent = toHexString(_CPU.PC);
+	divPCFill.innerText = divPCFill.textContent = toHexString(_CPU.PC + _Memory.rangeLow);
 	var divACCFill = document.getElementById("divACC");
 	divACCFill.innerText = divACCFill.textContent = _CPU.Acc;
 	var divXRegFill = document.getElementById("divXReg");
