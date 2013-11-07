@@ -29,6 +29,15 @@ function Cpu() {
         this.Zflag = 0;      
         this.isExecuting = false;  
     };
+	
+	this.statusUp = function(pc, acc, x, y, z)
+	{
+		this.PC    = pc;
+        this.Acc   = acc;
+        this.Xreg  = x;
+        this.Yreg  = y;
+        this.Zflag = z;
+	}
     
     this.cycle = function() {
         krnTrace("CPU cycle");
@@ -37,9 +46,10 @@ function Cpu() {
 		
 		//alert(_Memory.rangeLow);
 		//alert(_Memory.rangeHigh);
-		if(_ContextSwitch === QUANTUM)
+		if(_ContextSwitch > QUANTUM)
 		{
-			_ContextSwitch = 0;
+			//going in scheduler...
+			scheduler();
 		}
 		
 		_ContextSwitch++;
@@ -246,6 +256,7 @@ function systemBreak()  //"Break (which is really a system call)"
 		cpuMemoryReset();
 		cpuMemoryFill();
 		_RunAllFlag = 0;
+		_ContextSwitch = 1;
 		_StdIn.advanceLine();
 		_StdIn.putText(">");
 	}
@@ -253,6 +264,7 @@ function systemBreak()  //"Break (which is really a system call)"
 	{
 		hostLog("Context Switch", "CPU");
 		krnNextProcess();
+		_ContextSwitch = 1;
 		// cpuMemoryReset();
 		// cpuMemoryFill();
 		// _KernelReadyQueue.q[0].statusUp("running", 0, 0, 0, 0, 0);
