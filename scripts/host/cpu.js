@@ -244,6 +244,7 @@ function loadYRegMem()  //"Load the Y register from memory"
 	}
 	else
 	{
+	//alert("test");
 		hostLog("Error, Memory Fault, check PC", "CPU");
 		cpuWrapUp();
 		_CPU.isExecuting = false;
@@ -310,6 +311,7 @@ function compareMemXReg()  //"Compare a byte in memory to the X reg -  Sets the 
 	}
 	else
 	{
+	//alert("test1");
 		hostLog("Error, Memory Fault, check PC", "CPU");
 		cpuWrapUp();
 		_CPU.isExecuting = false;
@@ -360,6 +362,7 @@ function incValueByte()  //"Increment the value of a byte"
 	}
 	else
 	{
+	//alert("test2");
 		hostLog("Error, Memory Fault, check PC", "CPU");
 		cpuWrapUp();
 		_CPU.isExecuting = false;
