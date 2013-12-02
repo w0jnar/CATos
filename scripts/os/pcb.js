@@ -111,7 +111,10 @@ function PCB()
 		output += meow1;
 		output += " " + this.block;
 		output += meow;
-		output += " " + this.state;
+		if(this.state !== "terminated")
+			output += " " + this.state;
+		else
+			output += " " + "dead";
 		// output += meow;
 		// output += " ] ";
 		//alert(output);

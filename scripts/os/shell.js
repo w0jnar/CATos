@@ -723,6 +723,8 @@ function shellKill(args)
 		}
 		else
 		{
+			_KernelReadyQueue.q[0].state = "terminated";
+			_ContextSwitch = QUANTUM + 1;
 		}
 		
 		_StdIn.putText("Process decimated.");

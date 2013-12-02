@@ -70,3 +70,4 @@ Version History:
 "3.03-Indian jujube";  
 "3.04-Jocote";  
 "3.05-Korlan";  
+"3.06-Lanzones";  
