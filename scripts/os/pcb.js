@@ -79,6 +79,8 @@ function PCB()
 		divYRegFill.innerText = divYRegFill.textContent = this.yReg;
 		var divZFlagFill = document.getElementById("divZFlag_PCB");
 		divZFlagFill.innerText = divZFlagFill.textContent = this.zFlag;
+		var divStateFill = document.getElementById("divState_PCB");
+		divStateFill.innerText = divStateFill.textContent = this.state;
 	}
 	
 	// this.toString = function() {

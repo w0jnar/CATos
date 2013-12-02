@@ -4,12 +4,15 @@
 
 scheduler = function()
 {
-	hostLog("Context Switch", "Scheduler");
+	//hostLog("Context Switch", "Scheduler");
 	//alert("next");
 	_ContextSwitch = 1;
 	if(_KernelReadyQueue.getSize() > 1 && _KernelReadyQueue.q[0].state !== "terminated")
 	{
 		//alert("meow1");
+		var taLog = document.getElementById("taLog");
+		taLog.value = "Context Switch Occurring\n" + taLog.value;
+		_KernelReadyQueue.q[0].pcbMemoryFill(1);
 		_KernelReadyQueue.q[0].statusUp("ready", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
 		_KernelReadyQueue.enqueue(_KernelReadyQueue.q[0]);
 		_KernelReadyQueue.dequeue();
@@ -20,6 +23,7 @@ scheduler = function()
 	else if(_KernelReadyQueue.getSize() === 1 && _KernelReadyQueue.q[0].state !== "terminated")
 	{
 		//alert("meow2");
+		_KernelReadyQueue.q[0].pcbMemoryFill(1);
 		_KernelReadyQueue.q[0].statusUp("ready", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
 		var currentProcess = _KernelReadyQueue.q[0];
 		_CPU.statusUp(currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
@@ -28,6 +32,9 @@ scheduler = function()
 	else if(_KernelReadyQueue.getSize() > 1 && _KernelReadyQueue.q[0].state === "terminated")
 	{
 		//alert("meow3");
+		var taLog = document.getElementById("taLog");
+		taLog.value = "Context Switch Occurring\n" + taLog.value;
+		_KernelReadyQueue.q[0].pcbMemoryFill(1);
 		_KernelReadyQueue.dequeue();
 		var currentProcess = _KernelReadyQueue.q[0];
 		_CPU.statusUp(currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);

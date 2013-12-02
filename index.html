@@ -175,7 +175,7 @@
    </td>
    
    <td align="center">
-   <div id="divMemoryStatus" style="margin-left:40px; width:430px; height:120px; text-align:center; ">
+   <div id="divMemoryStatus" style="margin-left:50px; width:430px; height:120px; text-align:center; ">
    
    <textarea style="width: 420px; height: 120px;"
 				   name="taMemory"
@@ -202,12 +202,57 @@
    </td>
    </tr>
    
+   
+   
+   
+   
    <tr>
    <td>
-   <div id="divPCBStatus" style="width:240px; height:75px; float:left; margin-top:-40px; text-align:center;">
+<div style="text-align:center; width:240px; height:75px; margin-top:-50px;">
+	<table border="1" bgcolor="white" id="RQTable"> <!--Who does not love tables (Other than Bob)?-->
+		<tr>
+			<td colspan="5" bgcolor="42B4E6">
+			&nbsp;&nbsp;Ready Queue&nbsp;&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td>
+			&nbsp;PID&nbsp;
+			</td>
+			<td>
+			&nbsp;&nbsp;Base&nbsp;&nbsp;
+			</td>
+			<td>
+			&nbsp;&nbsp;Limit&nbsp;&nbsp;
+			</td>
+			<td>
+			&nbsp;Block&nbsp;
+			</td>
+			<td>
+			&nbsp;&nbsp;&nbsp;&nbsp;State&nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td colspan="5" align=left>
+				<div id="RQOut">
+				&nbsp;
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+</td>
+</tr>
+
+
+
+
+  <tr>
+   <td>
+   <div id="divPCBStatus" style="width:240px; height:75px; float:left; margin-top:50px; text-align:center;">
    <table border="1" align="center" bgcolor="white" id="PCBTable">
    <tr>
-   <td colspan="6" bgcolor="42B4E6">
+   <td colspan="7" bgcolor="42B4E6">
    PCB Status
    </td>
    </tr>
@@ -229,6 +274,9 @@
    </td>
    <td>
    &nbsp;&nbsp;&nbsp;&nbsp;Z&nbsp;&nbsp;&nbsp;
+   </td>
+   <td>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;State&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    </td>
    </tr>
 
@@ -267,6 +315,10 @@
 		<div id="divZFlag_PCB">
 		&nbsp;
 		</div>
+		<td>
+		<div id="divState_PCB">
+		&nbsp;
+		</div>
 		</td>
    </tr>
    </table>
@@ -274,43 +326,11 @@
    </td>
 
    </tr>
-   <tr>
-   <td>
-<div style="text-align:center; width:240px; height:75px; margin-top:25px;">
-	<table border="1" bgcolor="white" id="RQTable"> <!--Who does not love tables (Other than Bob)?-->
-		<tr>
-			<td colspan="5" bgcolor="42B4E6">
-			&nbsp;&nbsp;Ready Queue&nbsp;&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td>
-			&nbsp;PID&nbsp;
-			</td>
-			<td>
-			&nbsp;&nbsp;Base&nbsp;&nbsp;
-			</td>
-			<td>
-			&nbsp;&nbsp;Limit&nbsp;&nbsp;
-			</td>
-			<td>
-			&nbsp;Block&nbsp;
-			</td>
-			<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;State&nbsp;&nbsp;&nbsp;&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td colspan="5" align=left>
-				<div id="RQOut">
-				&nbsp;
-				</div>
-			</td>
-		</tr>
-	</table>
-</div>
-</td>
-</tr>
+
+
+
+
+
 </table>
 </div>
 <table width="100%">
