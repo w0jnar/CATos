@@ -282,6 +282,7 @@ function krnRunProcess(inPID)
 		while(!_KernelReadyQueue.isEmpty())
 			_KernelReadyQueue.dequeue()
 		_KernelReadyQueue.q.unshift(_KernelResidentList[_CurrentPCB]);
+		//alert(_KernelReadyQueue.q[0].toString());
 		//_KernelResidentList.splice(_CurrentPCB, 1);
 		_KernelResidentList[_CurrentPCB] = null;
 		krnNextProcess();
@@ -356,6 +357,7 @@ function krnRunAllProcesses()
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
 		//alert(_KernelReadyQueue.toString());
+		//alert(_KernelReadyQueue.q[0].toString());
 		krnNextProcess();
 		_KernelReadyQueue.q[0].pcbMemoryFill(1);
 		// cpuMemoryReset();

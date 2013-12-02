@@ -660,14 +660,20 @@ function shellQuantum(args)
 function shellDisplay()
 {
 	var outputStr = "Current Active Processes: ";
-	
-	for (var i in _KernelResidentList)
+	var outPIDs = [];
+	for (var i in _KernelReadyQueue.q)
 	{
-		if(_KernelResidentList[i] !== null)
+		//alert("meow");
+		//alert(_KernelReadyQueue.q[i].pid);
+		if(_KernelReadyQueue.q[i].state !== "terminated")
 		{
-			outputStr += _KernelResidentList[i].pid + " ";
+			//outputStr += _KernelReadyQueue.q[i].pid + " ";
+			outPIDs.push(_KernelReadyQueue.q[i].pid);
 		}
 	}
+	outPIDs.sort(function(a,b){return a - b}); //sorts them as they could be out of order
+	outputStr += outPIDs.join(" "); //adds them to the string to print
+	//alert(outputStr);
 	_StdIn.putText(outputStr);
 }
 
