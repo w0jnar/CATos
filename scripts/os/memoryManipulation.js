@@ -52,13 +52,13 @@ function mainMemoryInitString()  //creates a string of the mainMemoroy array to 
 //	current = parseInt(hexString, 16);
 	var j = 0; //column count more or less
 	var currentBlock = 1;
-	for(var i = 0; i <= 99; i++)
+	for(var i = 0; i <= _TotalLines; i++)
 	{
 		if(i == 0)
 		{
 			stringReturn = "                     Memory                     \n";
 		}
-		else if((i === 1) || (i === 34) || (i === 67))
+		else if((i === _LineBreak1) || (i === _LineBreak2) || (i === _LineBreak3))
 		{
 			stringReturn += "                    Program " + currentBlock + "                \n";
 			currentBlock++;
@@ -66,7 +66,7 @@ function mainMemoryInitString()  //creates a string of the mainMemoroy array to 
 		else
 		{
 			stringReturn += " " + toHexString(j) + " | ";
-			for(var cellCount = 0; cellCount < 8; cellCount++)   //realistically could have probably used j here or changed the variables, but for my own sake, this just helped me.
+			for(var cellCount = 0; cellCount < _MaxCellCount; cellCount++)   //realistically could have probably used j here or changed the variables, but for my own sake, this just helped me.
 			{
 				stringReturn += _Memory.mainMemory[j++] + " | ";
 			}

@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "3.01-Giant Granadilla"; //versions increment alphabetically by fruit
+var APP_VERSION = "3.02-Honeysuckle"; 	//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -70,3 +70,10 @@ var _PartitionSize = 256;
 var _processFlag = 0;
 var _RunAllFlag = 0;
 var _ContextSwitch = 1;
+
+//outputting code globals
+var _TotalLines = 99;
+var _LineBreak1 = 1;
+var _LineBreak2 = 34;
+var _LineBreak3 = 67;
+var _MaxCellCount = 8;

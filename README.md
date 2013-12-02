@@ -1,8 +1,9 @@
 CATos
 ============
 CATos, or Categorically Awesome Time operating system is an Operating System coded in Javascript
-as my submission for my professor's Fall 2013 Operating Systems class initial project.
-See http://www.labouseur.com/courses/os/ for details.
+as my submission for my professor's Fall 2013 Operating Systems class project.  
+See http://www.labouseur.com/courses/os/ for details. 
+I recommend using Google Chrome to view it.
 
 Link to the current live version:  
 http://w0jnar.github.io/CATos/  
@@ -65,3 +66,4 @@ Version History:
 "2.16-Emblica";  
 "3.00-Florida Strangler Fig";  
 "3.01-Giant Granadilla";  
+"3.02-Honeysuckle";
