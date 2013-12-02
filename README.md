@@ -69,3 +69,4 @@ Version History:
 "3.02-Honeysuckle";  
 "3.03-Indian jujube";  
 "3.04-Jocote";  
+"3.05-Korlan";  

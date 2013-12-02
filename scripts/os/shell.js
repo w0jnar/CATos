@@ -680,12 +680,12 @@ function shellDisplay()
 function shellKill(args)
 {
 	_CurrentPCB = -1;
-	for(var i=0; i < _KernelResidentList.length; i++)  //goes through the ready queue looking for the process based on PID
+	for(var i=0; i < _KernelReadyQueue.q.length; i++)  //goes through the ready queue looking for the process based on PID
     {
 		//goes pcb by pcb
-		if(_KernelResidentList[i] !== null)
+		if(_KernelReadyQueue.q[i] !== null)
 		{
-			if(args == parseInt(_KernelResidentList[i].pid))
+			if(args == parseInt(_KernelReadyQueue.q[i].pid))
 			{
 				_CurrentPCB = i;
 			}
@@ -697,7 +697,34 @@ function shellKill(args)
 	}
 	else
 	{
-		_KernelResidentList[_CurrentPCB] = null;
+		//alert(_CurrentPCB);
+		if(_KernelReadyQueue.q[0].pid !== _KernelReadyQueue.q[_CurrentPCB].pid) //check if it is the active process
+		{
+			var currentPID = _KernelReadyQueue.q[0].pid; //maintain the state
+			var toBeRemoved = _KernelReadyQueue.q[_CurrentPCB];
+			//alert("meow1");
+			while(_KernelReadyQueue.q[0].pid !== toBeRemoved.pid) //get the one to be removed to the top
+			{
+				_KernelReadyQueue.enqueue(_KernelReadyQueue.q[0]);
+				_KernelReadyQueue.dequeue();
+			}
+			//alert(_KernelReadyQueue.q[0].pid);
+			//alert(_CurrentPCB);
+			_KernelReadyQueue.dequeue(); //remove the program to be removed
+			//alert("meow2");
+			while(_KernelReadyQueue.q[0].pid !== currentPID) //reset
+			{
+			//alert(_KernelReadyQueue.q[0].pid);
+			//alert(currentPID);
+				_KernelReadyQueue.enqueue(_KernelReadyQueue.q[0]);
+				_KernelReadyQueue.dequeue();
+			}
+			//alert("meow3");
+		}
+		else
+		{
+		}
+		
 		_StdIn.putText("Process decimated.");
 		programCount--;
 	}
