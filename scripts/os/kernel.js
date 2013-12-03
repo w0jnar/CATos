@@ -392,7 +392,12 @@ function krnNextProcess()
 	_CPU.isExecuting = true;
 }
 
-function krnFormatDisk()
+function krnDiskHandle(args)
 {
-    _KernelInterruptQueue.enqueue(new Interrupt(FILESYSTEM_IRQ, "format"));
+    _KernelInterruptQueue.enqueue(new Interrupt(FILESYSTEM_IRQ, args));
 }
+
+// function krnFileCreate(args)
+// {
+    // _KernelInterruptQueue.enqueue(new Interrupt(FILESYSTEM_IRQ, args));
+// }

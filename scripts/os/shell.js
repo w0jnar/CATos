@@ -164,6 +164,13 @@ function shellInit() {
     sc.function = shellFormat;
     this.commandList[this.commandList.length] = sc;
 	
+	// create
+	sc = new ShellCommand();
+    sc.command = "create"; 
+    sc.description = "- <filename> creates a file on the disk.";
+    sc.function = shellCreate;
+    this.commandList[this.commandList.length] = sc;
+	
 	// Program 1
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
@@ -742,10 +749,24 @@ function shellKill(args)
 function shellFormat()
 {
 	//_HardDrive.format();
-	krnFormatDisk();
-	window.alert(sessionStorage.getItem("0,0,1"));
+	var args = ["format"];
+	krnDiskHandle(args);
+	if(response == true)
+		_StdIn.putText("Disk Formatted.");
+	else
+		_StdIn.putText("Disk Format Failed.");
+	//window.alert(sessionStorage.getItem("0,0,1"));
+	//response = null;
 }
 
+function shellCreate(args)
+{
+	//_HardDrive.format();
+	var args = ["create", args]; //I realize this probably looks awful, I just felt it made the most sense.
+	krnDiskHandle(args);
+	//window.alert(sessionStorage.getItem("0,0,1"));
+	//response = null;
+}
 
 
 function shellProgram1() //Program1

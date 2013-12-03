@@ -8,27 +8,4 @@ function FileSystem()
     this.sectors    = _MaxSectors;
     this.blocks     = _MaxBlocks;
     this.bytes 		= _MaxBytes;
-
-    this.format = function()
-    {
-        var tsbKey = "";
-        var data = "0---~"; //~ being the escape character
-		for( var i = 0; i < _FileSize-1; i++)
-		{
-			data += "-";
-		}
-
-        for (var t = 0; t < this.tracks; t++) //track loop
-        {
-            for (var s = 0; s < this.sectors; s++) //sector loop
-            {
-                for (var b = 0; b < this.blocks; b++) //block loop
-                {
-                    tsbKey = t.toString() + "," + s.toString() + "," + b.toString(); //create the tsbKey and add it to the disk
-					this.disk.setItem(tsbKey, data);
-                }
-            }
-        }
-		this.disk.setItem("0,0,0", "_---MBR");
-    };
 }
