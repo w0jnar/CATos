@@ -75,6 +75,8 @@ DiskCreate = function(args)
 	if(_HardDrive.disk.getItem("0,0,0") == null) //check if the storage has been formatted
 	{
 		_StdIn.putText("File Creation Failed, Disk not Formatted.");
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
 	}
 	else
 	{
@@ -121,7 +123,7 @@ DiskCreate = function(args)
 				_StdIn.advanceLine();
 				_StdIn.putText(">");
 			}
-			else if(args.toString().indexOf("~") !== -1)
+			else if(args.toString().indexOf("~") !== -1) //check if EOF is in the filename (this is the only invalid filename for CATos. Dat freedom.)
 			{
 				_StdIn.putText("File Creation Failed, Invalid Character in Filename.");
 				_StdIn.advanceLine();
@@ -150,28 +152,49 @@ DiskCreate = function(args)
 
 DiskList = function()
 {
-	var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
-	var inUseCheck = _HardDrive.disk.getItem(currentKey);
-	var keyToUse = null;
-	
-	var filenameArray = [];
-		
-	while(currentKey !== "0,0,0")
+	if(_HardDrive.disk.getItem("0,0,0") == null) //check if the storage has been formatted
 	{
-		if(parseInt(inUseCheck.substring(0,1)) === 1)
-		{
-			if(inUseCheck.substring(inUseCheck.length-1,inUseCheck.length) !== "~")
-				filenameArray.push(inUseCheck.substring(4,inUseCheck.length));
-			else
-				filenameArray.push(inUseCheck.substring(4,inUseCheck.length-1));
-		}
-		currentKey = getNextFileKey(currentKey); //otherwise, get the next tsb			
-		inUseCheck = _HardDrive.disk.getItem(currentKey);
+		_StdIn.putText("File Creation Failed, Disk not Formatted.");
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
 	}
-	//alert(filenameArray.join(", "));
-	_StdIn.putText(filenameArray.join(", "));
-	_StdIn.advanceLine();
-	_StdIn.putText(">");
+	else
+	{
+		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
+		var inUseCheck = _HardDrive.disk.getItem(currentKey);
+		var keyToUse = null;
+		
+		var filenameArray = []; //array to store the filenames
+			
+		while(currentKey !== "0,0,0")
+		{
+			if(parseInt(inUseCheck.substring(0,1)) === 1)
+			{
+				if(inUseCheck.substring(inUseCheck.length-1,inUseCheck.length) !== "~")
+					filenameArray.push(inUseCheck.substring(4,inUseCheck.length));
+				else
+					filenameArray.push(inUseCheck.substring(4,inUseCheck.length-1));
+			}
+			currentKey = getNextFileKey(currentKey); //otherwise, get the next tsb			
+			inUseCheck = _HardDrive.disk.getItem(currentKey);
+		}
+		//alert(filenameArray.join(", "));
+		if(filenameArray.length > 0)
+		{
+			_StdIn.putText("Current Files on Disk:");
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+			_StdIn.putText(filenameArray.join(", "));
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+		}
+		else
+		{
+			_StdIn.putText("There are currently no Files on Disk.");
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+		}
+	}
 }
 
 function getNextFileKey(key)
