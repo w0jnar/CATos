@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "3.06-Lanzones";		//versions increment alphabetically by fruit
+var APP_VERSION = "3.07-Mabolo"; 		//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -61,6 +61,7 @@ var _SarcasticMode = false;
 
 // Global Device Driver Objects - page 12
 var krnKeyboardDriver = null;
+var krnFileSystemDDriver = null;
 
 // For testing...
 var _GLaDOS = null;
@@ -77,3 +78,9 @@ var _LineBreak1 = 1;
 var _LineBreak2 = 34;
 var _LineBreak3 = 67;
 var _MaxCellCount = 8;
+
+//file system globals
+var _MaxDisks = 1;
+var _MaxTracks = 4;
+var _MaxSectors = 8;
+var _MaxBytes = 64;

@@ -720,6 +720,7 @@ function shellKill(args)
 				_KernelReadyQueue.dequeue();
 			}
 			//alert("meow3");
+			programCount--;
 		}
 		else
 		{
@@ -728,7 +729,6 @@ function shellKill(args)
 		}
 		
 		_StdIn.putText("Process decimated.");
-		programCount--;
 	}
 }
 

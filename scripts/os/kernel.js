@@ -43,6 +43,11 @@ function krnBootstrap()      // Page 8.
    krnKeyboardDriver.driverEntry();                    // Call the driverEntry() initialization routine.
    krnTrace(krnKeyboardDriver.status);
 
+   krnTrace("Loading the file system driver.");
+   krnFileSystemDDriver = new DeviceDriverFileSystem();  // Construct it.  TODO: Should that have a _global-style name?
+   krnFileSystemDDriver.driverEntry();                 // Call the driverEntry() initialization routine.
+   krnTrace(krnFileSystemDDriver.status);
+   
    //
    // ... more?
    //
@@ -157,6 +162,10 @@ function krnInterruptHandler(irq, params)    // This is the Interrupt Handler Ro
             break;
         case KEYBOARD_IRQ: 
             krnKeyboardDriver.isr(params);   // Kernel mode device driver
+            _StdIn.handleInput();
+            break;
+		case FILESYSTEM_IRQ: 
+            krnFileSystemDDriver.isr(params);   // Kernel mode device driver
             _StdIn.handleInput();
             break;
         default: 

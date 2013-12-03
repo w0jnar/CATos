@@ -16,6 +16,7 @@
    <script type="text/javascript" src="scripts/host/devices.js"></script>
    <script type="text/javascript" src="scripts/host/cpu.js"></script>
    <script type="text/javascript" src="scripts/host/mainMemory.js"></script>
+   <script type="text/javascript" src="scripts/host/disk.js"></script>
    
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="scripts/os/interrupt.js"></script>
@@ -23,6 +24,7 @@
    <script type="text/javascript" src="scripts/os/console.js"></script>	
    <script type="text/javascript" src="scripts/os/deviceDriver.js"></script>
    <script type="text/javascript" src="scripts/os/deviceDriverKeyboard.js"></script>
+   <script type="text/javascript" src="scripts/os/deviceDriverFileSystem.js"></script>
    <script type="text/javascript" src="scripts/os/queue.js"></script>
    <script type="text/javascript" src="scripts/os/shell.js"></script>
    <script type="text/javascript" src="scripts/os/pcb.js"></script>
@@ -95,7 +97,7 @@
    </td>
    
    <td>
-   <div id="divLog" style="float:left; margin-left:200px;" align="right">
+   <div id="divLog" style="float:left; margin-left:150px;" align="right">
       <label>
          Log
          <br>
@@ -188,7 +190,7 @@
    </td>
    
    <td>
-   <div id="divUserProgramInput" style="float:left; margin-left:200px; text-align:right;">
+   <div id="divUserProgramInput" style="float:left; margin-left:150px; text-align:right;">
       <label>
          User Program Input
          <br>

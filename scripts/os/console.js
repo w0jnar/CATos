@@ -128,11 +128,11 @@ function CLIconsole() {
        // decided to write one function and use the term "text" to connote string or char.
        if (text !== "")
        {
-           // Draw the text at the current X and Y coordinates.
-           _DrawingContext.drawText(this.CurrentFont, this.CurrentFontSize, this.CurrentXPosition, this.CurrentYPosition, text);
-         // Move the current X position.
-           var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, text);
-           this.CurrentXPosition = this.CurrentXPosition + offset;
+			// Draw the text at the current X and Y coordinates.
+			_DrawingContext.drawText(this.CurrentFont, this.CurrentFontSize, this.CurrentXPosition, this.CurrentYPosition, text);
+			// Move the current X position.
+			var offset = _DrawingContext.measureText(this.CurrentFont, this.CurrentFontSize, text);
+			this.CurrentXPosition = this.CurrentXPosition + offset;
        }
     };
 	
