@@ -171,6 +171,13 @@ function shellInit() {
     sc.function = shellCreate;
     this.commandList[this.commandList.length] = sc;
 	
+	// ls
+	sc = new ShellCommand();
+    sc.command = "ls"; 
+    sc.description = "- lists the files on the disk.";
+    sc.function = shellList;
+    this.commandList[this.commandList.length] = sc;
+	
 	// Program 1
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
@@ -763,6 +770,15 @@ function shellCreate(args)
 {
 	//_HardDrive.format();
 	var args = ["create", args]; //I realize this probably looks awful, I just felt it made the most sense.
+	krnDiskHandle(args);
+	//window.alert(sessionStorage.getItem("0,0,1"));
+	//response = null;
+}
+
+function shellList()
+{
+	//_HardDrive.format();
+	var args = ["list"]; //I realize this probably looks awful, I just felt it made the most sense.
 	krnDiskHandle(args);
 	//window.alert(sessionStorage.getItem("0,0,1"));
 	//response = null;

@@ -36,6 +36,9 @@ function krnFileSystemHandler(args)
 		case "create":
 			DiskCreate(args[1]);
 			break;
+		case "list":
+			DiskList();
+			break;
 		default:
 			response = false; //probably not the best way to deal with this...
 			break;
@@ -110,9 +113,17 @@ DiskCreate = function(args)
 			//_StdIn.advanceLine();
 			//_StdIn.putText(">");
 			//alert(keyToUse);
-			if(args.length === 0 || args.length > _FileSize)
+			//alert(args.toString().length);
+			//alert(_FileSize);
+			if(args.length === 0 || args.toString().length > _FileSize)
 			{
 				_StdIn.putText("File Creation Failed, Name Too Long Or Short.");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+			}
+			else if(args.toString().indexOf("~") !== -1)
+			{
+				_StdIn.putText("File Creation Failed, Invalid Character in Filename.");
 				_StdIn.advanceLine();
 				_StdIn.putText(">");
 			}
@@ -136,6 +147,32 @@ DiskCreate = function(args)
 		}
 	}
 };
+
+DiskList = function()
+{
+	var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
+	var inUseCheck = _HardDrive.disk.getItem(currentKey);
+	var keyToUse = null;
+	
+	var filenameArray = [];
+		
+	while(currentKey !== "0,0,0")
+	{
+		if(parseInt(inUseCheck.substring(0,1)) === 1)
+		{
+			if(inUseCheck.substring(inUseCheck.length-1,inUseCheck.length) !== "~")
+				filenameArray.push(inUseCheck.substring(4,inUseCheck.length));
+			else
+				filenameArray.push(inUseCheck.substring(4,inUseCheck.length-1));
+		}
+		currentKey = getNextFileKey(currentKey); //otherwise, get the next tsb			
+		inUseCheck = _HardDrive.disk.getItem(currentKey);
+	}
+	//alert(filenameArray.join(", "));
+	_StdIn.putText(filenameArray.join(", "));
+	_StdIn.advanceLine();
+	_StdIn.putText(">");
+}
 
 function getNextFileKey(key)
 {
