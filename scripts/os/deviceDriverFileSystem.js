@@ -106,10 +106,33 @@ DiskCreate = function(args)
 		}
 		else
 		{
-			_StdIn.putText("Meow!"); //placeholder, I assure you
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			//_StdIn.putText("Meow!"); //placeholder, I assure you
+			//_StdIn.advanceLine();
+			//_StdIn.putText(">");
 			//alert(keyToUse);
+			if(args.length === 0 || args.length > _FileSize)
+			{
+				_StdIn.putText("File Creation Failed, Name Too Long Or Short.");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+			}
+			else if(args.length === _FileSize)
+			{
+				var file = "1---" + args;
+				_HardDrive.disk.setItem(keyToUse, file);
+				_StdIn.putText("File Created.");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+			}
+			else if(args.length < _FileSize)
+			{
+				var file = "1---" + args + "~";
+				_HardDrive.disk.setItem(keyToUse, file);
+				_StdIn.putText("File Created.");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+			}
+			//alert(_HardDrive.disk.getItem(keyToUse));
 		}
 	}
 };
