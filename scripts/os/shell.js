@@ -742,7 +742,7 @@ function shellKill(args)
 function shellFormat()
 {
 	_HardDrive.format();
-	alert(sessionStorage.getItem("0,0,0"));
+	window.alert(sessionStorage.getItem("0,0,1"));
 }
 
 

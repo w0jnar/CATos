@@ -12,8 +12,8 @@ function FileSystem()
     this.format = function()
     {
         var tsbKey = "";
-        var data = "0---^Z"; //^Z being the escape character
-		for( var i = _FileDenote; i <= _FileSize; i++)
+        var data = "0---~"; //~ being the escape character
+		for( var i = 0; i < _FileSize-1; i++)
 		{
 			data += "-";
 		}
