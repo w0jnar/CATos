@@ -165,7 +165,7 @@ function krnInterruptHandler(irq, params)    // This is the Interrupt Handler Ro
             _StdIn.handleInput();
             break;
 		case FILESYSTEM_IRQ: 
-            krnFileSystemDDriver.isr(params);   // Kernel mode device driver
+            krnFileSystemDDriver.isr(params);  // Kernel mode device driver
             _StdIn.handleInput();
             break;
         default: 
@@ -390,4 +390,9 @@ function krnNextProcess()
 	_CPU.PC = 0; // + ((_KernelReadyQueue.q[0].pid) * _PartitionSize);
 	memoryRanges(_KernelReadyQueue.q[0]);
 	_CPU.isExecuting = true;
+}
+
+function krnFormatDisk()
+{
+    _KernelInterruptQueue.enqueue(new Interrupt(FILESYSTEM_IRQ, "format"));
 }

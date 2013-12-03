@@ -741,7 +741,8 @@ function shellKill(args)
 
 function shellFormat()
 {
-	_HardDrive.format();
+	//_HardDrive.format();
+	krnFormatDisk();
 	window.alert(sessionStorage.getItem("0,0,1"));
 }
 
