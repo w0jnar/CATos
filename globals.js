@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "3.07-Mabolo"; 		//versions increment alphabetically by fruit
+var APP_VERSION = "3.08-Noni"; 			//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -29,6 +29,7 @@ var QUANTUM = 6;
 //
 var _CPU = null;
 var _Memory = null;
+var _HardDrive = null;
 var _OSclock = 0;       // Page 23.
 //var pcb = null; for testing
 
@@ -83,4 +84,8 @@ var _MaxCellCount = 8;
 var _MaxDisks = 1;
 var _MaxTracks = 4;
 var _MaxSectors = 8;
+var _MaxBlocks = 8;
 var _MaxBytes = 64;
+
+var _FileSize = _MaxBytes - 4;
+var _FileDenote = _MaxBytes - 60;

@@ -43,6 +43,7 @@ function hostInit()
 // pcb.pcbMemoryFill();	
 	
    	_Memory = new MainMemory();
+	_HardDrive = new FileSystem();
     _Memory.init();
 	mainMemoryFill();
    // Check for our testing and enrichment core.

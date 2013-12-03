@@ -27,5 +27,10 @@ function krnFileSystemDriverEntry()
 
 function krnFileSystemHandler(params)
 {
-
+	switch(param)
+	{
+		case "format":
+			disk.format();
+			break;
+	}
 }

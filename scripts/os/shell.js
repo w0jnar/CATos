@@ -157,6 +157,13 @@ function shellInit() {
     sc.function = shellKill;
     this.commandList[this.commandList.length] = sc;
 	
+	// format
+	sc = new ShellCommand();
+    sc.command = "format"; 
+    sc.description = "- formats the disk storage.";
+    sc.function = shellFormat;
+    this.commandList[this.commandList.length] = sc;
+	
 	// Program 1
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
@@ -731,6 +738,14 @@ function shellKill(args)
 		_StdIn.putText("Process decimated.");
 	}
 }
+
+function shellFormat()
+{
+	_HardDrive.format();
+	alert(sessionStorage.getItem("0,0,0"));
+}
+
+
 
 function shellProgram1() //Program1
 {

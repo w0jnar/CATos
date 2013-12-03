@@ -9,10 +9,14 @@ function FileSystem()
     this.blocks     = _MaxBlocks;
     this.bytes 		= _MaxBytes;
 
-    this.init = function()
+    this.format = function()
     {
         var tsbKey = "";
-        var data = "";
+        var data = "0---^Z"; //^Z being the escape character
+		for( var i = _FileDenote; i <= _FileSize; i++)
+		{
+			data += "-";
+		}
 
         for (var t = 0; t < this.tracks; t++) //track loop
         {
@@ -21,9 +25,10 @@ function FileSystem()
                 for (var b = 0; b < this.blocks; b++) //block loop
                 {
                     tsbKey = t.toString() + "," + s.toString() + "," + b.toString(); //create the tsbKey and add it to the disk
-                    this.disk.setItem(tsbKey, data);
+					this.disk.setItem(tsbKey, data);
                 }
             }
         }
+		this.disk.setItem("0,0,0", "_---MBR");
     };
 }

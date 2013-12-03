@@ -72,3 +72,4 @@ Version History:
 "3.05-Korlan";  
 "3.06-Lanzones";  
 "3.07-Mabolo";  
+"3.08-Noni";  
