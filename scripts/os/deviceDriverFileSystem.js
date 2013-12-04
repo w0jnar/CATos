@@ -184,17 +184,17 @@ DiskWrite = function(args)
 		var inUseCheck = _HardDrive.disk.getItem(currentKey);
 		var keyToUse = null;
 		//alert(inUseCheck);
-		if(args.length === _FileSize)
-		{
-			var sizeToUse = inUseCheck.length;
-		}
-		else
-		{
-			var sizeToUse = inUseCheck.length-1;
-		}
-		
+		var sizeToUse = inUseCheck.split("~",1).toString().length;
+		// alert(inUseCheck);
+		// alert(inUseCheck.toString());
+		// alert(inUseCheck.toString().split("~",1));
+		// alert(inUseCheck.split("~",1).toString().length);
+		// alert(sizeToUse);
 		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
 		{
+			//alert(parseInt(inUseCheck.substring(0,1)) === 1);
+			//alert(inUseCheck.substring(_FileDenote,sizeToUse).trim());
+			//alert(args.split(" ",1).toString().trim());
 			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,sizeToUse).trim() === args.split(" ",1).toString().trim()))
 			{
 				keyToUse = currentKey;
@@ -206,7 +206,7 @@ DiskWrite = function(args)
 
 		if(keyToUse === null)
 		{
-			_StdIn.putText("File Write Failed, Disk Not Found.");
+			_StdIn.putText("File Write Failed, File Not Found.");
 			_StdIn.advanceLine();
 			_StdIn.putText(">");
 		}
@@ -214,27 +214,42 @@ DiskWrite = function(args)
 		{
 			//keyToUse denotes the key of the file to be written to.
 			//Now to find the length needed and develop a getNextFile for the memory.
-			var currentDataKey = "1,0,0";
-			currentDataKey = getNextDataKey(currentDataKey);
-			//alert(currentDataKey);
-			var inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
-			// for(var i = 0; i < 20; i++)
-			// {
-				// currentDataKey = getNextDataKey(currentDataKey);
-				// alert(currentDataKey);
-			// }
-			var fileKeyToUse = null;
-			while(currentDataKey !== "0,0,0")
+			var argsHolder = args.split(" "); //takes args and splits it into an array based on spaces.
+			argsHolder.shift(); //removes the first element from the array, which will always be the name, and returns just the data.
+			var dataToWrite = argsHolder.join(" "); //remakes it into a string.
+			//alert(dataToWrite);
+			dataToWrite += "~"; //appends the end of file character to the string.
+			//alert(dataToWrite);
+			var numOfPartitions = Math.ceil(dataToWrite.length / _FileSize);
+			//alert(numOfPartitions);
+			for(var i = 0; i < numOfPartitions; i++)
 			{
-				if(parseInt(inUseCheckData.substring(0,1)) === 0)
+				var currentDataKey = "1,0,0";
+				var dataKeyToUse = dataKeyLoop(currentDataKey);
+				if(dataKeyToUse === null)
 				{
-					fileKeyToUse = currentDataKey;
-					break;
+					_StdIn.putText("File Write Failed, Disk Space Not Found.");
+					_StdIn.advanceLine();
+					_StdIn.putText(">");
 				}
-				currentDataKey = getNextDataKey(currentDataKey);
-				inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
-				//alert(currentDataKey);
+				else
+				{
+					//alert(_HardDrive.disk.getItem(keyToUse));
+					var itemData = _HardDrive.disk.getItem(keyToUse);
+					itemData = itemData.substring(0,1) + dataKeyToUse.replace(/[\,&]+/g, '') + itemData.substring(_FileDenote,_MaxBytes)
+					var file = _HardDrive.disk.setItem(keyToUse, itemData);
+					// alert(_HardDrive.disk.getItem(keyToUse));
+					// alert(dataKeyToUse);
+					
+					
+					keyToUse = dataKeyToUse; //set the key to use to be the first block of memory.
+				}
 			}
+			var currentDataKey = "1,0,0";
+			var dataKeyToUse = dataKeyLoop(currentDataKey);
+			//alert(dataKeyToUse);
+			//dataKeyToUse = dataKeyLoop(dataKeyToUse);
+			//alert(dataKeyToUse);
 		}
 	}
 };
@@ -387,4 +402,24 @@ function getNextDataKey(key) //starting key is "1,0,0"
 		currentKey = "0,0,0";
 	}
 	return currentKey;
+}
+
+function dataKeyLoop(currentDataKey)
+{
+	var currentDataKey = getNextDataKey(currentDataKey);
+	var inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
+
+	var fileKeyToUse = null;
+	while(currentDataKey !== "0,0,0")
+	{
+		if(parseInt(inUseCheckData.substring(0,1)) === 0)
+		{
+			fileKeyToUse = currentDataKey;
+			break;
+		}
+		currentDataKey = getNextDataKey(currentDataKey);
+		inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
+		//alert(currentDataKey);
+	}
+	return fileKeyToUse;
 }
