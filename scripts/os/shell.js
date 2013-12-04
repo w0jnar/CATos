@@ -199,6 +199,13 @@ function shellInit() {
     sc.function = shellList;
     this.commandList[this.commandList.length] = sc;
 	
+	// setschedule
+	sc = new ShellCommand();
+    sc.command = "setschedule"; 
+    sc.description = "- [rr, fcfs, priority] sets the CPU scheduling algorithm.";
+    sc.function = shellSetSchedule;
+    this.commandList[this.commandList.length] = sc;
+	
 	// Program 1
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
@@ -831,6 +838,26 @@ function shellList()
 	krnDiskHandle(args);
 	//window.alert(sessionStorage.getItem("0,0,1"));
 	//response = null;
+}
+
+function shellSetSchedule(args)
+{
+	var input = args[0];
+	//alert(input);
+	//alert(schedule);
+	if(input !== "rr" && input !== "fcfs" && input !== "priority")
+	{
+		_StdOut.putText("Invalid Scheduling Algorithm.");
+	}
+	else if(input === scheduleAlgorithm)
+	{
+		_StdOut.putText("This is Already Selected.");
+	}
+	else
+	{
+		scheduleAlgorithm = input;
+		_StdOut.putText("Scheduling Algorithm Successfully Changed.");
+	}
 }
 
 
