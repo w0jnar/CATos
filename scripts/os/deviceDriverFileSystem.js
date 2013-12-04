@@ -66,13 +66,14 @@ DiskFormat = function()
 		}
 	}
 	_HardDrive.disk.setItem("0,0,0", "_---MBR");
+	formatFlag = 1;
 };
 
 	
 DiskCreate = function(args)
 {
 	//alert(_HardDrive.disk.getItem("0,0,0"));
-	if(_HardDrive.disk.getItem("0,0,0") == null) //check if the storage has been formatted
+	if(formatFlag === 0) //check if the storage has been formatted
 	{
 		_StdIn.putText("File Creation Failed, Disk not Formatted.");
 		_StdIn.advanceLine();
@@ -152,7 +153,7 @@ DiskCreate = function(args)
 
 DiskList = function()
 {
-	if(_HardDrive.disk.getItem("0,0,0") == null) //check if the storage has been formatted
+	if(formatFlag === 0) //check if the storage has been formatted
 	{
 		_StdIn.putText("File Creation Failed, Disk not Formatted.");
 		_StdIn.advanceLine();

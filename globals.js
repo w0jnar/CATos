@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "3.14-Totara"; 		//versions increment alphabetically by fruit
+var APP_VERSION = "3.15-Wax jambu"; 	//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -92,3 +92,5 @@ var _FileSize = _MaxBytes - 4;
 var _FileDenote = _MaxBytes - 60;
 
 var response = true;
+
+var formatFlag = 0; //mainly to handle the tab still being open, as the session is maintained.
