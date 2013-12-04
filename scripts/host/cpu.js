@@ -57,11 +57,8 @@ function Cpu() {
 		
 		//alert(_Memory.rangeLow);
 		//alert(_Memory.rangeHigh);
-		if(_ContextSwitch > QUANTUM)
-		{
-			//going in scheduler...
-			scheduler();
-		}
+		//going in scheduler...
+		scheduler();
 		
 		_ContextSwitch++;
 		this.execute(this.nextOp());

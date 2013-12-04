@@ -206,6 +206,13 @@ function shellInit() {
     sc.function = shellSetSchedule;
     this.commandList[this.commandList.length] = sc;
 	
+	// getschedule
+	sc = new ShellCommand();
+    sc.command = "getschedule"; 
+    sc.description = "- displays the current CPU scheduling algorithm.";
+    sc.function = shellGetSchedule;
+    this.commandList[this.commandList.length] = sc;
+	
 	// Program 1
 	sc = new ShellCommand();
     sc.command = "program1";   //admittedly unoriginal, but it gets the point across.
@@ -857,6 +864,22 @@ function shellSetSchedule(args)
 	{
 		scheduleAlgorithm = input;
 		_StdOut.putText("Scheduling Algorithm Successfully Changed.");
+	}
+}
+
+function shellGetSchedule()
+{
+	if(scheduleAlgorithm === "rr")
+	{
+		_StdOut.putText("The Current Scheduling Algorithm is Round Robin.");
+	}
+	else if(scheduleAlgorithm === "fcfs")
+	{
+		_StdOut.putText("The Current Scheduling Algorithm is First Come, First Served.");
+	}
+	else
+	{
+		_StdOut.putText("The Current Scheduling Algorithm is Non-pre-emptive Priority.");
 	}
 }
 
