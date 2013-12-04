@@ -213,6 +213,17 @@ DiskWrite = function(args)
 			var dataToWrite = argsHolder.join(" ").toString(); //remakes it into a string.
 			//alert(dataToWrite);
 			dataToWrite += "~"; //appends the end of file character to the string.
+			var dataToWriteCopy = dataToWrite;
+			
+			while(dataToWriteCopy.length >= _FileSize)
+			{
+				dataToWriteCopy = dataToWriteCopy.substring(_FileSize,dataToWriteCopy.length);
+			}
+			var buffer = _FileSize - dataToWriteCopy.length;
+			for(var i = 0; i < buffer; i++)
+			{
+				dataToWrite += "-";
+			}
 			//alert(dataToWrite);
 			var numOfPartitions = Math.ceil(dataToWrite.length / _FileSize);
 			//alert(numOfPartitions);
@@ -273,7 +284,7 @@ DiskWrite = function(args)
 				{
 					var writeValue = "1---" + dataToWrite.substring(0, _FileSize);
 					_HardDrive.disk.setItem(dataKeyToUse, writeValue);
-					//alert(_HardDrive.disk.getItem(dataKeyToUse));
+					//window.alert(_HardDrive.disk.getItem(dataKeyToUse));
 				}
 				
 				
@@ -329,15 +340,31 @@ DiskRead = function(args)
 		else
 		{
 			var rawContent = _HardDrive.disk.getItem(keyToUse);
-			var content = rawContent.toString().substring(_FileDenote,sizeToUse);
-			_StdIn.putText("File Content of ");
-			_StdIn.putText(content);
-			_StdIn.putText(":");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
-			_StdIn.putText("lol");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			var filename = rawContent.toString().substring(_FileDenote,inUseCheck.length).split("~",1).toString();
+			var dataLocation = rawContent.substring(1,_FileDenote);
+			dataLocation = dataLocation.split("");
+			dataLocation = dataLocation.join(",").toString();
+			//alert(dataLocation);
+			if(dataLocation === "-,-,-")
+			{
+				_StdIn.putText("File Not Written To.");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+			}
+			else
+			{
+				var data = filePull(dataLocation);
+				data = data.split("~",1).toString();
+				//window.alert(data);
+				_StdIn.putText("File Content of ");
+				_StdIn.putText(filename);
+				_StdIn.putText(":");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+				_StdIn.putText(data);
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+			}
 		}
 	}
 };
@@ -448,4 +475,20 @@ function dataKeyLoop(currentDataKey)
 		//alert(currentDataKey);
 	}
 	return fileKeyToUse;
+}
+
+function filePull(currentDataKey)
+{
+	var inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
+	var outStr = inUseCheckData.substring(_FileDenote,inUseCheckData.length);
+	while((inUseCheckData.substring(1,_FileDenote) !== "---") || (parseInt(inUseCheckData.substring(0,1)) !== 1))
+	{
+		var dataKeyToUse = inUseCheckData.substring(1,_FileDenote);
+		dataKeyToUse = dataKeyToUse.split("");
+		dataKeyToUse = dataKeyToUse.join(",").toString();
+		inUseCheckData = _HardDrive.disk.getItem(dataKeyToUse);
+		outStr += inUseCheckData.substring(_FileDenote,inUseCheckData.length);
+	}
+	//window.alert(outStr);
+	return outStr;
 }
