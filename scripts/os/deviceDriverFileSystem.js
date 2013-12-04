@@ -181,21 +181,17 @@ DiskWrite = function(args)
 	{
 		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
 		
-		var inUseCheck = _HardDrive.disk.getItem(currentKey);
+		//var inUseCheck = _HardDrive.disk.getItem(currentKey);
 		var keyToUse = null;
-		//alert(inUseCheck);
-		var sizeToUse = inUseCheck.split("~",1).toString().length;
-		// alert(inUseCheck);
-		// alert(inUseCheck.toString());
-		// alert(inUseCheck.toString().split("~",1));
-		// alert(inUseCheck.split("~",1).toString().length);
-		// alert(sizeToUse);
+		var sizeToUse = args.toString().split(" ",1).toString().split("~",1).toString().length;
+
+		//alert(sizeToUse);
 		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
 		{
-			//alert(parseInt(inUseCheck.substring(0,1)) === 1);
-			//alert(inUseCheck.substring(_FileDenote,sizeToUse).trim());
-			//alert(args.split(" ",1).toString().trim());
-			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,sizeToUse).trim() === args.split(" ",1).toString().trim()))
+			var inUseCheck = _HardDrive.disk.getItem(currentKey);
+			//alert(inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim());
+			//alert(args.split(" ",1).toString().trim().length);
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim() === args.split(" ",1).toString().trim()))
 			{
 				keyToUse = currentKey;
 				break;
@@ -212,44 +208,82 @@ DiskWrite = function(args)
 		}
 		else
 		{
-			//keyToUse denotes the key of the file to be written to.
-			//Now to find the length needed and develop a getNextFile for the memory.
 			var argsHolder = args.split(" "); //takes args and splits it into an array based on spaces.
 			argsHolder.shift(); //removes the first element from the array, which will always be the name, and returns just the data.
-			var dataToWrite = argsHolder.join(" "); //remakes it into a string.
+			var dataToWrite = argsHolder.join(" ").toString(); //remakes it into a string.
 			//alert(dataToWrite);
 			dataToWrite += "~"; //appends the end of file character to the string.
 			//alert(dataToWrite);
 			var numOfPartitions = Math.ceil(dataToWrite.length / _FileSize);
 			//alert(numOfPartitions);
-			for(var i = 0; i < numOfPartitions; i++)
+			
+			var currentDataKey = "1,0,0";
+			var itemData = _HardDrive.disk.getItem(keyToUse); //preform the first write
+
+			if(itemData.substring(1,_FileDenote) !== "---") //check if the file has be written to at least once
 			{
-				var currentDataKey = "1,0,0";
+				var dataKeyToUse = itemData.substring(1,_FileDenote);
+				dataKeyToUse = dataKeyToUse.split("");
+				dataKeyToUse = dataKeyToUse.join(",").toString();
+			}
+			else
+			{
 				var dataKeyToUse = dataKeyLoop(currentDataKey);
-				if(dataKeyToUse === null)
+			}
+			
+			if(dataKeyToUse === null)
+			{
+				_StdIn.putText("File Write Failed, Disk Space Not Found.");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+			}
+			else
+			{
+				//alert(_HardDrive.disk.getItem(keyToUse));
+				//var itemData = _HardDrive.disk.getItem(keyToUse);
+				itemData = itemData.substring(0,1) + dataKeyToUse.replace(/[\,&]+/g, '') + itemData.substring(_FileDenote,_MaxBytes) //sets the file's data location
+				_HardDrive.disk.setItem(keyToUse, itemData);
+				//alert(_HardDrive.disk.getItem(keyToUse));
+				//alert(dataKeyToUse);
+				if(dataToWrite.length > _FileSize)
 				{
-					_StdIn.putText("File Write Failed, Disk Space Not Found.");
-					_StdIn.advanceLine();
-					_StdIn.putText(">");
+					while(dataToWrite.length > 0)
+					{
+						if(dataToWrite.length > _FileSize) //not great, but it gets the job done
+						{
+							var writeValue = "1---" + dataToWrite.substring(0, _FileSize); //write it first to take the memory location
+							_HardDrive.disk.setItem(dataKeyToUse, writeValue);
+							var nextDataKeyToUse = dataKeyLoop("1,0,0");
+							writeValue = "1" + nextDataKeyToUse.replace(/[\,&]+/g, '') + dataToWrite.substring(0, _FileSize);
+							_HardDrive.disk.setItem(dataKeyToUse, writeValue);
+							dataToWrite = dataToWrite.substring(_FileSize, dataToWrite.length); //get rid of the current first 60 characters
+							//window.alert(_HardDrive.disk.getItem(dataKeyToUse));
+							dataKeyToUse = nextDataKeyToUse;
+						}
+						else
+						{
+							var writeValue = "1---" + dataToWrite.substring(0, _FileSize); //write it first to take the memory location
+							_HardDrive.disk.setItem(dataKeyToUse, writeValue);
+							dataToWrite = dataToWrite.substring(_FileSize, dataToWrite.length); //just to end the loop
+							//window.alert(_HardDrive.disk.getItem(dataKeyToUse));
+						}
+					}
 				}
 				else
 				{
-					//alert(_HardDrive.disk.getItem(keyToUse));
-					var itemData = _HardDrive.disk.getItem(keyToUse);
-					itemData = itemData.substring(0,1) + dataKeyToUse.replace(/[\,&]+/g, '') + itemData.substring(_FileDenote,_MaxBytes)
-					var file = _HardDrive.disk.setItem(keyToUse, itemData);
-					// alert(_HardDrive.disk.getItem(keyToUse));
-					// alert(dataKeyToUse);
-					
-					
-					keyToUse = dataKeyToUse; //set the key to use to be the first block of memory.
+					var writeValue = "1---" + dataToWrite.substring(0, _FileSize);
+					_HardDrive.disk.setItem(dataKeyToUse, writeValue);
+					//alert(_HardDrive.disk.getItem(dataKeyToUse));
 				}
+				
+				
+				//keyToUse = dataKeyToUse; //set the key to use to be the first block of memory.
+				//alert
+				_StdIn.putText("Data Written.");
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
 			}
-			var currentDataKey = "1,0,0";
-			var dataKeyToUse = dataKeyLoop(currentDataKey);
-			//alert(dataKeyToUse);
-			//dataKeyToUse = dataKeyLoop(dataKeyToUse);
-			//alert(dataKeyToUse);
+			
 		}
 	}
 };
@@ -269,23 +303,15 @@ DiskRead = function(args)
 	{
 		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
 		
-		var inUseCheck = _HardDrive.disk.getItem(currentKey);
+		//var inUseCheck = _HardDrive.disk.getItem(currentKey);
 		var keyToUse = null;
-		//alert(inUseCheck);
-		if(args.length === _FileSize)
-		{
-			var sizeToUse = inUseCheck.length;
-		}
-		else
-		{
-			var sizeToUse = inUseCheck.length-1;
-		}
-		//alert(args.split(" ",1));
+		var sizeToUse = args.toString().split(" ",1).toString().split("~",1).toString().length;
+
+		//alert(sizeToUse);
 		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
 		{
-			//alert(inUseCheck);
-			//alert(inUseCheck.substring(_FileDenote,sizeToUse));
-			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,sizeToUse).trim() === args.split(" ",1).toString().trim()))
+			var inUseCheck = _HardDrive.disk.getItem(currentKey);
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim() === args.split(" ",1).toString().trim()))
 			{
 				keyToUse = currentKey;
 				break;
@@ -406,7 +432,7 @@ function getNextDataKey(key) //starting key is "1,0,0"
 
 function dataKeyLoop(currentDataKey)
 {
-	var currentDataKey = getNextDataKey(currentDataKey);
+	//var currentDataKey = getNextDataKey(currentDataKey);
 	var inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
 
 	var fileKeyToUse = null;
@@ -417,7 +443,7 @@ function dataKeyLoop(currentDataKey)
 			fileKeyToUse = currentDataKey;
 			break;
 		}
-		currentDataKey = getNextDataKey(currentDataKey);
+		var currentDataKey = getNextDataKey(currentDataKey);
 		inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
 		//alert(currentDataKey);
 	}
