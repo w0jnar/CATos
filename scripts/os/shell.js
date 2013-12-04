@@ -171,6 +171,13 @@ function shellInit() {
     sc.function = shellCreate;
     this.commandList[this.commandList.length] = sc;
 	
+	// read
+	sc = new ShellCommand();
+    sc.command = "read"; 
+    sc.description = "- <filename> displays the content of a file on the disk.";
+    sc.function = shellRead;
+    this.commandList[this.commandList.length] = sc;
+	
 	// ls
 	sc = new ShellCommand();
     sc.command = "ls"; 
@@ -775,10 +782,19 @@ function shellCreate(args)
 	//response = null;
 }
 
+function shellRead(args)
+{
+	//_HardDrive.format();
+	var args = ["read", args];
+	krnDiskHandle(args);
+	//window.alert(sessionStorage.getItem("0,0,1"));
+	//response = null;
+}
+
 function shellList()
 {
 	//_HardDrive.format();
-	var args = ["list"]; //I realize this probably looks awful, I just felt it made the most sense.
+	var args = ["list"];
 	krnDiskHandle(args);
 	//window.alert(sessionStorage.getItem("0,0,1"));
 	//response = null;

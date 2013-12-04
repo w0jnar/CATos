@@ -36,6 +36,9 @@ function krnFileSystemHandler(args)
 		case "create":
 			DiskCreate(args[1]);
 			break;
+		case "read":
+			DiskRead(args[1]);
+			break;
 		case "list":
 			DiskList();
 			break;
@@ -81,6 +84,7 @@ DiskCreate = function(args)
 	}
 	else
 	{
+		var args = args.toString(); //necessary as otherwise treated as an array (it gets messy).
 		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
 		//alert(_HardDrive.disk.key("0,0,1"));
 		//alert(currentKey);
@@ -118,13 +122,13 @@ DiskCreate = function(args)
 			//alert(keyToUse);
 			//alert(args.toString().length);
 			//alert(_FileSize);
-			if(args.length === 0 || args.toString().length > _FileSize)
+			if(args.length === 0 || args.length > _FileSize)
 			{
 				_StdIn.putText("File Creation Failed, Name Too Long Or Short.");
 				_StdIn.advanceLine();
 				_StdIn.putText(">");
 			}
-			else if(args.toString().indexOf("~") !== -1) //check if EOF is in the filename (this is the only invalid filename for CATos. Dat freedom.)
+			else if(args.indexOf("~") !== -1) //check if EOF is in the filename (this is the only invalid filename for CATos. Dat freedom.)
 			{
 				_StdIn.putText("File Creation Failed, Invalid Character in Filename.");
 				_StdIn.advanceLine();
@@ -151,11 +155,59 @@ DiskCreate = function(args)
 	}
 };
 
+DiskRead = function(args)
+{
+	//alert(args.length);
+	var args = args.toString();
+	//alert(args.length);
+	if(formatFlag === 0) //check if the storage has been formatted
+	{
+		_StdIn.putText("File Read Failed, Disk not Formatted.");
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
+	}
+	else
+	{
+		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
+		
+		var inUseCheck = _HardDrive.disk.getItem(currentKey);
+		var keyToUse = null;
+		//alert(inUseCheck);
+		
+		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
+		{
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length-1)))//check the inUse byte
+			{
+				keyToUse = currentKey;
+				break;
+			}
+			currentKey = getNextFileKey(currentKey);		
+			inUseCheck = _HardDrive.disk.getItem(currentKey);
+		}
+
+		if(keyToUse === null)
+		{
+			_StdIn.putText("File Read Failed, Disk Not Found.");
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+		}
+		else
+		{
+			var rawContent = _HardDrive.disk.getItem(keyToUse);
+			_StdIn.putText("File Content:");
+			_StdIn.advanceLine();
+			_StdIn.putText(content);
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+		}
+	}
+};
+
 DiskList = function()
 {
 	if(formatFlag === 0) //check if the storage has been formatted
 	{
-		_StdIn.putText("File Creation Failed, Disk not Formatted.");
+		_StdIn.putText("File List Failed, Disk not Formatted.");
 		_StdIn.advanceLine();
 		_StdIn.putText(">");
 	}
@@ -172,9 +224,9 @@ DiskList = function()
 			if(parseInt(inUseCheck.substring(0,1)) === 1)
 			{
 				if(inUseCheck.substring(inUseCheck.length-1,inUseCheck.length) !== "~")
-					filenameArray.push(inUseCheck.substring(4,inUseCheck.length));
+					filenameArray.push(inUseCheck.substring(_FileDenote,inUseCheck.length));
 				else
-					filenameArray.push(inUseCheck.substring(4,inUseCheck.length-1));
+					filenameArray.push(inUseCheck.substring(_FileDenote,inUseCheck.length-1));
 			}
 			currentKey = getNextFileKey(currentKey); //otherwise, get the next tsb			
 			inUseCheck = _HardDrive.disk.getItem(currentKey);
