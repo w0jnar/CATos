@@ -36,6 +36,9 @@ function krnFileSystemHandler(args)
 		case "create":
 			DiskCreate(args[1]);
 			break;
+		case "write":
+			DiskWrite(args[1]);
+			break;
 		case "read":
 			DiskRead(args[1]);
 			break;
@@ -84,7 +87,7 @@ DiskCreate = function(args)
 	}
 	else
 	{
-		var args = args.toString(); //necessary as otherwise treated as an array (it gets messy).
+		var args = args.join(" "); //necessary as otherwise treated as an array (it gets messy).
 		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
 		//alert(_HardDrive.disk.key("0,0,1"));
 		//alert(currentKey);
@@ -128,7 +131,7 @@ DiskCreate = function(args)
 				_StdIn.advanceLine();
 				_StdIn.putText(">");
 			}
-			else if(args.indexOf("~") !== -1) //check if EOF is in the filename (this is the only invalid filename for CATos. Dat freedom.)
+			else if(args.indexOf("~") !== -1 || args.indexOf(" ") !== -1) //check if EOF is in the filename (this is the only invalid filename for CATos. Dat freedom.)
 			{
 				_StdIn.putText("File Creation Failed, Invalid Character in Filename.");
 				_StdIn.advanceLine();
@@ -155,10 +158,54 @@ DiskCreate = function(args)
 	}
 };
 
+DiskWrite = function(args)
+{
+	//alert(args.length);
+	var args = args.join(" ");
+	//alert(args);
+	//alert(args.length);
+	if(formatFlag === 0) //check if the storage has been formatted
+	{
+		_StdIn.putText("File Write Failed, Disk not Formatted.");
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
+	}
+	else
+	{
+		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
+		
+		var inUseCheck = _HardDrive.disk.getItem(currentKey);
+		var keyToUse = null;
+		//alert(inUseCheck);
+		
+		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
+		{
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,sizeToUse).trim() === args.split(" ",1).toString().trim()))
+			{
+				keyToUse = currentKey;
+				break;
+			}
+			currentKey = getNextFileKey(currentKey);		
+			inUseCheck = _HardDrive.disk.getItem(currentKey);
+		}
+
+		if(keyToUse === null)
+		{
+			_StdIn.putText("File Write Failed, Disk Not Found.");
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+		}
+		else
+		{
+			
+		}
+	}
+};
+
 DiskRead = function(args)
 {
 	//alert(args.length);
-	var args = args.toString();
+	var args = args.join(" ");
 	//alert(args.length);
 	if(formatFlag === 0) //check if the storage has been formatted
 	{
@@ -173,10 +220,20 @@ DiskRead = function(args)
 		var inUseCheck = _HardDrive.disk.getItem(currentKey);
 		var keyToUse = null;
 		//alert(inUseCheck);
-		
+		if(args.length === _FileSize)
+		{
+			var sizeToUse = inUseCheck.length;
+		}
+		else
+		{
+			var sizeToUse = inUseCheck.length-1;
+		}
+		//alert(args.split(" ",1));
 		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
 		{
-			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length-1)))//check the inUse byte
+			//alert(inUseCheck);
+			//alert(inUseCheck.substring(_FileDenote,sizeToUse));
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,sizeToUse).trim() === args.split(" ",1).toString().trim()))
 			{
 				keyToUse = currentKey;
 				break;
@@ -194,9 +251,13 @@ DiskRead = function(args)
 		else
 		{
 			var rawContent = _HardDrive.disk.getItem(keyToUse);
-			_StdIn.putText("File Content:");
-			_StdIn.advanceLine();
+			var content = rawContent.toString().substring(_FileDenote,sizeToUse);
+			_StdIn.putText("File Content of ");
 			_StdIn.putText(content);
+			_StdIn.putText(":");
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+			_StdIn.putText("lol");
 			_StdIn.advanceLine();
 			_StdIn.putText(">");
 		}
