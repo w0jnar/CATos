@@ -185,6 +185,13 @@ function shellInit() {
     sc.function = shellRead;
     this.commandList[this.commandList.length] = sc;
 	
+	// delete
+	sc = new ShellCommand();
+    sc.command = "delete"; 
+    sc.description = "- <filename> deletes the content of a file on the disk.";
+    sc.function = shellDelete;
+    this.commandList[this.commandList.length] = sc;
+	
 	// ls
 	sc = new ShellCommand();
     sc.command = "ls"; 
@@ -808,6 +815,13 @@ function shellRead(args)
 	krnDiskHandle(args);
 	//window.alert(sessionStorage.getItem("0,0,1"));
 	//response = null;
+}
+
+function shellDelete(args)
+{
+	//_HardDrive.format();
+	var args = ["delete", args];
+	krnDiskHandle(args);
 }
 
 function shellList()

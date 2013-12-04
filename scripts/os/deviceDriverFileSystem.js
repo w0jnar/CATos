@@ -42,6 +42,9 @@ function krnFileSystemHandler(args)
 		case "read":
 			DiskRead(args[1]);
 			break;
+		case "delete":
+			DiskDelete(args[1]);
+			break;
 		case "list":
 			DiskList();
 			break;
@@ -59,6 +62,7 @@ DiskFormat = function()
 	{
 		data += "-";
 	}
+	_ClearedValue = data;
 
 	for (var t = 0; t < _HardDrive.tracks; t++) //track loop
 	{
@@ -369,6 +373,61 @@ DiskRead = function(args)
 	}
 };
 
+
+DiskDelete = function(args)
+{
+	if(formatFlag === 0) //check if the storage has been formatted
+	{
+		_StdIn.putText("File Delete Failed, Disk not Formatted.");
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
+	}
+	else
+	{
+		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
+		
+		//var inUseCheck = _HardDrive.disk.getItem(currentKey);
+		var keyToUse = null;
+		var sizeToUse = args.toString().split(" ",1).toString().split("~",1).toString().length;
+
+		//alert(sizeToUse);
+		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
+		{
+			var inUseCheck = _HardDrive.disk.getItem(currentKey);
+			//alert(inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim());
+			//alert(args.split(" ",1).toString().trim().length);
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim() === args.toString().split(" ",1).toString().trim()))
+			{
+				keyToUse = currentKey;
+				break;
+			}
+			currentKey = getNextFileKey(currentKey);		
+			inUseCheck = _HardDrive.disk.getItem(currentKey);
+		}
+
+		if(keyToUse === null)
+		{
+			_StdIn.putText("File Deletion Failed, File Not Found.");
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+		}
+		else
+		{
+			var fileToDelete = _HardDrive.disk.getItem(keyToUse); //delete the file
+			var dataKey = fileToDelete.substring(1,_FileDenote);
+			_HardDrive.disk.setItem(keyToUse,_ClearedValue);
+			if(dataKey !== "---") //check if it was written to and if so, delete.
+			{
+				deleteData(dataKey);
+			}
+			_StdIn.putText("File Deletion Successful.");
+			_StdIn.advanceLine();
+			_StdIn.putText(">");
+		}
+	}
+};
+
+
 DiskList = function()
 {
 	if(formatFlag === 0) //check if the storage has been formatted
@@ -491,4 +550,31 @@ function filePull(currentDataKey)
 	}
 	//window.alert(outStr);
 	return outStr;
+}
+
+function deleteData(currentDataKey)
+{
+	var dataKeyToUse = currentDataKey.split("");
+	dataKeyToUse = dataKeyToUse.join(",").toString();
+	
+	var inUseCheckData = _HardDrive.disk.getItem(dataKeyToUse);
+	//var nextData = inUseCheckData.substring(1,_FileDenote);
+
+	_HardDrive.disk.setItem(dataKeyToUse,_ClearedValue);
+	
+	while((inUseCheckData.substring(1,_FileDenote) !== "---") || (parseInt(inUseCheckData.substring(0,1)) === 1))
+	{
+		var dataKeyToDelete = inUseCheckData.substring(1,_FileDenote);
+		dataKeyToDelete = dataKeyToDelete.split("");
+		dataKeyToDelete = dataKeyToDelete.join(",").toString();
+		inUseCheckData = _HardDrive.disk.getItem(dataKeyToDelete);
+		_HardDrive.disk.setItem(dataKeyToDelete,_ClearedValue);
+		//alert(_HardDrive.disk.getItem(dataKeyToUse));
+		if(inUseCheckData === null)
+		{
+			break;
+		}
+	}
+	//alert(_HardDrive.disk.getItem(dataKeyToUse));
+	//return outStr;
 }
