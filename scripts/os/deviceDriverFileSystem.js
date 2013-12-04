@@ -140,6 +140,7 @@ DiskCreate = function(args)
 			else if(args.length === _FileSize)
 			{
 				var file = "1---" + args;
+				//window.alert(file);
 				_HardDrive.disk.setItem(keyToUse, file);
 				_StdIn.putText("File Created.");
 				_StdIn.advanceLine();
@@ -148,6 +149,12 @@ DiskCreate = function(args)
 			else if(args.length < _FileSize)
 			{
 				var file = "1---" + args + "~";
+				var buffer = _MaxBytes - file.length;
+				for(var i = 0; i < buffer; i++)
+				{
+					file += "-";
+				}
+				//window.alert(file);
 				_HardDrive.disk.setItem(keyToUse, file);
 				_StdIn.putText("File Created.");
 				_StdIn.advanceLine();
@@ -209,16 +216,24 @@ DiskWrite = function(args)
 			//Now to find the length needed and develop a getNextFile for the memory.
 			var currentDataKey = "1,0,0";
 			currentDataKey = getNextDataKey(currentDataKey);
-			alert(currentDataKey);
+			//alert(currentDataKey);
+			var inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
 			// for(var i = 0; i < 20; i++)
 			// {
 				// currentDataKey = getNextDataKey(currentDataKey);
 				// alert(currentDataKey);
 			// }
+			var fileKeyToUse = null;
 			while(currentDataKey !== "0,0,0")
 			{
+				if(parseInt(inUseCheckData.substring(0,1)) === 0)
+				{
+					fileKeyToUse = currentDataKey;
+					break;
+				}
 				currentDataKey = getNextDataKey(currentDataKey);
-				alert(currentDataKey);
+				inUseCheckData = _HardDrive.disk.getItem(currentDataKey);
+				//alert(currentDataKey);
 			}
 		}
 	}
@@ -306,10 +321,8 @@ DiskList = function()
 		{
 			if(parseInt(inUseCheck.substring(0,1)) === 1)
 			{
-				if(inUseCheck.substring(inUseCheck.length-1,inUseCheck.length) !== "~")
-					filenameArray.push(inUseCheck.substring(_FileDenote,inUseCheck.length));
-				else
-					filenameArray.push(inUseCheck.substring(_FileDenote,inUseCheck.length-1));
+				var filename = inUseCheck.substring(_FileDenote,_FileSize).split("~",1);
+				filenameArray.push(filename);
 			}
 			currentKey = getNextFileKey(currentKey); //otherwise, get the next tsb			
 			inUseCheck = _HardDrive.disk.getItem(currentKey);
@@ -318,18 +331,19 @@ DiskList = function()
 		if(filenameArray.length > 0)
 		{
 			_StdIn.putText("Current Files on Disk:");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
-			_StdIn.putText(filenameArray.join(", "));
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			for(var i = 0; i < filenameArray.length; i++)
+			{
+				_StdIn.advanceLine();
+				_StdIn.putText(">");
+				_StdIn.putText(filenameArray[i].toString());
+			}
 		}
 		else
 		{
 			_StdIn.putText("There are currently no Files on Disk.");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
 		}
+		_StdIn.advanceLine();
+		_StdIn.putText(">");
 	}
 }
 
