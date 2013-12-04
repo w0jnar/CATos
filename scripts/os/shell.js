@@ -773,9 +773,11 @@ function shellFormat()
 	var args = ["format"];
 	krnDiskHandle(args);
 	if(response == true)
-		_StdIn.putText("Disk Formatted.");
+		_StdIn.putText(">Disk Formatted.");
+		//_StdIn.putText("Disk Formatted.");
 	else
-		_StdIn.putText("Disk Format Failed.");
+		_StdIn.putText(">Disk Format Failed.");
+		//_StdIn.putText("Disk Format Failed.");
 	//window.alert(sessionStorage.getItem("0,0,1"));
 	//response = null;
 }

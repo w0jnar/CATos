@@ -177,6 +177,14 @@ DiskWrite = function(args)
 		var inUseCheck = _HardDrive.disk.getItem(currentKey);
 		var keyToUse = null;
 		//alert(inUseCheck);
+		if(args.length === _FileSize)
+		{
+			var sizeToUse = inUseCheck.length;
+		}
+		else
+		{
+			var sizeToUse = inUseCheck.length-1;
+		}
 		
 		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
 		{
@@ -199,6 +207,19 @@ DiskWrite = function(args)
 		{
 			//keyToUse denotes the key of the file to be written to.
 			//Now to find the length needed and develop a getNextFile for the memory.
+			var currentDataKey = "1,0,0";
+			currentDataKey = getNextDataKey(currentDataKey);
+			alert(currentDataKey);
+			// for(var i = 0; i < 20; i++)
+			// {
+				// currentDataKey = getNextDataKey(currentDataKey);
+				// alert(currentDataKey);
+			// }
+			while(currentDataKey !== "0,0,0")
+			{
+				currentDataKey = getNextDataKey(currentDataKey);
+				alert(currentDataKey);
+			}
 		}
 	}
 };
@@ -317,15 +338,39 @@ function getNextFileKey(key) //removed magic number, but at what cost(interroban
 	var currentKey = key;
 	if(parseInt(currentKey.substring(_BlockRangeLower,_BlockRangeUpper)) < _MaxBlocks - 1)
 	{
-		var currentKey = key.substring(0,_BlockRangeLower) + (parseInt(key.substring(_BlockRangeLower,_BlockRangeUpper)) + 1).toString();
+		currentKey = key.substring(0,_BlockRangeLower) + (parseInt(key.substring(_BlockRangeLower,_BlockRangeUpper)) + 1).toString();
 	}
 	else if(parseInt(currentKey.substring(_BlockRangeLower,_BlockRangeUpper)) === _MaxBlocks - 1)
 	{
-		var currentKey = key.substring(0,_SectorRangeLower) + (parseInt(key.substring(_SectorRangeLower,_SectorRangeUpper)) + 1).toString() + ",0"; //admittedly messy, but more or less rebuilds the string based on the necessary changes
+		currentKey = key.substring(0,_SectorRangeLower) + (parseInt(key.substring(_SectorRangeLower,_SectorRangeUpper)) + 1).toString() + ",0"; //admittedly messy, but more or less rebuilds the string based on the necessary changes
 	}
 	if(parseInt(currentKey.substring(_SectorRangeLower,_SectorRangeUpper)) > _MaxSectors - 1)
 	{
-		var currentKey = "0,0,0";
+		currentKey = "0,0,0";
+	}
+	return currentKey;
+}
+
+function getNextDataKey(key) //starting key is "1,0,0"
+{
+	var currentKey = key;
+	if(parseInt(currentKey.substring(_BlockRangeLower,_BlockRangeUpper)) < _MaxBlocks - 1) //Block
+	{
+		currentKey = currentKey.substring(0,_BlockRangeLower) + (parseInt(currentKey.substring(_BlockRangeLower,_BlockRangeUpper)) + 1).toString();
+	}
+	else if(parseInt(currentKey.substring(_BlockRangeLower,_BlockRangeUpper)) === _MaxBlocks - 1)
+	{
+		currentKey = currentKey.substring(0,_SectorRangeLower) + (parseInt(currentKey.substring(_SectorRangeLower,_SectorRangeUpper)) + 1).toString() + ",0"; //admittedly messy, but more or less rebuilds the string based on the necessary changes
+	}
+
+	if(parseInt(currentKey.substring(_SectorRangeLower,_SectorRangeUpper)) > _MaxSectors - 1) //Sector
+	{
+		currentKey = (parseInt(currentKey.substring(0,1)) + 1).toString() + ",0," + currentKey.substring(_BlockRangeLower,_BlockRangeUpper);
+	}
+	
+	if(parseInt(currentKey.substring(0,1)) > _MaxTracks - 1) //Sector
+	{
+		currentKey = "0,0,0";
 	}
 	return currentKey;
 }
