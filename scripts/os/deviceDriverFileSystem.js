@@ -197,7 +197,8 @@ DiskWrite = function(args)
 		}
 		else
 		{
-			
+			//keyToUse denotes the key of the file to be written to.
+			//Now to find the length needed and develop a getNextFile for the memory.
 		}
 	}
 };
@@ -311,14 +312,20 @@ DiskList = function()
 	}
 }
 
-function getNextFileKey(key)
+function getNextFileKey(key) //removed magic number, but at what cost(interrobang)
 {
 	var currentKey = key;
-	if(parseInt(currentKey.substring(4,5)) < 7)
-		var currentKey = key.substring(0,4) + (parseInt(key.substring(4,5)) + 1).toString();
-	else if(parseInt(currentKey.substring(4,5)) === 7)
-		var currentKey = key.substring(0,2) + (parseInt(key.substring(2,3)) + 1).toString() + ",0"; //admittedly messy, but more or less rebuilds the string based on the necessary changes
-	if(parseInt(currentKey.substring(2,3)) > 7)
+	if(parseInt(currentKey.substring(_BlockRangeLower,_BlockRangeUpper)) < _MaxBlocks - 1)
+	{
+		var currentKey = key.substring(0,_BlockRangeLower) + (parseInt(key.substring(_BlockRangeLower,_BlockRangeUpper)) + 1).toString();
+	}
+	else if(parseInt(currentKey.substring(_BlockRangeLower,_BlockRangeUpper)) === _MaxBlocks - 1)
+	{
+		var currentKey = key.substring(0,_SectorRangeLower) + (parseInt(key.substring(_SectorRangeLower,_SectorRangeUpper)) + 1).toString() + ",0"; //admittedly messy, but more or less rebuilds the string based on the necessary changes
+	}
+	if(parseInt(currentKey.substring(_SectorRangeLower,_SectorRangeUpper)) > _MaxSectors - 1)
+	{
 		var currentKey = "0,0,0";
+	}
 	return currentKey;
 }
