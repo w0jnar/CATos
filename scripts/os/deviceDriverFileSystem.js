@@ -4,6 +4,7 @@
    Requires deviceDriver.js
    
    The Kernel File System Device Driver.
+   ~~Admittedly, having almost of the responses of passing or failing going specifically to the Log may seem terrible, though it works quite nicely.
    ---------------------------------- */
 
 DeviceDriverFileSystem.prototype = new DeviceDriver;  // "Inherit" from prototype DeviceDriver in deviceDriver.js.
@@ -336,7 +337,7 @@ DiskRead = function(args)
 		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
 		{
 			var inUseCheck = _HardDrive.disk.getItem(currentKey);
-			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim() === args.split(" ",1).toString().trim()))
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim() === args.split(" ",1).toString().trim())) //admittedly a logical mess, I blame Javascript's String/Array conventions for this specific instance.
 			{
 				keyToUse = currentKey;
 				break;
@@ -354,8 +355,8 @@ DiskRead = function(args)
 		}
 		else
 		{
-			var rawContent = _HardDrive.disk.getItem(keyToUse);
-			var filename = rawContent.toString().substring(_FileDenote,inUseCheck.length).split("~",1).toString();
+			var rawContent = _HardDrive.disk.getItem(keyToUse);  //get the raw string
+			var filename = rawContent.toString().substring(_FileDenote,inUseCheck.length).split("~",1).toString(); //get just the file name
 			var dataLocation = rawContent.substring(1,_FileDenote);
 			dataLocation = dataLocation.split("");
 			dataLocation = dataLocation.join(",").toString();
@@ -592,7 +593,7 @@ function deleteData(currentDataKey)
 	//return outStr;
 }
 
-DisktoString = function()
+DisktoString = function() //makes the printed string for the display.
 {
 	var tsbKey = "";
 	var strToPrint = "~~File System~~\n";
@@ -630,7 +631,7 @@ DisktoString = function()
 
 
 
-DiskReadRoll = function(args)
+DiskReadRoll = function(args) //specifically for getting the entirety of the data during a read and returning just that.
 {
 	//alert(args);
 	var args = args.join(" ");
