@@ -88,7 +88,14 @@ scheduler = function()
 			var taLog = document.getElementById("taLog");
 			taLog.value = "Context Switch Occurring\n" + taLog.value;
 			_KernelReadyQueue.q[0].pcbMemoryFill(1);
+			var lastProcess = _KernelReadyQueue.q[0];
 			_KernelReadyQueue.dequeue();
+			var currentProcess = _KernelReadyQueue.q[0];
+			if(currentProcess.base === 0 && currentProcess.limit === 0)
+			{
+				//_KernelReadyQueue.dequeue();
+				lastProcess = rollHandle(lastProcess, currentProcess);
+			}
 			var currentProcess = _KernelReadyQueue.q[0];
 			_CPU.statusUp(currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
 			_KernelReadyQueue.q[0].statusUp("running", currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
