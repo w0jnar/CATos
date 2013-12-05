@@ -94,6 +94,12 @@ function krnOnCPUClockPulse()
 	{
 		DisktoString();
 	}
+	else
+	{
+		var diskStatus = "Disk Needs to be Formatted.";
+		var programTA = document.getElementById("taHDD");
+		programTA.value = diskStatus;
+	}
 	var RQOut = document.getElementById("RQOut");
 	if(!_KernelReadyQueue.isEmpty())
 	{

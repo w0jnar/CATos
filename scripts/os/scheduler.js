@@ -120,12 +120,34 @@ scheduler = function()
 	{
 		_ContextSwitch = 1;
 		prioritySort();
+		var currentProcess = _KernelReadyQueue.q[0];
+		if(currentProcess.base === 0 && currentProcess.limit === 0)
+		{
+			for(var i = 0; i < _KernelReadyQueue.getSize(); i++) //admittedlt, this will break if someone attempts to only use files from the File System, but who would ever do that?
+			{
+				if(_KernelReadyQueue.q[i].limit !== 0)
+				{
+					var lastProcess = _KernelReadyQueue.q[i];
+					break;
+				}
+			}
+			var lastProcess = rollHandle(lastProcess, currentProcess);
+			_KernelReadyQueue.enqueue(lastProcess);
+			prioritySort();
+		}
 		if(_KernelReadyQueue.q[0].state === "terminated" && _KernelReadyQueue.getSize() > 1)
 		{
 			var taLog = document.getElementById("taLog");
 			taLog.value = "Context Switch Occurring\n" + taLog.value;
 			_KernelReadyQueue.q[0].pcbMemoryFill(1);
+			var lastProcess = _KernelReadyQueue.q[0];
 			_KernelReadyQueue.dequeue();
+			var currentProcess = _KernelReadyQueue.q[0];
+			if(currentProcess.base === 0 && currentProcess.limit === 0)
+			{
+				//_KernelReadyQueue.dequeue();
+				lastProcess = rollHandle(lastProcess, currentProcess);
+			}
 			var currentProcess = _KernelReadyQueue.q[0];
 			_CPU.statusUp(currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
 			_KernelReadyQueue.q[0].statusUp("running", currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
