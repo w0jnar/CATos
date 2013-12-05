@@ -274,7 +274,7 @@ function systemBreak()  //"Break (which is really a system call)"
 	}
 	else if(_RunAllFlag === 1 && !_KernelReadyQueue.isEmpty())
 	{
-		hostLog("Context Switch", "CPU");
+		//hostLog("Context Switch", "CPU");
 		//krnNextProcess();
 		//_ContextSwitch = 1;
 		//_KernelReadyQueue.dequeue();

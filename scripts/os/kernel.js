@@ -236,7 +236,7 @@ function krnTrapError(msg)
     krnShutdown();
 }
 
-function krnMemoryAllocation(inCode)
+function krnMemoryAllocation(inCode, priority)
 {
 	var process = new PCB();  //creates new pcb
 	var newProcessLocation;
@@ -250,7 +250,7 @@ function krnMemoryAllocation(inCode)
 	}
 	//if(newProcessLocation == null) should be an impossibility with former checking, so for now removed
 	
-	process.pcbInit(newProcessLocation);
+	process.pcbInit(newProcessLocation, priority);
 	_KernelResidentList[newProcessLocation] = process;
 	programCount++;
 	if(_processFlag === 0)

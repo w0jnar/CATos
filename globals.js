@@ -12,7 +12,7 @@
 // Global CONSTANTS
 //
 var APP_NAME = "CATos";
-var APP_VERSION = "3.26-Jabuticaba"; 	//versions increment alphabetically by fruit
+var APP_VERSION = "3.27-Kaffir lime"; 	//versions increment alphabetically by fruit
 										//Apple uses cats for OSX, this is a CATos, so the first version (0.01) 
 										//was Apple, and I decided in Ubuntu-like fashion to go alphabetically.
 										// fruit gotten from http://en.wikipedia.org/wiki/List_of_culinary_fruits
@@ -107,3 +107,5 @@ var _ClearedValue = null;
 var scheduleAlgorithm = "rr";
 var _FCFSQUANTUM = 1337;
 var _PreviousQuantum = 0;
+
+var firstTime = 0;

@@ -118,7 +118,7 @@ function shellInit() {
 	// load
 	sc = new ShellCommand();
     sc.command = "load"; 
-    sc.description = "- Checks user code for errors.";
+    sc.description = "- (optional priority value) Checks user code for errors.";
     sc.function = shellLoad;
     this.commandList[this.commandList.length] = sc;
 	
@@ -637,7 +637,7 @@ function shellFail() //BSOD
 	krnTrapError("LOLMEOW");  //What? Cats are fun.
 }
 
-function shellLoad() //Load
+function shellLoad(priority) //Load
 {
 	var inCode = document.getElementById("taProgramInput").value.replace(/\s+/g, '').toUpperCase(); //admittedly messy, but seemingly for the best.
 	var test = inCode.match(/^([0-9A-F ])*$/gm);
@@ -647,7 +647,7 @@ function shellLoad() //Load
 	{   //logic is to test that it is proper 2 byte hex code.
 //		_StdIn.putText(inCode);  test lines
 //		_StdIn.advanceLine();
-		var process = krnMemoryAllocation(inCode);
+		var process = krnMemoryAllocation(inCode, priority);
 		_StdIn.putText("Program Loaded. Program has a PID of " + process.pid + ".");
 		_StdIn.advanceLine();
 		//_StdIn.putText(process.toString());
