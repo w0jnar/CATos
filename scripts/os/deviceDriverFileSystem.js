@@ -48,6 +48,9 @@ function krnFileSystemHandler(args)
 		case "list":
 			DiskList();
 			break;
+		case "roll":
+			DiskReadRoll(args[1]);
+			break;
 		default:
 			response = false; //probably not the best way to deal with this...
 			break;
@@ -85,9 +88,10 @@ DiskCreate = function(args)
 	//alert(_HardDrive.disk.getItem("0,0,0"));
 	if(formatFlag === 0) //check if the storage has been formatted
 	{
-		_StdIn.putText("File Creation Failed, Disk not Formatted.");
-		_StdIn.advanceLine();
-		_StdIn.putText(">");
+		// _StdIn.putText("File Creation Failed, Disk not Formatted.");
+		// _StdIn.advanceLine();
+		// _StdIn.putText(">");
+		addToLog("File Creation Failed, Disk not Formatted.\n");
 	}
 	else
 	{
@@ -117,9 +121,10 @@ DiskCreate = function(args)
 
 		if(keyToUse === null)
 		{
-			_StdIn.putText("File Creation Failed, Disk Full.");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			// _StdIn.putText("File Creation Failed, Disk Full.");
+			// _StdIn.advanceLine();
+			// _StdIn.putText(">");
+			addToLog("File Creation Failed, Disk Full.\n");
 		}
 		else
 		{
@@ -131,24 +136,27 @@ DiskCreate = function(args)
 			//alert(_FileSize);
 			if(args.length === 0 || args.length > _FileSize)
 			{
-				_StdIn.putText("File Creation Failed, Name Too Long Or Short.");
-				_StdIn.advanceLine();
-				_StdIn.putText(">");
+				// _StdIn.putText("File Creation Failed, Name Too Long Or Short.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("File Creation Failed, Name Too Long Or Short.\n");
 			}
 			else if(args.indexOf("~") !== -1 || args.indexOf(" ") !== -1) //check if EOF is in the filename (this is the only invalid filename for CATos. Dat freedom.)
 			{
-				_StdIn.putText("File Creation Failed, Invalid Character in Filename.");
-				_StdIn.advanceLine();
-				_StdIn.putText(">");
+				// _StdIn.putText("File Creation Failed, Invalid Character in Filename.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("File Creation Failed, Invalid Character in Filename.\n")
 			}
 			else if(args.length === _FileSize)
 			{
 				var file = "1---" + args;
 				//window.alert(file);
 				_HardDrive.disk.setItem(keyToUse, file);
-				_StdIn.putText("File Created.");
-				_StdIn.advanceLine();
-				_StdIn.putText(">");
+				// _StdIn.putText("File Created.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("File Created.\n");
 			}
 			else if(args.length < _FileSize)
 			{
@@ -160,9 +168,10 @@ DiskCreate = function(args)
 				}
 				//window.alert(file);
 				_HardDrive.disk.setItem(keyToUse, file);
-				_StdIn.putText("File Created.");
-				_StdIn.advanceLine();
-				_StdIn.putText(">");
+				// _StdIn.putText("File Created.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("File Created.\n");
 			}
 			//alert(_HardDrive.disk.getItem(keyToUse));
 		}
@@ -177,9 +186,10 @@ DiskWrite = function(args)
 	//alert(args.length);
 	if(formatFlag === 0) //check if the storage has been formatted
 	{
-		_StdIn.putText("File Write Failed, Disk not Formatted.");
-		_StdIn.advanceLine();
-		_StdIn.putText(">");
+		// _StdIn.putText("File Write Failed, Disk not Formatted.");
+		// _StdIn.advanceLine();
+		// _StdIn.putText(">");
+		addToLog("File Write Failed, Disk not Formatted.\n");
 	}
 	else
 	{
@@ -206,9 +216,10 @@ DiskWrite = function(args)
 
 		if(keyToUse === null)
 		{
-			_StdIn.putText("File Write Failed, File Not Found.");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			// _StdIn.putText("File Write Failed, File Not Found.");
+			// _StdIn.advanceLine();
+			// _StdIn.putText(">");
+			addToLog("File Write Failed, File Not Found.");
 		}
 		else
 		{
@@ -237,20 +248,17 @@ DiskWrite = function(args)
 
 			if(itemData.substring(1,_FileDenote) !== "---") //check if the file has be written to at least once
 			{
-				var dataKeyToUse = itemData.substring(1,_FileDenote);
-				dataKeyToUse = dataKeyToUse.split("");
-				dataKeyToUse = dataKeyToUse.join(",").toString();
+				var dataToDelete = itemData.substring(1,_FileDenote);
+				deleteData(dataToDelete);
 			}
-			else
-			{
-				var dataKeyToUse = dataKeyLoop(currentDataKey);
-			}
+			var dataKeyToUse = dataKeyLoop(currentDataKey);
 			
 			if(dataKeyToUse === null)
 			{
-				_StdIn.putText("File Write Failed, Disk Space Not Found.");
-				_StdIn.advanceLine();
-				_StdIn.putText(">");
+				// _StdIn.putText("File Write Failed, Disk Space Not Found.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("File Write Failed, Disk Space Not Found.\n");
 			}
 			else
 			{
@@ -294,9 +302,10 @@ DiskWrite = function(args)
 				
 				//keyToUse = dataKeyToUse; //set the key to use to be the first block of memory.
 				//alert
-				_StdIn.putText("Data Written.");
-				_StdIn.advanceLine();
-				_StdIn.putText(">");
+				// _StdIn.putText("Data Written.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("Data Written.\n");
 			}
 			
 		}
@@ -310,9 +319,10 @@ DiskRead = function(args)
 	//alert(args.length);
 	if(formatFlag === 0) //check if the storage has been formatted
 	{
-		_StdIn.putText("File Read Failed, Disk not Formatted.");
-		_StdIn.advanceLine();
-		_StdIn.putText(">");
+		// _StdIn.putText("File Read Failed, Disk not Formatted.");
+		// _StdIn.advanceLine();
+		// _StdIn.putText(">");
+		addToLog("File Read Failed, Disk not Formatted.\n");
 	}
 	else
 	{
@@ -337,9 +347,10 @@ DiskRead = function(args)
 
 		if(keyToUse === null)
 		{
-			_StdIn.putText("File Read Failed, Disk Not Found.");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			// _StdIn.putText("File Read Failed, Disk Not Found.");
+			// _StdIn.advanceLine();
+			// _StdIn.putText(">");
+			addToLog("File Read Failed, Disk Not Found.\n");
 		}
 		else
 		{
@@ -351,9 +362,10 @@ DiskRead = function(args)
 			//alert(dataLocation);
 			if(dataLocation === "-,-,-")
 			{
-				_StdIn.putText("File Not Written To.");
-				_StdIn.advanceLine();
-				_StdIn.putText(">");
+				// _StdIn.putText("File Not Written To.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("File Not Written To.\n");
 			}
 			else
 			{
@@ -378,9 +390,9 @@ DiskDelete = function(args)
 {
 	if(formatFlag === 0) //check if the storage has been formatted
 	{
-		_StdIn.putText("File Delete Failed, Disk not Formatted.");
-		_StdIn.advanceLine();
-		_StdIn.putText(">");
+		// _StdIn.putText("File Delete Failed, Disk not Formatted.");
+		// _StdIn.advanceLine();
+		// _StdIn.putText(">");
 	}
 	else
 	{
@@ -407,9 +419,10 @@ DiskDelete = function(args)
 
 		if(keyToUse === null)
 		{
-			_StdIn.putText("File Deletion Failed, File Not Found.");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			// _StdIn.putText("File Deletion Failed, File Not Found.");
+			// _StdIn.advanceLine();
+			// _StdIn.putText(">");
+			addToLog("File Deletion Failed, File Not Found.\n");
 		}
 		else
 		{
@@ -420,9 +433,9 @@ DiskDelete = function(args)
 			{
 				deleteData(dataKey);
 			}
-			_StdIn.putText("File Deletion Successful.");
-			_StdIn.advanceLine();
-			_StdIn.putText(">");
+			// _StdIn.putText("File Deletion Successful.");
+			// _StdIn.advanceLine();
+			// _StdIn.putText(">");
 		}
 	}
 };
@@ -432,9 +445,9 @@ DiskList = function()
 {
 	if(formatFlag === 0) //check if the storage has been formatted
 	{
-		_StdIn.putText("File List Failed, Disk not Formatted.");
-		_StdIn.advanceLine();
-		_StdIn.putText(">");
+		// _StdIn.putText("File List Failed, Disk not Formatted.");
+		// _StdIn.advanceLine();
+		// _StdIn.putText(">");
 	}
 	else
 	{
@@ -613,4 +626,72 @@ DisktoString = function()
 	var programTA = document.getElementById("taHDD");
 	programTA.value = strToPrint;
 	//return strToPrint;
+};
+
+
+
+DiskReadRoll = function(args)
+{
+	//alert(args);
+	var args = args.join(" ");
+	//alert(args.length);
+	if(formatFlag === 0) //check if the storage has been formatted
+	{
+		// _StdIn.putText("File Read Failed, Disk not Formatted.");
+		// _StdIn.advanceLine();
+		// _StdIn.putText(">");
+		addToLog("File Read Failed, Disk not Formatted.\n");
+	}
+	else
+	{
+		var currentKey = "0,0,1"; //start with the first key, looking at the inUse byte.
+		
+		//var inUseCheck = _HardDrive.disk.getItem(currentKey);
+		var keyToUse = null;
+		var sizeToUse = args.toString().split(" ",1).toString().split("~",1).toString().length;
+
+		//alert(sizeToUse);
+		while(currentKey !== "0,0,0") //check all possible file locations to see if any are empty
+		{
+			var inUseCheck = _HardDrive.disk.getItem(currentKey);
+			if((parseInt(inUseCheck.substring(0,1)) === 1) && (inUseCheck.substring(_FileDenote,inUseCheck.length).split("~",1).toString().trim() === args.split(" ",1).toString().trim()))
+			{
+				keyToUse = currentKey;
+				break;
+			}
+			currentKey = getNextFileKey(currentKey);		
+			inUseCheck = _HardDrive.disk.getItem(currentKey);
+		}
+
+		if(keyToUse === null)
+		{
+			// _StdIn.putText("File Read Failed, Disk Not Found.");
+			// _StdIn.advanceLine();
+			// _StdIn.putText(">");
+			addToLog("File Read Failed, Disk Not Found.\n");
+		}
+		else
+		{
+			var rawContent = _HardDrive.disk.getItem(keyToUse);
+			var filename = rawContent.toString().substring(_FileDenote,inUseCheck.length).split("~",1).toString();
+			var dataLocation = rawContent.substring(1,_FileDenote);
+			dataLocation = dataLocation.split("");
+			dataLocation = dataLocation.join(",").toString();
+			//alert(dataLocation);
+			if(dataLocation === "-,-,-")
+			{
+				// _StdIn.putText("File Not Written To.");
+				// _StdIn.advanceLine();
+				// _StdIn.putText(">");
+				addToLog("File Not Written To.\n");
+			}
+			else
+			{
+				var data = filePull(dataLocation);
+				data = data.split("~",1).toString();
+				//window.alert(data);
+				return data;
+			}
+		}
+	}
 };

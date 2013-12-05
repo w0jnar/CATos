@@ -93,4 +93,10 @@ function toHexString(args){  //for printing
 		var hexString ='$' + args.toString(16);
 	}
 	return hexString;
-	}
+}
+
+function addToLog(args)
+{
+	var taLog = document.getElementById("taLog");
+    taLog.value = args + taLog.value;
+}

@@ -16,6 +16,7 @@ function PCB()
 	this.block		= 1;	    // Block in main Memory
 	this.state		= "new";
 	this.priority 	= 0;
+	this.location 	= "memory";
 	
 	this.acc	= 0;
 	this.xReg	= 0;
@@ -32,9 +33,16 @@ function PCB()
 		if(priority.toString().length !== 0 && !isNaN(priority))
 		{
 			//alert("meow");
-			this.priority 	= priority;
+			this.priority = priority;
 		}
-		
+		if(this.block > _MaxProgram)
+		{
+			this.location = "disk";
+			this.base = 0;
+			this.limit = 0;
+			//alert(this.location);
+		}
+		//alert(this.location);
 		
 		this.acc	= 0;
 		this.xReg	= 0;
@@ -124,9 +132,25 @@ function PCB()
 			output += " " + this.state;
 		else
 			output += " " + "dead";
+		output += meow;
+		output += " " + this.location;
 		// output += meow;
 		// output += " ] ";
 		//alert(output);
 		return output;
+	}
+	
+	this.rollInUpdate = function(oldProcess)       //status update for the pcb
+	{
+		this.location	= oldProcess.location;
+		this.base  		= oldProcess.base;
+		this.limit 		= oldProcess.limit;
+	}
+	
+	this.rollOutUpdate = function()       //status update for the pcb
+	{
+		this.location	= "disk";
+		this.base  		= 0;
+		this.limit 		= 0;
 	}
 }

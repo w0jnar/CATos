@@ -269,6 +269,7 @@ function systemBreak()  //"Break (which is really a system call)"
 		cpuMemoryFill();
 		_RunAllFlag = 0;
 		_ContextSwitch = 1;
+		programCount--;
 		_StdIn.advanceLine();
 		_StdIn.putText(">");
 	}
@@ -294,6 +295,10 @@ function systemBreak()  //"Break (which is really a system call)"
 	else if(_RunAllFlag === 1)
 	{
 		_RunAllFlag = 0;
+	}
+	else
+	{
+		programCount--;
 	}
 }
 

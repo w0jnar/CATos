@@ -16,8 +16,21 @@ scheduler = function()
 			taLog.value = "Context Switch Occurring\n" + taLog.value;
 			_KernelReadyQueue.q[0].pcbMemoryFill(1);
 			_KernelReadyQueue.q[0].statusUp("ready", _CPU.PC, _CPU.Acc, _CPU.Xreg, _CPU.Yreg, _CPU.Zflag);
-			_KernelReadyQueue.enqueue(_KernelReadyQueue.q[0]);
+			
+			var lastProcess = _KernelReadyQueue.q[0];
+			//_KernelReadyQueue.enqueue(_KernelReadyQueue.q[0]);
 			_KernelReadyQueue.dequeue();
+			var currentProcess = _KernelReadyQueue.q[0];
+			if(currentProcess.base === 0 && currentProcess.limit === 0)
+			{
+				//_KernelReadyQueue.dequeue();
+				lastProcess = rollHandle(lastProcess, currentProcess);
+				_KernelReadyQueue.enqueue(lastProcess);
+			}
+			else
+			{
+				_KernelReadyQueue.enqueue(lastProcess);
+			}
 			var currentProcess = _KernelReadyQueue.q[0];
 			_CPU.statusUp(currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
 			_KernelReadyQueue.q[0].statusUp("running", currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
@@ -39,7 +52,14 @@ scheduler = function()
 			var taLog = document.getElementById("taLog");
 			taLog.value = "Context Switch Occurring\n" + taLog.value;
 			_KernelReadyQueue.q[0].pcbMemoryFill(1);
+			var lastProcess = _KernelReadyQueue.q[0];
 			_KernelReadyQueue.dequeue();
+			var currentProcess = _KernelReadyQueue.q[0];
+			if(currentProcess.base === 0 && currentProcess.limit === 0)
+			{
+				//_KernelReadyQueue.dequeue();
+				lastProcess = rollHandle(lastProcess, currentProcess);
+			}
 			var currentProcess = _KernelReadyQueue.q[0];
 			_CPU.statusUp(currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
 			_KernelReadyQueue.q[0].statusUp("running", currentProcess.pc, currentProcess.acc, currentProcess.xReg, currentProcess.yReg, currentProcess.zFlag);
@@ -62,8 +82,6 @@ scheduler = function()
 	}
 	else if(scheduleAlgorithm === "fcfs")
 	{
-		//_PreviousQuantum = QUANTUM;
-		//QUANTUM = _FCFSQUANTUM;
 		_ContextSwitch = 1;
 		if(_KernelReadyQueue.q[0].state === "terminated" && _KernelReadyQueue.getSize() > 1)
 		{
@@ -93,14 +111,8 @@ scheduler = function()
 	}
 	else if(scheduleAlgorithm === "priority")
 	{
-		//_PreviousQuantum = QUANTUM;
-		//QUANTUM = _FCFSQUANTUM;
 		_ContextSwitch = 1;
-		if(firstTime === 0)
-		{
-			prioritySort();
-			firstTime = 1;
-		}
+		prioritySort();
 		if(_KernelReadyQueue.q[0].state === "terminated" && _KernelReadyQueue.getSize() > 1)
 		{
 			var taLog = document.getElementById("taLog");

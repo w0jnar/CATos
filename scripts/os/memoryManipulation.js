@@ -100,3 +100,46 @@ function next2Bytes()  //pulls the next 2 byte from memory and makes them into a
 	var hexLoc = storeCheck2 + storeCheck1;
 	return hexLoc;
 }
+
+function rollHandle(lastProcess, currentProcess)
+{
+	addToLog("Attempting to Roll...\n");
+	currentProcess.rollInUpdate(lastProcess);
+	var filename = ["process" + currentProcess.pid.toString()];
+	var fileToWrite = DiskReadRoll(filename); //admittedly it was either put in a sleep or just skip the kernel. I felt skipping the kernel was superior.
+	//alert(fileToWrite);
+	DiskDelete(filename);
+	var fileToCreate = ["process" + lastProcess.pid.toString()];
+	DiskCreate(fileToCreate);
+	var lastProcessFile = ""
+	//alert(lastProcess.base);
+	//alert(lastProcess.limit);
+	for(var i = lastProcess.base; i < lastProcess.limit; i++)
+	{
+		lastProcessFile += _Memory.mainMemory[i].toString();
+		//alert(i);
+	}
+	//alert(lastProcessFile);
+	DiskWrite([("process" + lastProcess.pid.toString()) + " " + lastProcessFile]);
+	lastProcess.rollOutUpdate();
+	mainMemoryRewrite(currentProcess.base, currentProcess.limit)
+	
+	var count = 0;
+	for(var i = currentProcess.base; i < currentProcess.limit; i++)
+	{
+		var fileSub = fileToWrite.substring(count, count + 2);
+		_Memory.mainMemory[i] = fileSub;
+		count += 2;
+	}
+	
+	// lastProcessFile = "";
+	// for(var i = currentProcess.base; i < currentProcess.limit; i++)
+	// {
+		// lastProcessFile += _Memory.mainMemory[i].toString();
+		// //alert(i);
+	// }
+	// alert(lastProcessFile);
+	_KernelReadyQueue.dequeue();
+	_KernelReadyQueue.q.unshift(currentProcess);
+	return lastProcess;
+}

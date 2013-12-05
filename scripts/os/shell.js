@@ -652,11 +652,16 @@ function shellLoad(priority) //Load
 		_StdIn.advanceLine();
 		//_StdIn.putText(process.toString());
 	}
-	else if(programCount === _MaxProgram)
+	else if((test != null) && (inCode.length % 2 == 0) && (inCode !== "") && sizeTest)
 	{
-		_StdIn.putText("Attempted to load too many programs.");
-		_StdIn.advanceLine();
-		_StdIn.putText("No more memory can be allocated at this time.");
+		if(formatFlag === 0) //check if the storage has been formatted
+		{
+			_StdOut.putText("File List Failed, Disk not Formatted.");
+		}
+		else
+		{
+			krnMemoryAllocationDisk(inCode, priority);
+		}
 	}
 	else if(inCode.length % 2 !== 0)
 	{

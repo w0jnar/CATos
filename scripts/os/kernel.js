@@ -22,10 +22,7 @@ function krnBootstrap()      // Page 8.
    _KernelBuffers = new Array();         // Buffers... for the kernel.
    _KernelInputQueue = new Queue();      // Where device input lands before being processed out somewhere.
    _KernelResidentList = new Array();
-   for(var i = 0; i < _MaxProgram; i++)
-   {
-		_KernelResidentList[i] = null;
-   }
+
    _KernelReadyQueue = new Queue();  	 // A queue for new PCB's (Process Control Blocks).
    
    _Console = new CLIconsole();          // The command line interface / console I/O device.
@@ -93,8 +90,10 @@ function krnOnCPUClockPulse()
 	
 	dateFunc();
 	mainMemoryFill();
-	DisktoString();
-	
+	if(formatFlag === 1)
+	{
+		DisktoString();
+	}
 	var RQOut = document.getElementById("RQOut");
 	if(!_KernelReadyQueue.isEmpty())
 	{
@@ -241,18 +240,19 @@ function krnMemoryAllocation(inCode, priority)
 {
 	var process = new PCB();  //creates new pcb
 	var newProcessLocation;
-	for(var i = 0; i < _MaxProgram; i++) //find a free space, not the best method for now, but seemed ok.
-	{
-		if(_KernelResidentList[i] === null)
-		{
-			newProcessLocation = i;
-			break;
-		}
-	}
+	// for(var i = 0; i < _MaxProgram; i++) //find a free space, not the best method for now, but seemed ok.
+	// {
+		// if(_KernelResidentList[i] === null)
+		// {
+			// newProcessLocation = i;
+			// break;
+		// }
+	// }
+	newProcessLocation = _KernelResidentList.length;
 	//if(newProcessLocation == null) should be an impossibility with former checking, so for now removed
 	
 	process.pcbInit(newProcessLocation, priority);
-	_KernelResidentList[newProcessLocation] = process;
+	_KernelResidentList.push(process);
 	programCount++;
 	if(_processFlag === 0)
 	{
@@ -263,6 +263,29 @@ function krnMemoryAllocation(inCode, priority)
 		process.pcbMemoryFill(1);
 	mainMemoryRewrite(process.base, process.limit);
 	mainMemoryUpdate(inCode, process.block);  //future-proofing for when there is more than one program for the memory on the "client."
+	return process;
+}
+
+function krnMemoryAllocationDisk(inCode, priority)
+{
+	var name = "process" + programCount.toString();
+	var args = ["create", [name]];
+	krnDiskHandle(args);
+	name = name + " " + inCode;
+	args = ["write", [name]];
+	krnDiskHandle(args);
+	_StdIn.putText("Program Loaded to File System.");
+	
+	var process = new PCB();  //creates new pcb
+	var newProcessLocation;
+
+	newProcessLocation = _KernelResidentList.length;
+	//if(newProcessLocation == null) should be an impossibility with former checking, so for now removed
+	
+	process.pcbInit(newProcessLocation, priority);
+	_KernelResidentList.push(process);
+	programCount++;
+	
 	return process;
 }
 
@@ -294,7 +317,7 @@ function krnRunProcess(inPID)
 		_KernelReadyQueue.q.unshift(_KernelResidentList[_CurrentPCB]);
 		//alert(_KernelReadyQueue.q[0].toString());
 		//_KernelResidentList.splice(_CurrentPCB, 1);
-		_KernelResidentList[_CurrentPCB] = null;
+		_KernelResidentList.splice(_CurrentPCB, 1);
 		krnNextProcess();
 		_KernelReadyQueue.q[0].pcbMemoryFill(1);
 		// cpuMemoryReset();
@@ -356,7 +379,7 @@ function krnRunAllProcesses()
 			if(_KernelResidentList[i].state == "ready") //necessary because errors otherwise
 			{
 				_KernelReadyQueue.enqueue(_KernelResidentList[i]);
-				_KernelResidentList[i] = null;
+				//_KernelResidentList[i] = null;
 			}
 		}
     }
@@ -366,6 +389,8 @@ function krnRunAllProcesses()
 	}
 	else    //else, set status (state), reset the cpu if it has old data, set cpu to executing.
 	{
+		while(_KernelResidentList.length > 0)
+			_KernelResidentList.shift();
 		//alert(_KernelReadyQueue.toString());
 		//alert(_KernelReadyQueue.q[0].toString());
 		krnNextProcess();
