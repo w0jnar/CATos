@@ -59,8 +59,6 @@ scheduler = function()
 			_StdIn.advanceLine();
 			_StdIn.putText(">");
 		}
-		if(!_KernelReadyQueue.isEmpty())
-			memoryRanges(_KernelReadyQueue.q[0]);
 	}
 	else if(scheduleAlgorithm === "fcfs")
 	{
@@ -92,8 +90,6 @@ scheduler = function()
 			_StdIn.advanceLine();
 			_StdIn.putText(">");
 		}
-		if(!_KernelReadyQueue.isEmpty())
-			memoryRanges(_KernelReadyQueue.q[0]);
 	}
 	else if(scheduleAlgorithm === "priority")
 	{
@@ -131,9 +127,9 @@ scheduler = function()
 			_StdIn.advanceLine();
 			_StdIn.putText(">");
 		}
-		if(!_KernelReadyQueue.isEmpty())
-			memoryRanges(_KernelReadyQueue.q[0]);
 	}
+	if(!_KernelReadyQueue.isEmpty())
+			memoryRanges(_KernelReadyQueue.q[0]);
 }
 
  function prioritySort()

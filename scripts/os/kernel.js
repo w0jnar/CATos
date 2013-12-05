@@ -93,6 +93,7 @@ function krnOnCPUClockPulse()
 	
 	dateFunc();
 	mainMemoryFill();
+	DisktoString();
 	
 	var RQOut = document.getElementById("RQOut");
 	if(!_KernelReadyQueue.isEmpty())

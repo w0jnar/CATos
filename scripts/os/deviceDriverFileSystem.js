@@ -578,3 +578,39 @@ function deleteData(currentDataKey)
 	//alert(_HardDrive.disk.getItem(dataKeyToUse));
 	//return outStr;
 }
+
+DisktoString = function()
+{
+	var tsbKey = "";
+	var strToPrint = "~~File System~~\n";
+
+	for (var t = 0; t < 1; t++) //track loop
+	{
+		for (var s = 0; s < _HardDrive.sectors; s++) //sector loop
+		{
+			for (var b = 0; b < _HardDrive.blocks; b++) //block loop
+			{
+				tsbKey = t.toString() + "," + s.toString() + "," + b.toString(); //create the tsbKey and add it to the disk
+				var current = _HardDrive.disk.getItem(tsbKey);
+				strToPrint += tsbKey + "|" + current.substring(0,1) + "|" + current.substring(1,_FileDenote) + "|" + current.substring(_FileDenote,current.length) + "\n";
+			}
+		}
+	}
+	strToPrint += "\n~~Data Storage~~\n";
+	for (var t = 1; t < _HardDrive.tracks; t++) //track loop
+	{
+		for (var s = 0; s < _HardDrive.sectors; s++) //sector loop
+		{
+			for (var b = 0; b < _HardDrive.blocks; b++) //block loop
+			{
+				tsbKey = t.toString() + "," + s.toString() + "," + b.toString(); //create the tsbKey and add it to the disk
+				var current = _HardDrive.disk.getItem(tsbKey);
+				strToPrint += tsbKey + "|" + current.substring(0,1) + "|" + current.substring(1,_FileDenote) + "|" + current.substring(_FileDenote,current.length) + "\n";
+			}
+		}
+	}
+	//var fill = mainMemoryInitString();
+	var programTA = document.getElementById("taHDD");
+	programTA.value = strToPrint;
+	//return strToPrint;
+};
